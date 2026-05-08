@@ -1,0 +1,105 @@
+{
+  "nav": {
+    "services": "Služby",
+    "pricing": "Ceník",
+    "about": "O nás",
+    "contact": "Kontakt",
+    "cta": "Nezávazná poptávka"
+  },
+  "hero": {
+    "headline": "Rychle a dostupně — bez zbytečností",
+    "subheadline": "Vyvíjíme webové aplikace a interní nástroje, které se skutečně dodají. Žádné nafukování rozsahu, žádné kecy — jen funkční software.",
+    "ctaPrimary": "Nezávazná poptávka",
+    "ctaSecondary": "Naše služby"
+  },
+  "services": {
+    "title": "Co děláme",
+    "webApps": {
+      "title": "Webové aplikace",
+      "description": "Firemní nástroje, dashboardy a datově náročné aplikace — postavené tak, aby skutečně seděly vašemu procesu."
+    },
+    "internalTools": {
+      "title": "Interní nástroje & CRUD aplikace",
+      "description": "Od adminů po skladové systémy — rychlé na vývoj, jednoduché na údržbu."
+    },
+    "landingPages": {
+      "title": "Landing pages & weby",
+      "description": "Weby zaměřené na konverzi, rychlé a přehledné — bez zbytečného balastu."
+    }
+  },
+  "pricing": {
+    "title": "Jednoduchý, férový ceník",
+    "tiers": {
+      "landing": {
+        "name": "Landing page",
+        "price": "Od 12 900 Kč",
+        "features": [
+          "Jednostránkový web",
+          "Responzivní design",
+          "Kontaktní formulář",
+          "Dodání za 5–7 dní"
+        ]
+      },
+      "webapp": {
+        "name": "Webová aplikace",
+        "price": "Od 38 900 Kč",
+        "badge": "Nejoblíbenější",
+        "features": [
+          "Webová aplikace na míru",
+          "Až 5 hlavních funkcí",
+          "Administrační panel",
+          "Podpora 30 dní"
+        ]
+      },
+      "custom": {
+        "name": "Na míru",
+        "price": "Domluvíme se",
+        "features": [
+          "Komplexní systémy",
+          "Integrace",
+          "Průběžný vývoj",
+          "Společně navrhneme rozsah"
+        ]
+      }
+    },
+    "ctaStart": "Začít",
+    "ctaContact": "Kontaktovat nás"
+  },
+  "about": {
+    "title": "Kdo jsme",
+    "description": "GG Software je malý, soustředěný tým vývojářů. Vynecháváme account managery a zbytečnou režii — komunikujete přímo s lidmi, kteří píší váš kód. Tak dokážeme zůstat rychlí a dostupní.",
+    "stats": {
+      "delivery": "⚡ Průměrné dodání: 2 týdny",
+      "communication": "💬 Přímá komunikace s vývojáři",
+      "pricing": "✅ Projekty s pevnou cenou"
+    },
+    "team": {
+      "title": "Tým"
+    }
+  },
+  "contact": {
+    "title": "Pojďme něco postavit",
+    "intro": "Řekněte nám, co potřebujete. Ozveme se do 24 hodin.",
+    "email": "ggsoftware.cz@gmail.com",
+    "fields": {
+      "name": "Jméno",
+      "email": "E-mail",
+      "projectType": "Typ projektu",
+      "projectTypes": {
+        "placeholder": "Vyberte typ projektu",
+        "webapp": "Webová aplikace",
+        "internalTool": "Interní nástroj",
+        "landing": "Landing page",
+        "other": "Jiné"
+      },
+      "message": "Zpráva",
+      "submit": "Odeslat"
+    },
+    "success": "Zpráva odeslána! Ozveme se brzy."
+  },
+  "footer": {
+    "tagline": "Rychle a dostupně — bez zbytečností",
+    "copyright": "© 2025 GG Software. Všechna práva vyhrazena.",
+    "links": "Rychlé odkazy"
+  }
+}

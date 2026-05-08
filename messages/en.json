@@ -1,0 +1,105 @@
+{
+  "nav": {
+    "services": "Services",
+    "pricing": "Pricing",
+    "about": "About",
+    "contact": "Contact",
+    "cta": "Get a quote"
+  },
+  "hero": {
+    "headline": "Fast & affordable — no fluff",
+    "subheadline": "We build web apps and internal tools that actually get delivered. No bloat, no BS, just working software.",
+    "ctaPrimary": "Get a quote",
+    "ctaSecondary": "See our services"
+  },
+  "services": {
+    "title": "What we build",
+    "webApps": {
+      "title": "Web Apps",
+      "description": "Custom business tools, dashboards, and data-heavy apps — built to actually fit your workflow."
+    },
+    "internalTools": {
+      "title": "Internal Tools & CRUD Apps",
+      "description": "From admin panels to inventory systems — fast to ship, easy to maintain."
+    },
+    "landingPages": {
+      "title": "Landing Pages & Marketing Sites",
+      "description": "Conversion-focused, fast-loading sites that look great and get out of the way."
+    }
+  },
+  "pricing": {
+    "title": "Simple, honest pricing",
+    "tiers": {
+      "landing": {
+        "name": "Landing Page",
+        "price": "From €499",
+        "features": [
+          "Single-page marketing site",
+          "Mobile responsive",
+          "Contact form",
+          "Delivered in 5–7 days"
+        ]
+      },
+      "webapp": {
+        "name": "Web App / Tool",
+        "price": "From €1,499",
+        "badge": "Most popular",
+        "features": [
+          "Custom web app or internal tool",
+          "Up to 5 core features",
+          "Admin panel",
+          "30-day support"
+        ]
+      },
+      "custom": {
+        "name": "Enterprise / Custom",
+        "price": "Let's talk",
+        "features": [
+          "Complex systems",
+          "Integrations",
+          "Ongoing development",
+          "Scoped together"
+        ]
+      }
+    },
+    "ctaStart": "Get started",
+    "ctaContact": "Contact us"
+  },
+  "about": {
+    "title": "Who we are",
+    "description": "GG Software is a small, focused team of developers. We skip the account managers and the overhead — you work directly with the people writing your code. That's how we stay fast and affordable.",
+    "stats": {
+      "delivery": "⚡ Avg. delivery: 2 weeks",
+      "communication": "💬 Direct dev communication",
+      "pricing": "✅ Fixed-price projects"
+    },
+    "team": {
+      "title": "The team"
+    }
+  },
+  "contact": {
+    "title": "Let's build something",
+    "intro": "Tell us what you need. We'll get back to you within 24 hours.",
+    "email": "ggsoftware.cz@gmail.com",
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "projectType": "Project type",
+      "projectTypes": {
+        "placeholder": "Select a project type",
+        "webapp": "Web App",
+        "internalTool": "Internal Tool",
+        "landing": "Landing Page",
+        "other": "Other"
+      },
+      "message": "Message",
+      "submit": "Send message"
+    },
+    "success": "Message sent! We'll be in touch soon."
+  },
+  "footer": {
+    "tagline": "Fast & affordable — no fluff",
+    "copyright": "© 2025 GG Software. All rights reserved.",
+    "links": "Quick links"
+  }
+}
