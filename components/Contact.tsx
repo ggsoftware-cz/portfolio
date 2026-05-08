@@ -1,8 +1,10 @@
 'use client';
 
 import {useState, useRef, useEffect, type FormEvent} from 'react';
+import Script from 'next/script';
 import {useTranslations} from 'next-intl';
 import {Mail, Send, CheckCircle2, ChevronDown} from 'lucide-react';
+import {siteConfig} from '@/config/site';
 
 type FormState = {
   name: string;
@@ -12,6 +14,14 @@ type FormState = {
 };
 
 type Errors = Partial<Record<keyof FormState, string>>;
+
+declare global {
+  interface Window {
+    turnstile?: {reset: (widgetId?: string) => void};
+  }
+}
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 export default function Contact() {
   const t = useTranslations('contact');
@@ -26,8 +36,11 @@ export default function Contact() {
   const [form, setForm] = useState<FormState>({name: '', email: '', projectType: '', message: ''});
   const [errors, setErrors] = useState<Errors>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [typeOpen, setTypeOpen] = useState(false);
   const typeRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
@@ -52,15 +65,40 @@ export default function Contact() {
     return e;
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (submitting) return;
+
     const errs = validate();
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
       return;
     }
-    // TODO: Wire up contact form to backend / email service (e.g. Resend, Formspree)
-    setSubmitted(true);
+
+    const fd = new FormData(e.currentTarget);
+    const honeypot = String(fd.get('website') ?? '');
+    const turnstileToken = String(fd.get('cf-turnstile-response') ?? '');
+
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({...form, website: honeypot, turnstileToken})
+      });
+      if (!res.ok) {
+        setSubmitError(t('error'));
+        window.turnstile?.reset();
+        return;
+      }
+      setSubmitted(true);
+    } catch {
+      setSubmitError(t('error'));
+      window.turnstile?.reset();
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -86,6 +124,14 @@ export default function Contact() {
 
   return (
     <section id="contact" className="py-24 bg-white">
+      {TURNSTILE_SITE_KEY && (
+        <Script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+          async
+          defer
+          strategy="afterInteractive"
+        />
+      )}
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-black text-gray-900 mb-4">
@@ -103,7 +149,7 @@ export default function Contact() {
               <p className="text-lg font-semibold text-gray-900">{t('success')}</p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
+            <form ref={formRef} onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -196,25 +242,43 @@ export default function Contact() {
                 />
               </div>
 
+              {/* Honeypot — humans never see or fill this; bots usually do. */}
+              <div
+                aria-hidden="true"
+                style={{position: 'absolute', left: '-9999px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden'}}
+              >
+                <label>
+                  Website
+                  <input type="text" name="website" tabIndex={-1} autoComplete="off" defaultValue="" />
+                </label>
+              </div>
+
+              {TURNSTILE_SITE_KEY && (
+                <div className="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="light" />
+              )}
+
+              {submitError && (
+                <p className="text-sm text-red-500" role="alert">{submitError}</p>
+              )}
+
               <button
                 type="submit"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand text-white font-semibold text-sm hover:bg-brand-700 transition-colors mt-2"
+                disabled={submitting}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand text-white font-semibold text-sm hover:bg-brand-700 transition-colors mt-2 disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 <Send size={15} />
-                {t('fields.submit')}
+                {submitting ? t('sending') : t('fields.submit')}
               </button>
             </form>
           )}
 
-          {/* Contact email */}
-          {/* TODO: Replace hello@ggsoftware.dev with real contact email */}
           <div className="flex items-center justify-center gap-2 mt-10 text-sm text-gray-500">
             <Mail size={14} />
             <a
-              href={`mailto:${t('email')}`}
+              href={`mailto:${siteConfig.email}`}
               className="hover:text-brand transition-colors"
             >
-              {t('email')}
+              {siteConfig.email}
             </a>
           </div>
         </div>

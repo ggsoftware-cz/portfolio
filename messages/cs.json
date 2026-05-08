@@ -80,7 +80,6 @@
   "contact": {
     "title": "Pojďme něco postavit",
     "intro": "Řekněte nám, co potřebujete. Ozveme se do 24 hodin.",
-    "email": "ggsoftware.cz@gmail.com",
     "fields": {
       "name": "Jméno",
       "email": "E-mail",
@@ -95,7 +94,9 @@
       "message": "Zpráva",
       "submit": "Odeslat"
     },
-    "success": "Zpráva odeslána! Ozveme se brzy."
+    "sending": "Odesílám…",
+    "success": "Zpráva odeslána! Ozveme se brzy.",
+    "error": "Něco se pokazilo. Zkuste to prosím znovu, nebo nám napište přímo."
   },
   "footer": {
     "tagline": "Rychle a dostupně — bez zbytečností",

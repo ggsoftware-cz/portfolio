@@ -80,7 +80,6 @@
   "contact": {
     "title": "Let's build something",
     "intro": "Tell us what you need. We'll get back to you within 24 hours.",
-    "email": "ggsoftware.cz@gmail.com",
     "fields": {
       "name": "Name",
       "email": "Email",
@@ -95,7 +94,9 @@
       "message": "Message",
       "submit": "Send message"
     },
-    "success": "Message sent! We'll be in touch soon."
+    "sending": "Sending…",
+    "success": "Message sent! We'll be in touch soon.",
+    "error": "Something went wrong. Please try again or email us directly."
   },
   "footer": {
     "tagline": "Fast & affordable — no fluff",
