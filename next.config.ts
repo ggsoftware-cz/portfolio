@@ -3,7 +3,8 @@ import type {NextConfig} from 'next';
 
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 const isGitHubPages = process.env.GITHUB_PAGES === 'true';
-const repositoryName = process.env.GITHUB_REPOSITORY?.split('/')[1];
+const repositoryParts = process.env.GITHUB_REPOSITORY?.split('/') ?? [];
+const repositoryName = repositoryParts.length === 2 ? repositoryParts[1] : undefined;
 
 const nextConfig: NextConfig = {
   ...(isGitHubPages
