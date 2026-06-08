@@ -1,4 +1,11 @@
 {
+  "meta": {
+    "title": "GG Software — Rychlý a dostupný vývoj webů",
+    "titleTemplate": "%s — GG Software",
+    "description": "GG Software vyvíjí webové aplikace, interní nástroje a landing pages, které se skutečně dodají. Rychle, za pevnou cenu, bez balastu — komunikujete přímo s vývojáři, kteří píší váš kód.",
+    "keywords": "vývoj webových aplikací, webové aplikace, interní nástroje, CRUD aplikace, landing pages, software na míru, vývoj za pevnou cenu, softwarová agentura, tvorba webů",
+    "ogImageAlt": "GG Software — Rychlý a dostupný vývoj webů"
+  },
   "nav": {
     "services": "Služby",
     "pricing": "Ceník",
