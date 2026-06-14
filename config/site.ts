@@ -26,7 +26,7 @@ export const siteConfig: SiteConfig = {
   copyrightStartYear: 2025,
   // Paste the code from Google Search Console → Settings → Ownership
   // verification → "HTML tag" (just the content="..." value). Leave empty to omit.
-  googleSiteVerification: "",
+  googleSiteVerification: "fNgWlsetCF-he9ep9kzSzA7FwC67wZNm3_KnD7vtmgA",
   // TODO: fill in your real Czech business identity. Shown in the footer and the
   // privacy policy. Leave a field empty to hide it.
   legal: {

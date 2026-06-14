@@ -23,9 +23,9 @@ export default function Testimonials() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-3">
-          {items.map(item => (
+          {items.map((item, i) => (
             <figure
-              key={item.name}
+              key={i}
               className="flex flex-col rounded-2xl border border-gray-100 bg-white p-7 shadow-sm"
             >
               <Quote size={24} className="mb-4 text-brand-200" fill="currentColor" />
