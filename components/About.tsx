@@ -1,4 +1,6 @@
+import Image from 'next/image';
 import {useTranslations} from 'next-intl';
+import {siteConfig} from '@/config/site';
 
 export default function About() {
   const t = useTranslations('about');
@@ -41,22 +43,30 @@ export default function About() {
         <div className="text-center mb-8">
           <h3 className="text-lg font-bold text-gray-700">{t('team.title')}</h3>
         </div>
-        {/* TODO: Swap placeholder team member names/photos in About section */}
+        {/* Team members are defined in config/site.ts */}
         <div className="flex flex-wrap justify-center gap-6">
-          {[
-            {name: 'Jan Novák', role: 'Full-stack Developer'},
-            {name: 'Petra Kovářová', role: 'Frontend & UX'}
-          ].map(member => (
+          {siteConfig.team.map(member => (
             <div
               key={member.name}
               className="flex flex-col items-center gap-3 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm w-44"
             >
-              <div className="w-16 h-16 rounded-full bg-brand-50 flex items-center justify-center text-xl font-black text-brand">
-                {member.name
-                  .split(' ')
-                  .map(n => n[0])
-                  .join('')}
-              </div>
+              {member.photo ? (
+                <Image
+                  src={member.photo}
+                  alt={member.name}
+                  width={64}
+                  height={64}
+                  unoptimized
+                  className="w-16 h-16 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-16 h-16 rounded-full bg-brand-50 flex items-center justify-center text-xl font-black text-brand">
+                  {member.name
+                    .split(' ')
+                    .map(n => n[0])
+                    .join('')}
+                </div>
+              )}
               <div className="text-center">
                 <p className="font-semibold text-gray-900 text-sm">{member.name}</p>
                 <p className="text-xs text-gray-500 mt-0.5">{member.role}</p>

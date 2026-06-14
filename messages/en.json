@@ -8,6 +8,7 @@
   },
   "nav": {
     "services": "Services",
+    "work": "Work",
     "pricing": "Pricing",
     "about": "About",
     "contact": "Contact",
@@ -33,6 +34,210 @@
       "title": "Landing Pages & Marketing Sites",
       "description": "Conversion-focused, fast-loading sites that look great and get out of the way."
     }
+  },
+  "work": {
+    "title": "Selected work",
+    "subtitle": "A look at recent projects we've designed, built, and shipped — on time and on budget.",
+    "cta": "View case study",
+    "items": {
+      "samolep": {
+        "name": "Samolep",
+        "category": "E-shop & Configurator",
+        "tagline": "An online configurator and shop for custom-printed stickers — from design to order in a few clicks.",
+        "overview": "Samolep needed more than a catalogue — customers want to design their own stickers, watch the price update as they go, and order without back-and-forth emails. We built a fast web app where shoppers pick size, shape, material and quantity, upload their own artwork, preview it, and check out — all in one smooth flow.",
+        "challenge": "Calculate pricing in real time from size, shape, material and quantity, let customers upload and preview their own artwork in the browser, and keep the whole ordering flow fast and effortless.",
+        "solution": "A React front-end talking to an ASP.NET Core REST API: a live sticker configurator with instant pricing, in-browser artwork upload and preview, and a streamlined checkout — built to handle custom orders without manual quoting.",
+        "results": [
+          "Customers design and order stickers entirely self-service",
+          "Live pricing that updates by size, shape, material and quantity",
+          "Upload and preview your own artwork right in the browser",
+          "Fast, responsive storefront powered by a clean REST API"
+        ]
+      },
+      "nova-bistro": {
+        "name": "Nova Bistro",
+        "category": "Landing & Reservations",
+        "tagline": "A mouth-watering restaurant site with online reservations and a menu the owners can update themselves.",
+        "overview": "Nova Bistro needed a website that looked as good as their food and stopped the endless phone tag for bookings. We delivered a fast, beautiful single-page site with online reservations and a self-service menu — so the kitchen, not a developer, is always in control of what's on the page.",
+        "challenge": "Convert visitors into bookings on mobile, let non-technical staff edit the menu and opening hours, and load instantly even on a busy Friday night.",
+        "solution": "A statically-rendered Next.js site wired to a headless CMS for the menu, online reservations, and Stripe deposits for large parties — all with sub-second load times.",
+        "results": [
+          "Online reservations now drive the majority of bookings",
+          "Menu updates take seconds, with no developer involved",
+          "Near-perfect Lighthouse performance on mobile",
+          "Launched in two weeks, start to finish"
+        ]
+      },
+      "medroster": {
+        "name": "MedRoster",
+        "category": "Web App",
+        "tagline": "Shift scheduling for clinics — drag-and-drop rosters, fewer conflicts, happier staff.",
+        "overview": "Scheduling clinic shifts by hand meant constant double-bookings, gaps in coverage, and a manager buried in messages. MedRoster turns rostering into a drag-and-drop board that flags conflicts before they happen and lets staff see their shifts the moment they're published.",
+        "challenge": "Model complex rules — qualifications, availability, rest periods — while keeping the interface simple enough for any clinic manager to use without training.",
+        "solution": "A React app with a Node.js and Prisma backend, a live conflict checker, swap requests, and instant notifications — built to scale from a single clinic to a whole network.",
+        "results": [
+          "Scheduling conflicts down by 80%",
+          "Roster planning that took hours now takes minutes",
+          "Staff see updated shifts in real time",
+          "Rolled out across several clinics on the same platform"
+        ]
+      }
+    },
+    "detail": {
+      "back": "Back to work",
+      "visit": "Visit live site",
+      "overviewTitle": "Overview",
+      "challengeTitle": "The challenge",
+      "solutionTitle": "What we built",
+      "screenshotsTitle": "A closer look",
+      "resultsTitle": "The results",
+      "ctaTitle": "Have a project like this?",
+      "ctaText": "Tell us what you're building. We'll get back to you within 24 hours with a fixed-price quote.",
+      "ctaButton": "Start your project"
+    }
+  },
+  "stats": {
+    "items": [
+      {"value": "20+", "label": "Projects delivered"},
+      {"value": "5+", "label": "Years building software"},
+      {"value": "2 wks", "label": "Average delivery time"},
+      {"value": "100%", "label": "Fixed-price clarity"}
+    ]
+  },
+  "process": {
+    "title": "How we work",
+    "subtitle": "A clear, transparent process from the first call to launch — and everything after.",
+    "steps": [
+      {
+        "title": "Discovery",
+        "description": "We learn your goals, users, and constraints, then scope the project together."
+      },
+      {
+        "title": "Proposal",
+        "description": "You get a fixed-price quote and a timeline. No hourly guesswork, no surprises."
+      },
+      {
+        "title": "Design & build",
+        "description": "We design and develop in short cycles, sharing progress so you're never in the dark."
+      },
+      {
+        "title": "Launch",
+        "description": "We test, deploy, and make sure everything runs smoothly in production."
+      },
+      {
+        "title": "Support",
+        "description": "After launch we stay available for fixes, tweaks, and new features as you grow."
+      }
+    ]
+  },
+  "techStack": {
+    "title": "Our tech stack",
+    "subtitle": "Modern, battle-tested tools we use to build fast, reliable software.",
+    "groups": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "infra": "Infrastructure & tools"
+    }
+  },
+  "testimonials": {
+    "title": "What clients say",
+    "subtitle": "We measure success by whether our clients would work with us again.",
+    "clientsLabel": "Trusted by",
+    "items": [
+      {
+        "quote": "They delivered exactly what we needed, on time and on budget. Communication was direct and honest the whole way through.",
+        "name": "Client Name",
+        "role": "Founder",
+        "company": "Company"
+      },
+      {
+        "quote": "Finally a team that just ships. Our internal tool went from idea to daily use in a matter of weeks.",
+        "name": "Client Name",
+        "role": "Operations Lead",
+        "company": "Company"
+      },
+      {
+        "quote": "Great work and a fair, fixed price. We knew exactly what we were paying for from day one.",
+        "name": "Client Name",
+        "role": "Owner",
+        "company": "Company"
+      }
+    ]
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "subtitle": "Everything you might want to know before getting in touch.",
+    "items": [
+      {
+        "q": "How much does a project cost?",
+        "a": "Most projects are fixed-price, agreed up front. Landing pages start around €499 and web apps from €1,499. After a short call we send a clear quote with no hidden fees."
+      },
+      {
+        "q": "How long does it take?",
+        "a": "Landing pages typically ship in 5–7 days, and most web apps within a few weeks. We agree on a timeline before we start and keep you updated throughout."
+      },
+      {
+        "q": "Who owns the code?",
+        "a": "You do. Once the project is paid for, all code and assets are yours — including the source code and full ownership of your project."
+      },
+      {
+        "q": "Do you offer support after launch?",
+        "a": "Yes. Every project includes a support period, and we're happy to continue with ongoing maintenance, fixes, and new features afterwards."
+      },
+      {
+        "q": "Can you work with our existing team or system?",
+        "a": "Absolutely. We regularly integrate with existing systems, APIs, and teams, and can pick up or extend an existing codebase."
+      },
+      {
+        "q": "What if I'm not sure exactly what I need?",
+        "a": "That's normal — and it's what the discovery step is for. We'll help you turn a rough idea into a clear, scoped plan before any code is written."
+      }
+    ]
+  },
+  "cookie": {
+    "message": "We use privacy-friendly analytics to understand how visitors use our site — no tracking cookies, no personal data sold.",
+    "accept": "Got it",
+    "decline": "Decline",
+    "learnMore": "Privacy policy"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "updated": "Last updated: June 2026",
+    "intro": "This Privacy Policy explains how {company} (\"we\") handles personal data collected through this website. We only collect what we need, and we never sell your data.",
+    "sections": [
+      {
+        "heading": "Who we are",
+        "body": "{company} operates this website. If you have any questions about this policy or your data, contact us at {email}."
+      },
+      {
+        "heading": "What data we collect",
+        "body": "When you submit our contact form, we collect the name, email address, project type, and message you provide. We do not collect any other personal data about you directly."
+      },
+      {
+        "heading": "Why we use it",
+        "body": "We use the information you send only to respond to your enquiry and to provide the services you ask about. The legal basis is your consent and our legitimate interest in replying to you."
+      },
+      {
+        "heading": "Analytics",
+        "body": "If you accept analytics, we use Plausible Analytics — a privacy-friendly tool that does not use cookies and does not collect any personal data. It only gives us anonymous, aggregated traffic statistics. You can decline at any time."
+      },
+      {
+        "heading": "Spam protection",
+        "body": "Our contact form is protected by Cloudflare Turnstile to prevent spam and abuse. Cloudflare processes limited technical data to verify you are not a bot."
+      },
+      {
+        "heading": "Data retention",
+        "body": "We keep contact messages only as long as needed to handle your request and any resulting work, after which they are deleted."
+      },
+      {
+        "heading": "Your rights",
+        "body": "Under the GDPR you have the right to access, correct, or delete your personal data, and to object to its processing. To exercise any of these rights, email us at {email}."
+      },
+      {
+        "heading": "Contact",
+        "body": "For any privacy-related questions or requests, reach us at {email}."
+      }
+    ]
   },
   "pricing": {
     "title": "Simple, honest pricing",
@@ -108,6 +313,7 @@
   "footer": {
     "tagline": "Fast & affordable — no fluff",
     "copyright": "© 2025 GG Software. All rights reserved.",
-    "links": "Quick links"
+    "links": "Quick links",
+    "privacy": "Privacy policy"
   }
 }

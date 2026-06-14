@@ -8,6 +8,7 @@
   },
   "nav": {
     "services": "Služby",
+    "work": "Reference",
     "pricing": "Ceník",
     "about": "O nás",
     "contact": "Kontakt",
@@ -33,6 +34,210 @@
       "title": "Landing pages & weby",
       "description": "Weby zaměřené na konverzi, rychlé a přehledné — bez zbytečného balastu."
     }
+  },
+  "work": {
+    "title": "Vybrané reference",
+    "subtitle": "Ukázka projektů, které jsme nedávno navrhli, postavili a nasadili — včas a v rozpočtu.",
+    "cta": "Zobrazit case study",
+    "items": {
+      "samolep": {
+        "name": "Samolep",
+        "category": "E-shop & konfigurátor",
+        "tagline": "Online konfigurátor a e-shop pro tisk samolepek na míru — od návrhu k objednávce v pár kliknutích.",
+        "overview": "Samolep nepotřeboval jen katalog — zákazníci si chtějí samolepku navrhnout sami, vidět cenu hned a objednat bez zbytečného e-mailování. Postavili jsme rychlou webovou aplikaci, kde si zákazník vybere rozměr, tvar, materiál a množství, nahraje vlastní motiv, zobrazí náhled a dokončí objednávku — vše v jednom plynulém kroku.",
+        "challenge": "Počítat cenu v reálném čase podle rozměru, tvaru, materiálu a množství, umožnit nahrání a náhled vlastního motivu přímo v prohlížeči a udržet celý průběh objednávky rychlý a bez tření.",
+        "solution": "React frontend komunikující s REST API v ASP.NET Core: živý konfigurátor samolepek s okamžitým výpočtem ceny, nahráním a náhledem motivu v prohlížeči a přehledným košíkem — bez ručního cenování zakázek.",
+        "results": [
+          "Zákazník si samolepku navrhne a objedná zcela sám",
+          "Cena se počítá v reálném čase podle rozměru, tvaru, materiálu a množství",
+          "Nahrání a náhled vlastního motivu přímo v prohlížeči",
+          "Rychlý a svižný e-shop postavený na čistém REST API"
+        ]
+      },
+      "nova-bistro": {
+        "name": "Nova Bistro",
+        "category": "Web & rezervace",
+        "tagline": "Lákavý web restaurace s online rezervacemi a menu, které si majitelé spravují sami.",
+        "overview": "Nova Bistro potřebovalo web, který vypadá stejně dobře jako jejich jídlo, a konec věčného telefonování kvůli rezervacím. Dodali jsme rychlý a elegantní web s online rezervacemi a samoobslužnou správou menu — o obsahu rozhoduje kuchyně, ne vývojář.",
+        "challenge": "Proměnit návštěvníky v rezervace na mobilu, umožnit netechnickému personálu upravovat menu i otevírací dobu a načítat se okamžitě i v páteční nával.",
+        "solution": "Staticky generovaný web v Next.js napojený na headless CMS pro menu, online rezervace a Stripe zálohy pro velké skupiny — vše s načtením pod jednu sekundu.",
+        "results": [
+          "Online rezervace dnes tvoří většinu objednaných stolů",
+          "Úprava menu trvá sekundy, bez vývojáře",
+          "Téměř bezchybné Lighthouse skóre na mobilu",
+          "Spuštěno od začátku do konce za dva týdny"
+        ]
+      },
+      "medroster": {
+        "name": "MedRoster",
+        "category": "Webová aplikace",
+        "tagline": "Plánování směn pro kliniky — rozpisy přetažením, méně konfliktů, spokojenější personál.",
+        "overview": "Ruční plánování směn znamenalo neustálé dvojí obsazení, díry v pokrytí a vedoucí zavalený zprávami. MedRoster mění rozpisy na board s přetahováním, který upozorní na konflikt dřív, než nastane, a personál vidí směny ihned po zveřejnění.",
+        "challenge": "Podchytit složitá pravidla — kvalifikace, dostupnost, doby odpočinku — a přitom udržet rozhraní tak jednoduché, aby ho zvládl každý vedoucí bez zaškolení.",
+        "solution": "Aplikace v Reactu s backendem na Node.js a Prisma, živá kontrola konfliktů, žádosti o výměnu a okamžitá upozornění — připravená růst od jedné kliniky po celou síť.",
+        "results": [
+          "Konflikty v rozpisech klesly o 80 %",
+          "Plánování, které zabralo hodiny, teď trvá minuty",
+          "Personál vidí aktualizované směny v reálném čase",
+          "Nasazeno na stejné platformě napříč několika klinikami"
+        ]
+      }
+    },
+    "detail": {
+      "back": "Zpět na reference",
+      "visit": "Otevřít web",
+      "overviewTitle": "Přehled",
+      "challengeTitle": "Zadání",
+      "solutionTitle": "Co jsme postavili",
+      "screenshotsTitle": "Zblízka",
+      "resultsTitle": "Výsledky",
+      "ctaTitle": "Máte podobný projekt?",
+      "ctaText": "Řekněte nám, co stavíte. Ozveme se do 24 hodin s nabídkou za pevnou cenu.",
+      "ctaButton": "Začít projekt"
+    }
+  },
+  "stats": {
+    "items": [
+      {"value": "20+", "label": "Dodaných projektů"},
+      {"value": "5+", "label": "Let vývoje softwaru"},
+      {"value": "2 týdny", "label": "Průměrná doba dodání"},
+      {"value": "100%", "label": "Jasná pevná cena"}
+    ]
+  },
+  "process": {
+    "title": "Jak pracujeme",
+    "subtitle": "Přehledný a transparentní proces od prvního hovoru po spuštění — a vše kolem.",
+    "steps": [
+      {
+        "title": "Poznání",
+        "description": "Zjistíme vaše cíle, uživatele a omezení a společně navrhneme rozsah projektu."
+      },
+      {
+        "title": "Nabídka",
+        "description": "Dostanete pevnou cenu a termín. Žádné hádání podle hodin, žádná překvapení."
+      },
+      {
+        "title": "Návrh & vývoj",
+        "description": "Navrhujeme a vyvíjíme v krátkých cyklech a průběžně sdílíme postup — nikdy nejste mimo obraz."
+      },
+      {
+        "title": "Spuštění",
+        "description": "Otestujeme, nasadíme a postaráme se, aby vše v provozu šlapalo."
+      },
+      {
+        "title": "Podpora",
+        "description": "Po spuštění zůstáváme k dispozici pro opravy, úpravy a nové funkce, jak rostete."
+      }
+    ]
+  },
+  "techStack": {
+    "title": "Naše technologie",
+    "subtitle": "Moderní a prověřené nástroje, se kterými stavíme rychlý a spolehlivý software.",
+    "groups": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "infra": "Infrastruktura & nástroje"
+    }
+  },
+  "testimonials": {
+    "title": "Co říkají klienti",
+    "subtitle": "Úspěch měříme tím, jestli by s námi klienti šli do dalšího projektu.",
+    "clientsLabel": "Důvěřují nám",
+    "items": [
+      {
+        "quote": "Dodali přesně to, co jsme potřebovali, včas a v rozpočtu. Komunikace byla po celou dobu přímá a férová.",
+        "name": "Jméno klienta",
+        "role": "Zakladatel",
+        "company": "Firma"
+      },
+      {
+        "quote": "Konečně tým, který prostě dodává. Náš interní nástroj šel od nápadu k dennímu používání během pár týdnů.",
+        "name": "Jméno klienta",
+        "role": "Vedoucí provozu",
+        "company": "Firma"
+      },
+      {
+        "quote": "Skvělá práce za férovou pevnou cenu. Od prvního dne jsme přesně věděli, za co platíme.",
+        "name": "Jméno klienta",
+        "role": "Majitel",
+        "company": "Firma"
+      }
+    ]
+  },
+  "faq": {
+    "title": "Časté dotazy",
+    "subtitle": "Vše, co vás může zajímat, než se nám ozvete.",
+    "items": [
+      {
+        "q": "Kolik projekt stojí?",
+        "a": "Většina projektů je za pevnou cenu domluvenou předem. Landing pages startují kolem 12 900 Kč a webové aplikace od 38 900 Kč. Po krátkém hovoru pošleme jasnou nabídku bez skrytých poplatků."
+      },
+      {
+        "q": "Jak dlouho to trvá?",
+        "a": "Landing pages obvykle dodáme za 5–7 dní, většinu webových aplikací do několika týdnů. Termín si odsouhlasíme před začátkem a po celou dobu vás informujeme."
+      },
+      {
+        "q": "Komu patří kód?",
+        "a": "Vám. Po uhrazení projektu je veškerý kód i podklady vaše — včetně zdrojového kódu a plného vlastnictví projektu."
+      },
+      {
+        "q": "Nabízíte podporu po spuštění?",
+        "a": "Ano. Každý projekt zahrnuje období podpory a rádi pokračujeme i s průběžnou údržbou, opravami a novými funkcemi."
+      },
+      {
+        "q": "Umíte spolupracovat s naším týmem nebo systémem?",
+        "a": "Rozhodně. Běžně se napojujeme na stávající systémy, API a týmy a umíme převzít nebo rozšířit existující kód."
+      },
+      {
+        "q": "Co když přesně nevím, co potřebuji?",
+        "a": "To je běžné — právě od toho je fáze poznání. Pomůžeme vám proměnit hrubý nápad v jasný plán s rozsahem, ještě než se napíše první řádek kódu."
+      }
+    ]
+  },
+  "cookie": {
+    "message": "Používáme analytiku šetrnou k soukromí, abychom rozuměli, jak návštěvníci web používají — žádné sledovací cookies, žádný prodej osobních údajů.",
+    "accept": "Rozumím",
+    "decline": "Odmítnout",
+    "learnMore": "Zásady ochrany údajů"
+  },
+  "privacy": {
+    "title": "Zásady ochrany osobních údajů",
+    "updated": "Naposledy aktualizováno: červen 2026",
+    "intro": "Tyto zásady popisují, jak {company} („my“) nakládá s osobními údaji shromážděnými prostřednictvím tohoto webu. Sbíráme jen to, co potřebujeme, a vaše údaje nikdy neprodáváme.",
+    "sections": [
+      {
+        "heading": "Kdo jsme",
+        "body": "Tento web provozuje {company}. Máte-li dotazy k těmto zásadám nebo ke svým údajům, napište nám na {email}."
+      },
+      {
+        "heading": "Jaké údaje sbíráme",
+        "body": "Při odeslání kontaktního formuláře shromažďujeme jméno, e-mail, typ projektu a zprávu, kterou vyplníte. Žádné další osobní údaje o vás přímo nesbíráme."
+      },
+      {
+        "heading": "Proč je používáme",
+        "body": "Údaje, které nám pošlete, používáme pouze k zodpovězení vaší poptávky a k poskytnutí služeb, na které se ptáte. Právním základem je váš souhlas a náš oprávněný zájem vám odpovědět."
+      },
+      {
+        "heading": "Analytika",
+        "body": "Pokud souhlasíte s analytikou, používáme Plausible Analytics — nástroj šetrný k soukromí, který nepoužívá cookies ani nesbírá osobní údaje. Poskytuje nám pouze anonymní souhrnné statistiky návštěvnosti. Souhlas můžete kdykoli odmítnout."
+      },
+      {
+        "heading": "Ochrana proti spamu",
+        "body": "Náš kontaktní formulář chrání Cloudflare Turnstile proti spamu a zneužití. Cloudflare zpracovává omezené technické údaje k ověření, že nejste robot."
+      },
+      {
+        "heading": "Doba uchování",
+        "body": "Kontaktní zprávy uchováváme jen po dobu nezbytnou k vyřízení vašeho požadavku a případné navazující práce, poté je mažeme."
+      },
+      {
+        "heading": "Vaše práva",
+        "body": "Podle GDPR máte právo na přístup ke svým osobním údajům, jejich opravu či výmaz a právo vznést námitku proti zpracování. Pro uplatnění těchto práv nám napište na {email}."
+      },
+      {
+        "heading": "Kontakt",
+        "body": "S jakýmikoli dotazy nebo žádostmi ohledně soukromí se na nás obraťte na {email}."
+      }
+    ]
   },
   "pricing": {
     "title": "Jednoduchý, férový ceník",
@@ -108,6 +313,7 @@
   "footer": {
     "tagline": "Rychle a dostupně — bez zbytečností",
     "copyright": "© 2025 GG Software. Všechna práva vyhrazena.",
-    "links": "Rychlé odkazy"
+    "links": "Rychlé odkazy",
+    "privacy": "Zásady ochrany údajů"
   }
 }

@@ -6,6 +6,8 @@ import {getMessages, getTranslations, setRequestLocale} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing';
 import {siteConfig} from '@/config/site';
+import CookieConsent from '@/components/CookieConsent';
+import Analytics from '@/components/Analytics';
 import '../globals.css';
 
 const geist = Geist({
@@ -74,6 +76,9 @@ export async function generateMetadata({
         'max-video-preview': -1
       }
     },
+    verification: siteConfig.googleSiteVerification
+      ? {google: siteConfig.googleSiteVerification}
+      : undefined,
     formatDetection: {telephone: false, email: false, address: false}
   };
 }
@@ -103,11 +108,31 @@ export default async function LocaleLayout({
         '@type': 'Organization',
         '@id': `${siteConfig.url}/#organization`,
         name: siteConfig.name,
+        alternateName: siteConfig.alternateNames,
         url: siteConfig.url,
         email: siteConfig.email,
         logo: `${siteConfig.url}/icon.svg`,
         image: `${siteConfig.url}/opengraph-image.png`,
-        description: t('description')
+        description: t('description'),
+        foundingDate: String(siteConfig.copyrightStartYear),
+        areaServed: 'CZ',
+        ...(siteConfig.phone ? {telephone: siteConfig.phone} : {}),
+        ...(siteConfig.legal.address
+          ? {address: {'@type': 'PostalAddress', streetAddress: siteConfig.legal.address, addressCountry: 'CZ'}}
+          : {}),
+        ...(siteConfig.legal.ico ? {vatID: siteConfig.legal.dic || undefined, taxID: siteConfig.legal.ico} : {}),
+        contactPoint: {
+          '@type': 'ContactPoint',
+          email: siteConfig.email,
+          ...(siteConfig.phone ? {telephone: siteConfig.phone} : {}),
+          contactType: 'sales',
+          availableLanguage: ['cs', 'en']
+        },
+        sameAs: [
+          siteConfig.social.linkedin,
+          siteConfig.social.github,
+          siteConfig.social.instagram
+        ].filter(Boolean)
       },
       {
         '@type': 'WebSite',
@@ -129,7 +154,9 @@ export default async function LocaleLayout({
         />
         <NextIntlClientProvider messages={messages} locale={locale}>
           {children}
+          <CookieConsent />
         </NextIntlClientProvider>
+        <Analytics />
       </body>
     </html>
   );

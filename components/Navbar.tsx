@@ -38,11 +38,17 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', onClickOutside);
   }, []);
 
+  // On the homepage use in-page hash anchors (smooth scroll); on subpages link
+  // back to the homepage section so the nav works everywhere.
+  const isHome = pathname === '/';
+  const sectionHref = (id: string) => (isHome ? `#${id}` : `/${locale}#${id}`);
+
   const navLinks = [
-    {label: t('services'), href: '#services'},
-    {label: t('pricing'), href: '#pricing'},
-    {label: t('about'), href: '#about'},
-    {label: t('contact'), href: '#contact'}
+    {label: t('services'), href: sectionHref('services')},
+    {label: t('work'), href: sectionHref('work')},
+    {label: t('pricing'), href: sectionHref('pricing')},
+    {label: t('about'), href: sectionHref('about')},
+    {label: t('contact'), href: sectionHref('contact')}
   ];
 
   const current = locales.find(l => l.code === locale) ?? locales[0];
@@ -64,7 +70,7 @@ export default function Navbar() {
       {/* 3-col grid: logo | nav (centered) | actions */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-[1fr_auto_1fr] items-center h-16">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-2.5">
+        <a href={isHome ? '#' : `/${locale}`} className="flex items-center gap-2.5">
           <Image src="/icon.svg" width={32} height={32} alt="GG Software" unoptimized />
           <span className="font-bold text-gray-900 text-[15px]">GG Software</span>
         </a>
@@ -85,7 +91,7 @@ export default function Navbar() {
         {/* Desktop right: CTA then language dropdown */}
         <div className="hidden md:flex items-center gap-2 justify-end">
           <a
-            href="#contact"
+            href={sectionHref('contact')}
             className="inline-flex items-center px-4 py-2 rounded-lg bg-brand text-white text-sm font-semibold hover:bg-brand-700 transition-colors"
           >
             {t('cta')}
@@ -157,7 +163,7 @@ export default function Navbar() {
           ))}
           <div className="flex items-center gap-3 pt-2 border-t border-gray-100">
             <a
-              href="#contact"
+              href={sectionHref('contact')}
               onClick={() => setMenuOpen(false)}
               className="inline-flex items-center px-4 py-2 rounded-lg bg-brand text-white text-sm font-semibold hover:bg-brand-700 transition-colors"
             >
