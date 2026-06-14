@@ -67,8 +67,8 @@ export default function Navbar() {
           : 'bg-transparent'
       }`}
     >
-      {/* 3-col grid: logo | nav (centered) | actions */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-[1fr_auto_1fr] items-center h-16">
+      {/* Mobile: logo + hamburger pinned to edges. md+: 3-col grid (logo | nav | actions). */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16 lg:grid lg:grid-cols-[1fr_auto_1fr]">
         {/* Logo */}
         <a href={isHome ? '#' : `/${locale}`} className="flex items-center gap-2.5">
           <Image src="/icon.svg" width={32} height={32} alt="GG Software" unoptimized />
@@ -76,7 +76,7 @@ export default function Navbar() {
         </a>
 
         {/* Desktop nav — centered */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden lg:flex items-center gap-6">
           {navLinks.map(link => (
             <a
               key={link.href}
@@ -89,10 +89,10 @@ export default function Navbar() {
         </nav>
 
         {/* Desktop right: CTA then language dropdown */}
-        <div className="hidden md:flex items-center gap-2 justify-end">
+        <div className="hidden lg:flex items-center gap-2 justify-end">
           <a
             href={sectionHref('contact')}
-            className="inline-flex items-center px-4 py-2 rounded-lg bg-brand text-white text-sm font-semibold hover:bg-brand-700 transition-colors"
+            className="inline-flex items-center whitespace-nowrap px-4 py-2 rounded-lg bg-brand text-white text-sm font-semibold hover:bg-brand-700 transition-colors"
           >
             {t('cta')}
           </a>
@@ -136,8 +136,8 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile: hamburger on the right */}
-        <div className="flex md:hidden justify-end">
+        {/* Mobile/tablet: hamburger on the right */}
+        <div className="lg:hidden">
           <button
             className="p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
             onClick={() => setMenuOpen(v => !v)}
@@ -150,7 +150,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 px-4 py-4 flex flex-col gap-3">
+        <div className="lg:hidden bg-white border-t border-gray-100 px-4 py-4 flex flex-col gap-3">
           {navLinks.map(link => (
             <a
               key={link.href}
