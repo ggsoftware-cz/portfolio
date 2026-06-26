@@ -40,6 +40,34 @@
     "subtitle": "A look at recent projects we've designed, built, and shipped — on time and on budget.",
     "cta": "View case study",
     "items": {
+      "wokmoto": {
+        "name": "Wokmoto",
+        "category": "Food Ordering & Delivery",
+        "tagline": "Bold Asian street food — ordered in seconds and delivered fast across the city.",
+        "overview": "Wokmoto wanted ordering to feel as quick and effortless as the food itself. We built a fast, appetite-first web app where hungry customers browse a vivid menu, pick a nearby branch, build their order, and check out in a few taps — then watch it move from kitchen to door in real time.",
+        "challenge": "Make a mouth-watering menu load instantly, let customers order from the right local branch, keep checkout down to a few taps on mobile, and show order progress without anyone reaching for the phone.",
+        "solution": "A server-rendered Next.js app styled with Tailwind, with a bilingual (CZ/EN) menu, branch-aware ordering, a frictionless cart and checkout, accounts with order history, and live order tracking — deployed on Vercel for snappy loads everywhere.",
+        "results": [
+          "Order in a few taps, from menu to checkout",
+          "Branch-aware ordering tied to the nearest location",
+          "Live order tracking from kitchen to doorstep",
+          "Fully bilingual storefront in Czech and English"
+        ]
+      },
+      "vireo": {
+        "name": "Vireo Clinic",
+        "category": "Healthcare Booking",
+        "tagline": "A private Prague clinic with five specialties under one roof — and appointments booked online in minutes.",
+        "overview": "Vireo Clinic needed a calm, trustworthy site that turns visitors into booked patients without a single phone call. We built a polished web app where patients browse five specialties, read doctor profiles and ratings, pick an open slot, and confirm their appointment online — with reminders so they actually show up.",
+        "challenge": "Present five specialties and their doctors clearly, let patients self-book the right slot with the right specialist, reduce no-shows, and keep the whole experience reassuring and effortless on any device.",
+        "solution": "A Next.js app styled with Tailwind: doctor profiles with specialties and patient ratings, real-time availability, online booking and rescheduling, automated reminders, and patient accounts — bilingual in Czech and English and deployed on Vercel.",
+        "results": [
+          "Patients book appointments online, no phone calls needed",
+          "Five specialties and every doctor in one clear place",
+          "Real-time slots with automated appointment reminders",
+          "Calm, trustworthy experience on mobile and desktop"
+        ]
+      },
       "samolep": {
         "name": "Samolep",
         "category": "E-shop & Configurator",
@@ -52,34 +80,6 @@
           "Live pricing that updates by size, shape, material and quantity",
           "Upload and preview your own artwork right in the browser",
           "Fast, responsive storefront powered by a clean REST API"
-        ]
-      },
-      "nova-bistro": {
-        "name": "Nova Bistro",
-        "category": "Landing & Reservations",
-        "tagline": "A mouth-watering restaurant site with online reservations and a menu the owners can update themselves.",
-        "overview": "Nova Bistro needed a website that looked as good as their food and stopped the endless phone tag for bookings. We delivered a fast, beautiful single-page site with online reservations and a self-service menu — so the kitchen, not a developer, is always in control of what's on the page.",
-        "challenge": "Convert visitors into bookings on mobile, let non-technical staff edit the menu and opening hours, and load instantly even on a busy Friday night.",
-        "solution": "A statically-rendered Next.js site wired to a headless CMS for the menu, online reservations, and Stripe deposits for large parties — all with sub-second load times.",
-        "results": [
-          "Online reservations now drive the majority of bookings",
-          "Menu updates take seconds, with no developer involved",
-          "Near-perfect Lighthouse performance on mobile",
-          "Launched in two weeks, start to finish"
-        ]
-      },
-      "medroster": {
-        "name": "MedRoster",
-        "category": "Web App",
-        "tagline": "Shift scheduling for clinics — drag-and-drop rosters, fewer conflicts, happier staff.",
-        "overview": "Scheduling clinic shifts by hand meant constant double-bookings, gaps in coverage, and a manager buried in messages. MedRoster turns rostering into a drag-and-drop board that flags conflicts before they happen and lets staff see their shifts the moment they're published.",
-        "challenge": "Model complex rules — qualifications, availability, rest periods — while keeping the interface simple enough for any clinic manager to use without training.",
-        "solution": "A React app with a Node.js and Prisma backend, a live conflict checker, swap requests, and instant notifications — built to scale from a single clinic to a whole network.",
-        "results": [
-          "Scheduling conflicts down by 80%",
-          "Roster planning that took hours now takes minutes",
-          "Staff see updated shifts in real time",
-          "Rolled out across several clinics on the same platform"
         ]
       }
     },

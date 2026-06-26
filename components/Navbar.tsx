@@ -88,15 +88,8 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Desktop right: CTA then language dropdown */}
+        {/* Desktop right: language dropdown */}
         <div className="hidden lg:flex items-center gap-2 justify-end">
-          <a
-            href={sectionHref('contact')}
-            className="inline-flex items-center whitespace-nowrap px-4 py-2 rounded-lg bg-brand text-white text-sm font-semibold hover:bg-brand-700 transition-colors"
-          >
-            {t('cta')}
-          </a>
-
           {/* Language dropdown */}
           <div ref={langRef} className="relative">
             <button

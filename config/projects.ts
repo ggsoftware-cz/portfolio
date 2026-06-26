@@ -25,6 +25,24 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "wokmoto",
+    url: "https://wokmoto.ggsoftware.cz",
+    year: "2026",
+    variant: "app",
+    tags: ["Next.js", "Tailwind CSS", "TypeScript"],
+    cover: "/work/wokmoto/cover.png",
+    screenshots: ["/work/wokmoto/desktop2.png", "/work/wokmoto/mobile.png"],
+  },
+  {
+    slug: "vireo",
+    url: "https://vireo.ggsoftware.cz",
+    year: "2026",
+    variant: "app",
+    tags: ["Next.js", "Tailwind CSS", "TypeScript"],
+    cover: "/work/vireo/cover.png",
+    screenshots: ["/work/vireo/desktop2.png", "/work/vireo/mobile.png"],
+  },
+  {
     slug: "samolep",
     url: "https://www.samolep.cz",
     year: "2025",
@@ -32,20 +50,6 @@ export const projects: Project[] = [
     tags: ["React", "RestAPI", "ASP.NET Core"],
     cover: "/work/samolep/cover.png",
     screenshots: ["/work/samolep/desktop2.png", "/work/samolep/mobile.png"],
-  },
-  {
-    slug: "nova-bistro",
-    url: "",
-    year: "2025",
-    variant: "landing",
-    tags: ["Next.js", "Headless CMS", "Stripe"],
-  },
-  {
-    slug: "medroster",
-    url: "",
-    year: "2024",
-    variant: "app",
-    tags: ["React", "Node.js", "Prisma"],
   },
 ];
 

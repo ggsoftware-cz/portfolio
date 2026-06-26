@@ -40,6 +40,34 @@
     "subtitle": "Ukázka projektů, které jsme nedávno navrhli, postavili a nasadili — včas a v rozpočtu.",
     "cta": "Zobrazit case study",
     "items": {
+      "wokmoto": {
+        "name": "Wokmoto",
+        "category": "Objednávky jídla a rozvoz",
+        "tagline": "Výrazné asijské street food jídlo — objednáš ho během pár vteřin a rychle dorazí až k tobě.",
+        "overview": "Wokmoto chtěl, aby objednávání bylo stejně rychlé a bez tření jako samotné jídlo. Postavili jsme svižnou webovou aplikaci, kde si zákazník prohlédne lákavé menu, vybere nejbližší pobočku, sestaví objednávku a dokončí ji na pár kliknutí — a pak sleduje, jak putuje z kuchyně až ke dveřím v reálném čase.",
+        "challenge": "Načíst lákavé menu okamžitě, umožnit objednávku ze správné místní pobočky, udržet dokončení objednávky na pár kliknutí na mobilu a ukazovat průběh objednávky bez jediného telefonátu.",
+        "solution": "Serverově renderovaná aplikace v Next.js a Tailwind: dvojjazyčné menu (CZ/EN), objednávání podle pobočky, plynulý košík a checkout, účty s historií objednávek a sledování objednávky v reálném čase — nasazené na Vercelu pro rychlé načítání odkudkoli.",
+        "results": [
+          "Objednávka na pár kliknutí, od menu po checkout",
+          "Objednávání navázané na nejbližší pobočku",
+          "Sledování objednávky v reálném čase z kuchyně ke dveřím",
+          "Plně dvojjazyčný e-shop v češtině a angličtině"
+        ]
+      },
+      "vireo": {
+        "name": "Vireo Clinic",
+        "category": "Rezervace ve zdravotnictví",
+        "tagline": "Soukromá pražská klinika s pěti obory pod jednou střechou — a objednáním online během pár minut.",
+        "overview": "Vireo Clinic potřebovala klidný a důvěryhodný web, který promění návštěvníky v objednané pacienty bez jediného telefonátu. Postavili jsme uhlazenou webovou aplikaci, kde si pacient projde pět oborů, přečte profily lékařů a hodnocení, vybere volný termín a objednání potvrdí online — s připomínkami, aby na termín nezapomněl.",
+        "challenge": "Přehledně představit pět oborů a jejich lékaře, umožnit pacientovi objednat se na správný termín ke správnému specialistovi, snížit počet neúčastí a udržet celý zážitek uklidňující a bez tření na jakémkoli zařízení.",
+        "solution": "Aplikace v Next.js a Tailwind: profily lékařů s obory a hodnocením pacientů, dostupnost v reálném čase, online objednání a přeobjednání, automatické připomínky a účty pacientů — dvojjazyčně v češtině a angličtině a nasazené na Vercelu.",
+        "results": [
+          "Pacienti se objednávají online, bez telefonátů",
+          "Pět oborů a všichni lékaři na jednom přehledném místě",
+          "Termíny v reálném čase s automatickými připomínkami",
+          "Klidný a důvěryhodný zážitek na mobilu i desktopu"
+        ]
+      },
       "samolep": {
         "name": "Samolep",
         "category": "E-shop & konfigurátor",
@@ -52,34 +80,6 @@
           "Cena se počítá v reálném čase podle rozměru, tvaru, materiálu a množství",
           "Nahrání a náhled vlastního motivu přímo v prohlížeči",
           "Rychlý a svižný e-shop postavený na čistém REST API"
-        ]
-      },
-      "nova-bistro": {
-        "name": "Nova Bistro",
-        "category": "Web & rezervace",
-        "tagline": "Lákavý web restaurace s online rezervacemi a menu, které si majitelé spravují sami.",
-        "overview": "Nova Bistro potřebovalo web, který vypadá stejně dobře jako jejich jídlo, a konec věčného telefonování kvůli rezervacím. Dodali jsme rychlý a elegantní web s online rezervacemi a samoobslužnou správou menu — o obsahu rozhoduje kuchyně, ne vývojář.",
-        "challenge": "Proměnit návštěvníky v rezervace na mobilu, umožnit netechnickému personálu upravovat menu i otevírací dobu a načítat se okamžitě i v páteční nával.",
-        "solution": "Staticky generovaný web v Next.js napojený na headless CMS pro menu, online rezervace a Stripe zálohy pro velké skupiny — vše s načtením pod jednu sekundu.",
-        "results": [
-          "Online rezervace dnes tvoří většinu objednaných stolů",
-          "Úprava menu trvá sekundy, bez vývojáře",
-          "Téměř bezchybné Lighthouse skóre na mobilu",
-          "Spuštěno od začátku do konce za dva týdny"
-        ]
-      },
-      "medroster": {
-        "name": "MedRoster",
-        "category": "Webová aplikace",
-        "tagline": "Plánování směn pro kliniky — rozpisy přetažením, méně konfliktů, spokojenější personál.",
-        "overview": "Ruční plánování směn znamenalo neustálé dvojí obsazení, díry v pokrytí a vedoucí zavalený zprávami. MedRoster mění rozpisy na board s přetahováním, který upozorní na konflikt dřív, než nastane, a personál vidí směny ihned po zveřejnění.",
-        "challenge": "Podchytit složitá pravidla — kvalifikace, dostupnost, doby odpočinku — a přitom udržet rozhraní tak jednoduché, aby ho zvládl každý vedoucí bez zaškolení.",
-        "solution": "Aplikace v Reactu s backendem na Node.js a Prisma, živá kontrola konfliktů, žádosti o výměnu a okamžitá upozornění — připravená růst od jedné kliniky po celou síť.",
-        "results": [
-          "Konflikty v rozpisech klesly o 80 %",
-          "Plánování, které zabralo hodiny, teď trvá minuty",
-          "Personál vidí aktualizované směny v reálném čase",
-          "Nasazeno na stejné platformě napříč několika klinikami"
         ]
       }
     },
