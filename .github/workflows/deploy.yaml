@@ -1,0 +1,74 @@
+name: Deploy
+
+on:
+  push:
+    branches: [prod] #branch names
+
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: GHCR login
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Build & push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:${{ github.ref_name }}
+            ${{ env.IMAGE }}:${{ github.sha }}
+      
+      - name: Generate .env for container
+        run: |
+          cat > deploy.env <<EOF
+          IMAGE=${{ env.IMAGE }}
+          IMAGE_TAG=${{ github.sha }}
+          APP_PORT=${{ vars.APP_PORT }}
+          MEM_LIMIT=${{ vars.MEM_LIMIT }}
+          CPU_LIMIT=${{ vars.CPU_LIMIT }}
+          EOF
+      
+      - name: Ensure app directory exists on VM
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ vars.VM_HOST }}
+          username: deploy
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: mkdir -p /srv/apps/${{ env.APP_NAME }}
+ 
+      - name: Ship compose file and .env to VM
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ vars.VM_HOST }}
+          username: deploy
+          key: ${{ secrets.VM_SSH_KEY }}
+          source: "docker-compose.yml,deploy.env"
+          target: /srv/apps/${{ env.APP_NAME }}/
+ 
+      - name: Pull and start
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ vars.VM_HOST }}
+          username: deploy
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            cd /srv/apps/${{ env.APP_NAME }}
+            mv deploy.env .env
+            echo "${{ secrets.GHCR_PULL_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker compose pull
+            docker compose up -d
+            docker image prune -f
