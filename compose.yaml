@@ -1,0 +1,8 @@
+services:
+  web:
+    image: ${IMAGE}:${IMAGE_TAG}
+    restart: unless-stopped
+    ports:
+      - "${PORT}:3000"
+    mem_limit: ${MEM_LIMIT_MB}m
+    cpus: ${CPU_LIMIT_CORES}

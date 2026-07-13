@@ -4,10 +4,11 @@ import type { NextConfig } from "next";
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
-  // Static export only for production builds (GitHub Pages). In dev we must NOT
-  // set this, otherwise the next-intl proxy is disabled and `/` can't redirect
-  // to `/cs`, which 404s and breaks the root layout.
-  output: process.env.NODE_ENV === "production" ? "export" : undefined,
+  // Standalone server build for the Docker/VM deploy: emits `.next/standalone`
+  // with a minimal server.js (started via `node server.js`, not `next start`).
+  // It's a full Node server, so the next-intl proxy and `/` -> `/cs` redirect
+  // keep working in bo. Buth dev and prod.
+  output: "standalone",
 
   // Pin the workspace root so Turbopack doesn't pick the parent lockfile.
   turbopack: {

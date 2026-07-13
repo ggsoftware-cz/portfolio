@@ -1,0 +1,25 @@
+# Installed/built inside the image
+node_modules
+.next
+out
+build
+
+# VCS & CI
+.git
+.gitignore
+.github
+
+# Local env & secrets — provide these at runtime, never bake into a layer
+.env
+.env.*
+
+# Docker
+Dockerfile
+.dockerignore
+compose.yaml
+
+# Editor / OS / misc
+.vscode
+.idea
+.DS_Store
+*.log
