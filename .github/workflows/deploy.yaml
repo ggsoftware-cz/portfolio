@@ -8,6 +8,10 @@ concurrency:
   group: deploy-${{ github.ref_name }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  packages: write
+
 env:
   IMAGE: ghcr.io/${{ github.repository }}
 
