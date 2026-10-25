@@ -20,6 +20,7 @@ export async function generateMetadata({
   const t = await getTranslations({locale, namespace: 'privacy'});
   return {
     title: t('title'),
+    description: t('description'),
     alternates: {
       canonical: `/${locale}/privacy`,
       languages: {cs: '/cs/privacy', en: '/en/privacy', 'x-default': '/cs/privacy'}

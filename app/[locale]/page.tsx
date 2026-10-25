@@ -6,7 +6,6 @@ import Services from '@/components/Services';
 import Process from '@/components/Process';
 import Work from '@/components/Work';
 import TechStack from '@/components/TechStack';
-import Testimonials from '@/components/Testimonials';
 import Pricing from '@/components/Pricing';
 import Faq from '@/components/Faq';
 import About from '@/components/About';
@@ -31,7 +30,6 @@ export default async function HomePage({
         <Process />
         <Work />
         <TechStack />
-        <Testimonials />
         <Pricing />
         <Faq />
         <About />
