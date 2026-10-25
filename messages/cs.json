@@ -98,10 +98,22 @@
   },
   "stats": {
     "items": [
-      {"value": "20+", "label": "Dodaných projektů"},
-      {"value": "5+", "label": "Let vývoje softwaru"},
-      {"value": "2 týdny", "label": "Průměrná doba dodání"},
-      {"value": "100%", "label": "Jasná pevná cena"}
+      {
+        "value": "20+",
+        "label": "Dodaných projektů"
+      },
+      {
+        "value": "5+",
+        "label": "Let vývoje softwaru"
+      },
+      {
+        "value": "2 týdny",
+        "label": "Průměrná doba dodání"
+      },
+      {
+        "value": "100%",
+        "label": "Jasná pevná cena"
+      }
     ]
   },
   "process": {
@@ -138,31 +150,6 @@
       "backend": "Backend",
       "infra": "Infrastruktura & nástroje"
     }
-  },
-  "testimonials": {
-    "title": "Co říkají klienti",
-    "subtitle": "Úspěch měříme tím, jestli by s námi klienti šli do dalšího projektu.",
-    "clientsLabel": "Důvěřují nám",
-    "items": [
-      {
-        "quote": "Dodali přesně to, co jsme potřebovali, včas a v rozpočtu. Komunikace byla po celou dobu přímá a férová.",
-        "name": "Jméno klienta",
-        "role": "Zakladatel",
-        "company": "Firma"
-      },
-      {
-        "quote": "Konečně tým, který prostě dodává. Náš interní nástroj šel od nápadu k dennímu používání během pár týdnů.",
-        "name": "Jméno klienta",
-        "role": "Vedoucí provozu",
-        "company": "Firma"
-      },
-      {
-        "quote": "Skvělá práce za férovou pevnou cenu. Od prvního dne jsme přesně věděli, za co platíme.",
-        "name": "Jméno klienta",
-        "role": "Majitel",
-        "company": "Firma"
-      }
-    ]
   },
   "faq": {
     "title": "Časté dotazy",
@@ -237,7 +224,8 @@
         "heading": "Kontakt",
         "body": "S jakýmikoli dotazy nebo žádostmi ohledně soukromí se na nás obraťte na {email}."
       }
-    ]
+    ],
+    "description": "Jak GG Software zpracovává osobní údaje — co sbíráme přes kontaktní formulář, jak funguje analytika a jaká máte podle GDPR práva."
   },
   "pricing": {
     "title": "Jednoduchý, férový ceník",
@@ -312,7 +300,7 @@
   },
   "footer": {
     "tagline": "Rychle a dostupně — bez zbytečností",
-    "copyright": "© 2025 GG Software. Všechna práva vyhrazena.",
+    "copyright": "© 2026 GG Software. Všechna práva vyhrazena.",
     "links": "Rychlé odkazy",
     "privacy": "Zásady ochrany údajů"
   }

@@ -98,10 +98,22 @@
   },
   "stats": {
     "items": [
-      {"value": "20+", "label": "Projects delivered"},
-      {"value": "5+", "label": "Years building software"},
-      {"value": "2 wks", "label": "Average delivery time"},
-      {"value": "100%", "label": "Fixed-price clarity"}
+      {
+        "value": "20+",
+        "label": "Projects delivered"
+      },
+      {
+        "value": "5+",
+        "label": "Years building software"
+      },
+      {
+        "value": "2 wks",
+        "label": "Average delivery time"
+      },
+      {
+        "value": "100%",
+        "label": "Fixed-price clarity"
+      }
     ]
   },
   "process": {
@@ -138,31 +150,6 @@
       "backend": "Backend",
       "infra": "Infrastructure & tools"
     }
-  },
-  "testimonials": {
-    "title": "What clients say",
-    "subtitle": "We measure success by whether our clients would work with us again.",
-    "clientsLabel": "Trusted by",
-    "items": [
-      {
-        "quote": "They delivered exactly what we needed, on time and on budget. Communication was direct and honest the whole way through.",
-        "name": "Client Name",
-        "role": "Founder",
-        "company": "Company"
-      },
-      {
-        "quote": "Finally a team that just ships. Our internal tool went from idea to daily use in a matter of weeks.",
-        "name": "Client Name",
-        "role": "Operations Lead",
-        "company": "Company"
-      },
-      {
-        "quote": "Great work and a fair, fixed price. We knew exactly what we were paying for from day one.",
-        "name": "Client Name",
-        "role": "Owner",
-        "company": "Company"
-      }
-    ]
   },
   "faq": {
     "title": "Frequently asked questions",
@@ -237,7 +224,8 @@
         "heading": "Contact",
         "body": "For any privacy-related questions or requests, reach us at {email}."
       }
-    ]
+    ],
+    "description": "How GG Software handles personal data — what we collect through the contact form, how our analytics work, and your rights under GDPR."
   },
   "pricing": {
     "title": "Simple, honest pricing",
@@ -312,7 +300,7 @@
   },
   "footer": {
     "tagline": "Fast & affordable — no fluff",
-    "copyright": "© 2025 GG Software. All rights reserved.",
+    "copyright": "© 2026 GG Software. All rights reserved.",
     "links": "Quick links",
     "privacy": "Privacy policy"
   }
