@@ -22,7 +22,7 @@ export async function generateMetadata({
     title: t('title'),
     alternates: {
       canonical: `/${locale}/privacy`,
-      languages: {cs: '/cs/privacy', en: '/en/privacy'}
+      languages: {cs: '/cs/privacy', en: '/en/privacy', 'x-default': '/cs/privacy'}
     },
     robots: {index: true, follow: true}
   };
