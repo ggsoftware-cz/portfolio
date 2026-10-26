@@ -263,7 +263,73 @@
       }
     },
     "ctaStart": "Get started",
-    "ctaContact": "Contact us"
+    "ctaContact": "Contact us",
+    "detailsLink": "Full pricing and terms"
+  },
+  "pricingPage": {
+    "meta": {
+      "title": "How much does a website cost in 2026? Pricing",
+      "description": "How much does a website cost in 2026? Landing pages from €499, web apps from €1,499. Fixed price agreed upfront, fast delivery — and the code is yours."
+    },
+    "h1": "How much does a website cost in 2026?",
+    "intro": "Honest, fixed pricing with no hidden fees. Most projects are delivered for a fixed price agreed upfront — here's what's included and how we work.",
+    "updated": "Prices updated: October 2026",
+    "tiersTitle": "2026 price list",
+    "includedTitle": "Always included in the price",
+    "included": [
+      "Responsive design for mobile, tablet and desktop",
+      "Deployment to your domain and basic SEO (meta tags, sitemap, fast loading)",
+      "Fixed price agreed upfront — no hourly billing, no surprises",
+      "Direct communication with the developers who write your code",
+      "Full source code and assets handed over once paid — the code is yours",
+      "A support period after launch, included in the project price"
+    ],
+    "termsTitle": "How we work",
+    "terms": [
+      {
+        "title": "Get a quote",
+        "body": "Tell us about your project. We'll help you scope it — even if you're not sure what you need yet."
+      },
+      {
+        "title": "Fixed-price offer",
+        "body": "You get a clear offer with a fixed price and a delivery date. No hidden fees."
+      },
+      {
+        "title": "Development with previews",
+        "body": "We agree on the deadline upfront and you always know where the project stands."
+      },
+      {
+        "title": "Launch and handover",
+        "body": "We deploy to your domain, hand over the code and assets — and support you after launch."
+      }
+    ],
+    "faqTitle": "Pricing FAQ",
+    "faq": [
+      {
+        "q": "Are the listed prices final?",
+        "a": "Yes. The price is fixed in the offer before work starts — you pay exactly what we agreed, with no hourly billing or surprise extras."
+      },
+      {
+        "q": "How much do e-commerce or booking systems cost?",
+        "a": "Online stores and booking systems for salons, clinics or tradespeople fall under our web app tier — starting from €1,499 depending on the feature scope."
+      },
+      {
+        "q": "Why “from”? What increases the price?",
+        "a": "The starting price covers the standard scope. It mainly grows with the number of features, third-party integrations (payments, APIs) and non-trivial design. Every offer spells out exactly what you get."
+      },
+      {
+        "q": "Who owns the code?",
+        "a": "You do. Once the project is paid, all source code and assets are yours — including full ownership and the freedom to continue with anyone."
+      },
+      {
+        "q": "How fast can you deliver?",
+        "a": "Landing pages usually in 5–7 days, most web apps within a few weeks. We agree on the deadline before we start."
+      }
+    ],
+    "ctaTitle": "Want an exact price for your project?",
+    "ctaBody": "Tell us a few sentences about what you need — we'll send you a no-obligation offer with a fixed price and deadline.",
+    "ctaButton": "Get a quote",
+    "workLink": "See our work"
   },
   "about": {
     "title": "Who we are",

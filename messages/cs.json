@@ -263,7 +263,73 @@
       }
     },
     "ctaStart": "Začít",
-    "ctaContact": "Kontaktovat nás"
+    "ctaContact": "Kontaktovat nás",
+    "detailsLink": "Detailní ceník a podmínky"
+  },
+  "pricingPage": {
+    "meta": {
+      "title": "Kolik stojí web v roce 2026? Ceník",
+      "description": "Kolik stojí web nebo webová aplikace v roce 2026? Landing page od 12 900 Kč, webová aplikace od 38 900 Kč. Pevná cena předem a kód po uhrazení je váš."
+    },
+    "h1": "Kolik stojí web v roce 2026?",
+    "intro": "Férové ceny bez skrytých poplatků. Většinu projektů dodáme za pevnou cenu domluvenou předem — zde je přehled, co je v ceně a jak spolupráce probíhá.",
+    "updated": "Ceny aktualizovány: říjen 2026",
+    "tiersTitle": "Ceník 2026",
+    "includedTitle": "Co je v ceně vždy",
+    "included": [
+      "Responzivní design pro mobil, tablet i desktop",
+      "Nasazení na vaši doménu a základní SEO (meta tagy, sitemap, rychlé načítání)",
+      "Pevná cena domluvená předem — žádné hodinové sazby ani překvapení",
+      "Komunikace přímo s vývojáři, kteří váš kód píší",
+      "Předání zdrojového kódu a podkladů po uhrazení — kód je váš",
+      "Období podpory po spuštění v ceně projektu"
+    ],
+    "termsTitle": "Jak spolupráce probíhá",
+    "terms": [
+      {
+        "title": "Nezávazná poptávka",
+        "body": "Napište nám o svém projektu. Pomůžeme vám určit rozsah — i když přesně nevíte, co potřebujete."
+      },
+      {
+        "title": "Nabídka s pevnou cenou",
+        "body": "Pošleme jasnou nabídku s fixní cenou a termínem dodání. Bez skrytých poplatků."
+      },
+      {
+        "title": "Vývoj s průběžným náhledem",
+        "body": "Termín odsouhlasíme předem a během vývoje víte, kde přesně projekt je."
+      },
+      {
+        "title": "Spuštění a předání",
+        "body": "Nasadíme web na vaši doménu, předáme kód a podklady — a po spuštění vás podporujeme."
+      }
+    ],
+    "faqTitle": "Časté otázky k cenám",
+    "faq": [
+      {
+        "q": "Jsou uvedené ceny konečné?",
+        "a": "Ano. Cena se fixuje v nabídce před zahájením práce — platíte přesně to, na čem jsme se domluvili, bez hodinové fakturace a příplatků navíc."
+      },
+      {
+        "q": "Kolik stojí e-shop, rezervační nebo booking systém?",
+        "a": "E-shopy a rezervační či booking systémy pro salony a řemeslníky řadíme mezi webové aplikace — ty startují od 38 900 Kč podle rozsahu funkcí."
+      },
+      {
+        "q": "Proč „od“? Co cenu zvyšuje?",
+        "a": "Výchozí cena pokrývá standardní rozsah. Zvyšuje ji hlavně počet funkcí, napojení na externí systémy (platby, API) a netriviální design. V nabídce vždy přesně rozepíšeme, co za cenu dostanete."
+      },
+      {
+        "q": "Komu patří kód?",
+        "a": "Vám. Po uhrazení projektu je veškerý zdrojový kód i podklady váš — včetně plného vlastnictví a možnosti pokračovat s kýmkoli."
+      },
+      {
+        "q": "Jak rychle dokážete dodavat?",
+        "a": "Landing pages obvykle za 5–7 dní, většinu webových aplikací do několika týdnů. Termín si odsouhlasíme před začátkem."
+      }
+    ],
+    "ctaTitle": "Chcete přesnou cenu pro svůj projekt?",
+    "ctaBody": "Napište nám pár vět o tom, co potřebujete — pošleme vám nezávaznou nabídku s pevnou cenou a termínem.",
+    "ctaButton": "Nezávazná poptávka",
+    "workLink": "Podívejte se na naše reference"
   },
   "about": {
     "title": "Kdo jsme",

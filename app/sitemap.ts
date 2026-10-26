@@ -39,6 +39,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   );
 
+  const pricing: MetadataRoute.Sitemap = routing.locales.map(locale => ({
+    url: `${siteConfig.url}/${locale}/pricing`,
+    lastModified,
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+    alternates: {
+      languages: {
+        cs: `${siteConfig.url}/cs/pricing`,
+        en: `${siteConfig.url}/en/pricing`
+      }
+    }
+  }));
+
   const privacy: MetadataRoute.Sitemap = routing.locales.map(locale => ({
     url: `${siteConfig.url}/${locale}/privacy`,
     lastModified,
@@ -52,5 +65,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }));
 
-  return [...home, ...work, ...privacy];
+  return [...home, ...pricing, ...work, ...privacy];
 }

@@ -11,7 +11,7 @@ export default function Footer() {
   const links = [
     {label: nav('services'), href: `/${locale}#services`},
     {label: nav('work'), href: `/${locale}#work`},
-    {label: nav('pricing'), href: `/${locale}#pricing`},
+    {label: nav('pricing'), href: `/${locale}/pricing`},
     {label: nav('about'), href: `/${locale}#about`},
     {label: nav('contact'), href: `/${locale}#contact`}
   ];

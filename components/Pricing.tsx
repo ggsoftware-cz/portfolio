@@ -1,4 +1,4 @@
-import {useTranslations} from 'next-intl';
+import {useTranslations, useLocale} from 'next-intl';
 import {Check} from 'lucide-react';
 
 type Tier = 'landing' | 'webapp' | 'custom';
@@ -11,6 +11,7 @@ const tiers: {key: Tier}[] = [
 
 export default function Pricing() {
   const t = useTranslations('pricing');
+  const locale = useLocale();
 
   return (
     <section id="pricing" className="py-24 bg-white">
@@ -58,6 +59,15 @@ export default function Pricing() {
               </div>
             );
           })}
+
+          <div className="mt-10 text-center">
+            <a
+              href={`/${locale}/pricing`}
+              className="text-sm font-semibold text-brand hover:underline"
+            >
+              {t('detailsLink')} →
+            </a>
+          </div>
         </div>
       </div>
     </section>
