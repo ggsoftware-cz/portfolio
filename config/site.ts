@@ -25,7 +25,7 @@ export const siteConfig: SiteConfig = {
     "ggsoftware",
   ],
   url: "https://ggsoftware.cz",
-  email: "ggsoftware.cz@gmail.com",
+  email: "info@ggsoftware.cz",
   // TODO: add a public phone number (e.g. "+420 777 123 456"), or leave empty to hide it.
   phone: "",
   copyrightStartYear: 2026,
