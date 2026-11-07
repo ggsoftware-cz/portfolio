@@ -51,10 +51,10 @@ export default function Pricing() {
                 </ul>
 
                 <a
-                  href="#contact"
+                  href={key === 'landing' ? `/${locale}/configure` : '#contact'}
                   className="inline-flex items-center justify-center px-5 py-3 rounded-xl font-semibold text-sm bg-gray-50 text-gray-800 border border-gray-200 hover:bg-gray-100 transition-colors"
                 >
-                  {key === 'custom' ? t('ctaContact') : t('ctaStart')}
+                  {key === 'custom' ? t('ctaContact') : key === 'landing' ? t('ctaConfigure') : t('ctaStart')}
                 </a>
               </div>
             );

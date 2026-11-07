@@ -9,6 +9,7 @@ export default function Footer() {
 
   // Absolute (locale-prefixed) so the links also work from project subpages.
   const links = [
+    {label: nav('configure'), href: `/${locale}/configure`},
     {label: nav('services'), href: `/${locale}#services`},
     {label: nav('work'), href: `/${locale}#work`},
     {label: nav('pricing'), href: `/${locale}/pricing`},

@@ -65,5 +65,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }));
 
-  return [...home, ...pricing, ...work, ...privacy];
+  const configure: MetadataRoute.Sitemap = routing.locales.map(locale => ({
+    url: `${siteConfig.url}/${locale}/configure`,
+    changeFrequency: 'monthly',
+    priority: 0.9,
+    alternates: {languages: {cs: `${siteConfig.url}/cs/configure`, en: `${siteConfig.url}/en/configure`}}
+  }));
+
+  return [...home, ...configure, ...pricing, ...work, ...privacy];
 }
