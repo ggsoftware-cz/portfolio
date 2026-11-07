@@ -113,9 +113,9 @@ close-on-outside-click via a `mousedown` listener, and a `ChevronDown` that rota
 The configurator is an intentional exception to the portfolio's repeated centered
 section headers: its shell is a quiet, practical workspace in the established
 Geist / white / GG pink identity. A dedicated `/[locale]/configure` route leaves
-space for a real page preview. The homepage introduces the same four designs.
+space for a real page preview. The homepage introduces the same five designs.
 
-Four compositions, rather than color skins:
+Distinct compositions, rather than color skins:
 
 - **Atelier**: architecture / studios / independent experts. Left-aligned generous
   display type, image occupying the right two-thirds of a composed hero, editorial
@@ -154,3 +154,32 @@ to the available canvas. On narrow screens, default to phone mode and fit its
 width so text remains readable; expanded mode fits the complete device to the
 available height as well. Keep the website itself scrollable inside the screen.
 Hardware details are decorative, non-interactive and hidden from screen readers.
+
+## Shift — fashion / lifestyle storefront
+
+Fifth direction, explicitly inspired by https://landonorris.com/: an oversized
+condensed masthead, floating interactive product, pale canvas, acid accent,
+contrasting editorial section and a large closing wordmark. Adapt the visual
+rhythm to a shop with a clear buying path; retain original names/copy/assets.
+Use Barlow Condensed 800 (`--font-barlow`, Arial Narrow / Arial fallbacks), Geist
+body, lime `#d2f600`, paper `#f5f5f0`, ink `#25291f`. The four palette presets
+and existing spacing / radius / width / type tokens remain editable.
+
+Hierarchy: brand / bag, expressive hero with 3D sneaker, product / colour / size
+selection, three-colour collection, editorial story, practical FAQ, GG enquiry.
+A one-page bag stays inside the preview, including the scaled iPhone, without
+nested dialog traps. Demo pricing is illustrative, with no payment collection or
+claims of real inventory, shipping, reviews or offers. Customers can configure
+initial shoe colour and motion as part of their saved design. Browsing colour,
+size and bag contents is ephemeral demo state, excluded from enquiry payloads.
+
+Three.js is dynamically imported only in an active visible preview. Gallery and
+no-WebGL states use local product renders. Cap DPR at 1.5; stop rendering outside
+the viewport or a hidden tab; honour reduced motion and a manual pause control.
+Drag gestures and labelled rotate/reset buttons inspect the product. Vertical
+touch gestures still scroll. Keep the 3D asset and its attribution local.
+
+Small previews, reduced-motion users and data-saving connections start with the
+local poster and an explicit “Explore in 3D” action. Desktop previews at least
+600px wide activate 3D near the viewport. This keeps the initial phone visit light
+while retaining the same interactive model after a tap.

@@ -6,8 +6,8 @@ page pricing lead to it.
 
 ## Customer journey
 
-1. Choose Atelier (studios), Haven (hospitality), Forma (local services) or Savor
-   (restaurants, added at the user's request).
+1. Choose Atelier (studios), Haven (hospitality), Forma (local services), Savor
+   (restaurants), or Shift (fashion and lifestyle with a 3D product).
 2. Start with a palette, then optionally change individual colors, heading font
    and size, section spacing, corners, content width, alignment, photography and
    visible sections. Edit the business name, headline, introduction and CTA.
@@ -111,3 +111,41 @@ Primary implementation references:
 - [Resend send-email contract](https://resend.com/docs/api-reference/emails/send-email).
 - [Turnstile server validation](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/).
 - [Worker rate limits](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/).
+
+## Shift 3D shop
+
+Open `/en/configure#template=shift` or `/cs/configure#template=shift`. Shift adds
+an original fashion storefront inspired by the composition and 3D interaction of
+landonorris.com. Its catalogue is an illustrative sneaker in three colourways;
+prices are demo amounts in CZK, not a GG Software offer or live merchandise.
+
+The existing controls apply to typography, palette, spacing, corners, content
+width, hero alignment/copy, editorial photography and optional collection,
+story and FAQ sections. Shift also stores the initial product colourway and
+motion setting. The optional `shop` object is validated by the same parser as
+share links, local drafts and enquiries. Older version-1 designs remain valid.
+Shopper selections and bag contents stay in memory and are not sent as orders.
+
+The demo supports colour/size choice, validation, adding/merging lines, quantity
+changes, removal, totals and an empty bag. Checkout explicitly ends the demo and
+links to the existing GG enquiry; no payment, inventory, delivery or order service
+is connected. Real store integration and client-owned product assets are a
+separate implementation scope.
+
+The active preview loads Three.js and the local 1.45 MB GLB only when its stage is
+near the viewport. Gallery cards and unsupported/failed WebGL use transparent
+WebP renders (17–24 KB each). Reduced motion, pause, offscreen/hidden-tab suspension,
+a DPR cap and renderer cleanup limit unnecessary graphics work. Labelled rotation
+buttons supplement dragging; vertical touch scrolling stays available. The bag
+is an inline view inside the iPhone frame, with focus moved to its heading and
+returned to the bag control when closed. Credits are linked in the store footer.
+
+**Release:** if in-page enquiry delivery is enabled, redeploy the configuration
+Worker from this revision alongside the static site so its validator accepts the
+new `shift` template, `barlow` font and optional shop settings. The email-app mode
+needs no Worker update. No hosting or Worker deployment is performed by this PR.
+
+Small previews, reduced-motion users and data-saving connections start with the
+local poster and an explicit “Explore in 3D” action. Desktop previews at least
+600px wide activate 3D near the viewport. This keeps the initial phone visit light
+while retaining the same interactive model after a tap.
