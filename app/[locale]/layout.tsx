@@ -139,6 +139,7 @@ export default async function LocaleLayout({
         '@id': `${siteConfig.url}/#website`,
         url: siteConfig.url,
         name: siteConfig.name,
+        alternateName: siteConfig.alternateNames,
         publisher: {'@id': `${siteConfig.url}/#organization`},
         inLanguage: locale
       }
