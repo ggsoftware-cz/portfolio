@@ -16,8 +16,7 @@ export type SiteConfig = {
 
 export const siteConfig: SiteConfig = {
   name: "GG Software",
-  // Brand variants people actually type into search — fed to structured data
-  // so Google links these queries to this site.
+  // Recognizable brand variants for Organization and WebSite structured data.
   alternateNames: [
     "GGSoftware",
     "GG Software CZ",

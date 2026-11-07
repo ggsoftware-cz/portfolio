@@ -6,19 +6,11 @@
     <title>GG Software</title>
     <link rel="canonical" href="https://ggsoftware.cz/cs" />
     <meta http-equiv="refresh" content="0; url=/cs" />
-    <script>
-      (function () {
-        var supported = ['cs', 'en'];
-        var fallback = 'cs';
-        var lang = (navigator.language || navigator.userLanguage || fallback)
-          .slice(0, 2)
-          .toLowerCase();
-        var target = supported.indexOf(lang) !== -1 ? lang : fallback;
-        window.location.replace('/' + target);
-      })();
-    </script>
+    <!-- GitHub Pages cannot run Next redirects. Keep the instant refresh and
+         canonical pointed at the same default homepage for every visitor. -->
   </head>
   <body>
-    <p>Redirecting to <a href="/cs">ggsoftware.cz</a>…</p>
+    <p>Pokračovat na <a href="/cs" lang="cs">GG Software — česky</a>.</p>
+    <p><a href="/en" lang="en">GG Software — English</a></p>
   </body>
 </html>

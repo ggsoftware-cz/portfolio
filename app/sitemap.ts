@@ -7,70 +7,26 @@ import {projects} from '@/config/projects';
 export const dynamic = 'force-static';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
+  // Include canonical public pages, not the root redirect or shared design
+  // fragments. Add new public routes here when they are introduced.
+  const paths = ['', '/configure', '/pricing', ...projects.map(project => `/work/${project.slug}`), '/privacy'];
 
-  // One entry per locale, cross-linked with hreflang alternates so crawlers
-  // understand cs/en are the same page in different languages.
-  const home: MetadataRoute.Sitemap = routing.locales.map(locale => ({
-    url: `${siteConfig.url}/${locale}`,
-    lastModified,
-    changeFrequency: 'monthly',
-    priority: locale === routing.defaultLocale ? 1 : 0.8,
-    alternates: {
-      languages: {
-        cs: `${siteConfig.url}/cs`,
-        en: `${siteConfig.url}/en`
-      }
-    }
-  }));
+  return paths.flatMap(path => {
+    const languages = Object.fromEntries(
+      routing.locales.map(locale => [locale, `${siteConfig.url}/${locale}${path}`])
+    );
 
-  const work: MetadataRoute.Sitemap = routing.locales.flatMap(locale =>
-    projects.map(project => ({
-      url: `${siteConfig.url}/${locale}/work/${project.slug}`,
-      lastModified,
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
+    // Omit lastModified until we have real per-page content dates. A build's
+    // timestamp is not evidence that every page changed. Google ignores
+    // priority and changeFrequency, so neither is needed here.
+    return routing.locales.map(locale => ({
+      url: languages[locale],
       alternates: {
         languages: {
-          cs: `${siteConfig.url}/cs/work/${project.slug}`,
-          en: `${siteConfig.url}/en/work/${project.slug}`
+          ...languages,
+          'x-default': languages[routing.defaultLocale]
         }
       }
-    }))
-  );
-
-  const pricing: MetadataRoute.Sitemap = routing.locales.map(locale => ({
-    url: `${siteConfig.url}/${locale}/pricing`,
-    lastModified,
-    changeFrequency: 'monthly' as const,
-    priority: 0.8,
-    alternates: {
-      languages: {
-        cs: `${siteConfig.url}/cs/pricing`,
-        en: `${siteConfig.url}/en/pricing`
-      }
-    }
-  }));
-
-  const privacy: MetadataRoute.Sitemap = routing.locales.map(locale => ({
-    url: `${siteConfig.url}/${locale}/privacy`,
-    lastModified,
-    changeFrequency: 'yearly' as const,
-    priority: 0.3,
-    alternates: {
-      languages: {
-        cs: `${siteConfig.url}/cs/privacy`,
-        en: `${siteConfig.url}/en/privacy`
-      }
-    }
-  }));
-
-  const configure: MetadataRoute.Sitemap = routing.locales.map(locale => ({
-    url: `${siteConfig.url}/${locale}/configure`,
-    changeFrequency: 'monthly',
-    priority: 0.9,
-    alternates: {languages: {cs: `${siteConfig.url}/cs/configure`, en: `${siteConfig.url}/en/configure`}}
-  }));
-
-  return [...home, ...configure, ...pricing, ...work, ...privacy];
+    }));
+  });
 }
