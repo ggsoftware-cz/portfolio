@@ -107,3 +107,50 @@ close-on-outside-click via a `mousedown` listener, and a `ChevronDown` that rota
 - Content is internationalized with `next-intl` — never hardcode user-facing strings; pull from `messages/{cs,en}.json` via `useTranslations`. Default locale is `cs`.
 - Keep components server-first; add `'use client'` only when interactivity (state, effects, listeners) requires it.
 - Site-wide values (name, email, URL, socials) live in `config/site.ts`.
+
+## Website configurator (November 2026)
+
+The configurator is an intentional exception to the portfolio's repeated centered
+section headers: its shell is a quiet, practical workspace in the established
+Geist / white / GG pink identity. A dedicated `/[locale]/configure` route leaves
+space for a real page preview. The homepage introduces the same four designs.
+
+Four compositions, rather than color skins:
+
+- **Atelier**: architecture / studios / independent experts. Left-aligned generous
+  display type, image occupying the right two-thirds of a composed hero, editorial
+  project rows. Default palette: paper `#f5f4ef`, ink `#24382f`, moss `#355b43`,
+  pale sage `#dce4d8`. Georgia display, Geist body. Quiet, rounded image corners.
+- **Haven**: hospitality / wellness / experiences. Full-width photographic opening,
+  a floating white navigation line, centered Georgia typography, a grounded
+  reservation-like contact strip and alternating image/story sections. Default
+  palette: white `#fcfaf6`, ink `#263b40`, ocean `#235c68`, pale sand `#eee7da`.
+- **Forma**: trades / local and professional services. Bold Arial display,
+  split cobalt and image hero, clear service list, explicit three-step customer
+  process, repeated quote action. Default palette: white `#ffffff`, ink `#172437`,
+  cobalt `#2449c7`, ice `#edf1fa`.
+
+Concept review: removed invented review stars, large metrics, repeated feature-card
+kits and decorative gradients. All three keep familiar navigation and contact
+buttons. Demo business names and copy are explicitly illustrative. A buyer can
+replace hero copy, choose a palette or individual colors, change display fonts,
+scale, spacing, width, alignment, image treatment, corners and visible sections.
+
+The fourth direction, **Savor**, was added at the user’s request for restaurants.
+It uses an expressive Georgia masthead, an arched food photo and a generous
+menu list. Palette: cream `#fff8ed`, wine `#852d36`, deep ink `#4a2026`.
+
+Layout: two-column gallery of Atelier, Haven, Forma and Savor; editor
+`[controls 300px] [live site preview]`; mobile uses preview/controls views with
+persistent quote action. Section rhythm scales with one spacing token. Display
+font options: Geist, Georgia, Arial, Palatino with system fallbacks. CSS variables
+scope every theme to its preview; container queries make mobile preview genuine.
+Motion responds to interaction; reduced motion disables smooth scrolling/transitions.
+
+Mobile preview refinement: use a graphite iPhone-style frame with a Dynamic
+Island, camera, quiet status/address chrome, side buttons and a home indicator.
+Render the template at a stable 390px screen width, then scale the complete frame
+to the available canvas. On narrow screens, default to phone mode and fit its
+width so text remains readable; expanded mode fits the complete device to the
+available height as well. Keep the website itself scrollable inside the screen.
+Hardware details are decorative, non-interactive and hidden from screen readers.

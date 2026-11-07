@@ -11,6 +11,7 @@ import Faq from '@/components/Faq';
 import About from '@/components/About';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
+import WebsiteStudio from '@/components/WebsiteStudio';
 
 export default async function HomePage({
   params
@@ -26,6 +27,7 @@ export default async function HomePage({
       <main>
         <Hero />
         <Stats />
+        <WebsiteStudio />
         <Services />
         <Process />
         <Work />

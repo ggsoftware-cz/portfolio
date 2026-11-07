@@ -1,0 +1,15 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "gg-website-enquiries",
+  "main": "index.ts",
+  "compatibility_date": "2026-11-07",
+  "vars": {
+    "SITE_URL": "https://ggsoftware.cz",
+    "CONTACT_TO": "info@ggsoftware.cz"
+  },
+  "ratelimits": [{
+    "name": "CONFIGURATION_RATE_LIMITER",
+    "namespace_id": "1001",
+    "simple": {"limit": 5, "period": 60}
+  }]
+}

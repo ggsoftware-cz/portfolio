@@ -1,26 +1,36 @@
 'use client';
 
-import {useEffect, useState} from 'react';
+import {useState, useSyncExternalStore} from 'react';
 import {useTranslations} from 'next-intl';
 import {Link} from '@/i18n/navigation';
 import {siteConfig} from '@/config/site';
 
 const CONSENT_KEY = 'gg-consent';
 
+function subscribeToConsent(callback: () => void) {
+  window.addEventListener('storage', callback);
+  window.addEventListener('gg-consent', callback);
+  return () => {
+    window.removeEventListener('storage', callback);
+    window.removeEventListener('gg-consent', callback);
+  };
+}
+
+function readConsent() {
+  try { return localStorage.getItem(CONSENT_KEY); }
+  catch { return null; }
+}
+
 export default function CookieConsent() {
   const t = useTranslations('cookie');
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    // Only ask for consent if analytics is actually configured.
-    if (!siteConfig.plausibleDomain) return;
-    if (!localStorage.getItem(CONSENT_KEY)) setVisible(true);
-  }, []);
+  const [dismissed, setDismissed] = useState(false);
+  const consent = useSyncExternalStore(subscribeToConsent, readConsent, () => 'server');
+  const visible = Boolean(siteConfig.plausibleDomain) && consent === null && !dismissed;
 
   function choose(value: 'accepted' | 'declined') {
-    localStorage.setItem(CONSENT_KEY, value);
+    try { localStorage.setItem(CONSENT_KEY, value); } catch { /* Storage may be disabled. */ }
     window.dispatchEvent(new Event('gg-consent'));
-    setVisible(false);
+    setDismissed(true);
   }
 
   if (!visible) return null;

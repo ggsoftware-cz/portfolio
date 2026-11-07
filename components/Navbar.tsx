@@ -44,6 +44,7 @@ export default function Navbar() {
   const sectionHref = (id: string) => (isHome ? `#${id}` : `/${locale}#${id}`);
 
   const navLinks = [
+    {label: t('configure'), href: `/${locale}/configure`},
     {label: t('services'), href: sectionHref('services')},
     {label: t('work'), href: sectionHref('work')},
     {label: t('pricing'), href: sectionHref('pricing')},

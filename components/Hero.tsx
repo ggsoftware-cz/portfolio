@@ -1,7 +1,8 @@
-import {useTranslations} from 'next-intl';
+import {useTranslations, useLocale} from 'next-intl';
 
 export default function Hero() {
   const t = useTranslations('hero');
+  const locale = useLocale();
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-white pt-16">
@@ -45,10 +46,10 @@ export default function Hero() {
               {t('ctaPrimary')}
             </a>
             <a
-              href="#services"
+              href={`/${locale}/configure`}
               className="inline-flex items-center justify-center px-6 py-3.5 rounded-xl border border-gray-200 text-gray-700 font-semibold text-base hover:border-gray-300 hover:bg-gray-50 transition-colors"
             >
-              {t('ctaSecondary')} →
+              {t('ctaConfigure')}
             </a>
           </div>
         </div>
