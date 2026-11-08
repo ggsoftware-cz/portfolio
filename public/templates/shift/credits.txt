@@ -1,0 +1,24 @@
+SHIFT — demo storefront asset credits
+
+3D shoe and derived product renders:
+Air Jordan 1 by makoto (https://sketchfab.com/lu87813).
+Creative Commons Attribution 4.0 International: https://creativecommons.org/licenses/by/4.0/
+Original: https://sketchfab.com/3d-models/air-jordan-1-a4b434181fbb48008ad460722fd53725
+Download mirror: https://sceneview.github.io/models/platforms/air_jordan_1.glb
+Mirror credits: https://sceneview.github.io/credits.html
+Changes: extracted one complete shoe from the pair, compacted unchanged geometry,
+and centered it. Both materials and all six original 1024px textures are preserved.
+Product renders use new camera/lighting. Blue and rose are illustrative colour tints,
+not official product variants. Original attribution is also embedded in the GLB.
+Nike / Air Jordan names and marks belong to their respective owners. This demo
+is not affiliated with or endorsed by Nike, Jordan Brand or the model creator.
+No merchandise is offered for sale by GG Software.
+
+Editorial photograph:
+KE ATLAS on Unsplash — https://unsplash.com/photos/7PFtrlle6hU
+https://unsplash.com/license
+Resized and encoded as WebP. Alternative photographs selected in the configurator are documented in docs/configurator-assets.md.
+
+Typeface: Barlow Condensed by Jeremy Tribby, SIL Open Font License 1.1, served locally through next/font.
+Original visual direction references the composition and interaction of https://landonorris.com/.
+No Lando Norris branding, text, photography or 3D assets are used.

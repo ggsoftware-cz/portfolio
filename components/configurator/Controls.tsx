@@ -41,8 +41,12 @@ export default function Controls({config, onChange, onReset}: Props) {
         {contrastRatio(config.text, config.background) < 4.5 && <div className={s.contrastNotice} role="status"><p>{t('contrast')}</p><button type="button" onClick={() => update('text', onColor(config.background))}>{t('fixContrast')}</button></div>}
         <fieldset><legend>{t('font')}</legend><div className={s.fontOptions}>{fontIds.map(font => <button type="button" key={font} aria-pressed={font === config.font} onClick={() => update('font', font)}><span style={{fontFamily: fonts[font].family}}>Aa</span><span>{fonts[font].name}</span>{font === config.font && <Check size={14} aria-hidden />}</button>)}</div></fieldset>
         {range('fontSize', t('headingSize'), 80, 125, '%')}
+        {config.template === 'shift' && <fieldset><legend>{t('shop.productStyle')}</legend>
+          <div className={s.segmented}>{(['beach', 'midnight', 'street'] as const).map(colorway => <button key={colorway} type="button" aria-pressed={(config.shop?.colorway || 'beach') === colorway} onClick={() => update('shop', {colorway, motion: config.shop?.motion !== false})}>{t(`shop.${colorway}`)}</button>)}</div>
+          <div className={s.sectionToggles}><label><span>{t('shop.motion')}</span><input type="checkbox" role="switch" checked={config.shop?.motion !== false} onChange={event => update('shop', {colorway: config.shop?.colorway || 'beach', motion: event.target.checked})} /></label></div>
+        </fieldset>}
         <details className={s.controlDetails}><summary>{t('photography')}<ChevronDown size={15} aria-hidden /></summary>
-          <div className={s.photoOptions}>{templateIds.map(image => <button type="button" key={image} aria-label={t('photo', {name: t(`templates.${image}.name`)})} aria-pressed={image === config.image} onClick={() => update('image', image)} style={{backgroundImage: `url(/templates/${image}.webp)`}}>{image === config.image && <Check size={16} aria-hidden />}</button>)}</div>
+          <div className={s.photoOptions}>{templateIds.map(image => <button type="button" key={image} aria-label={t('photo', {name: t(`templates.${image}.name`)})} aria-pressed={image === config.image} onClick={() => update('image', image)} style={{backgroundImage: `url(/templates/thumbs/${image}.webp)`}}>{image === config.image && <Check size={16} aria-hidden />}</button>)}</div>
           {range('imagePosition', t('imagePosition'), 0, 100, '%')}
           <fieldset><legend>{t('imageStyle')}</legend><div className={s.segmented}>{(['natural', 'muted', 'mono'] as const).map(value => <button type="button" key={value} aria-pressed={config.imageStyle === value} onClick={() => update('imageStyle', value)}>{t(value)}</button>)}</div></fieldset>
         </details>
@@ -52,7 +56,7 @@ export default function Controls({config, onChange, onReset}: Props) {
         {range('radius', t('corners'), 0, 32, 'px')}
         {range('width', t('width'), 880, 1280, 'px')}
         <fieldset><legend>{t('alignment')}</legend><div className={s.segmented}>{(['left', 'center'] as const).map(align => <button type="button" key={align} aria-pressed={config.align === align} onClick={() => update('align', align)}>{t(align)}</button>)}</div></fieldset>
-        <fieldset><legend>{t('sections')}</legend><div className={s.sectionToggles}>{(['services', 'about', 'faq'] as const).map(key => <label key={key}><span>{t(key)}</span><input type="checkbox" role="switch" checked={config.sections[key]} onChange={event => update('sections', {...config.sections, [key]: event.target.checked})} /></label>)}</div></fieldset>
+        <fieldset><legend>{t('sections')}</legend><div className={s.sectionToggles}>{(['services', 'about', 'faq'] as const).map(key => <label key={key}><span>{t(config.template === 'shift' && key === 'services' ? 'shop.collection' : key)}</span><input type="checkbox" role="switch" checked={config.sections[key]} onChange={event => update('sections', {...config.sections, [key]: event.target.checked})} /></label>)}</div></fieldset>
       </>}
       {tab === 'content' && <>
         <p className={s.fieldHint}>{t('contentHint')}</p>

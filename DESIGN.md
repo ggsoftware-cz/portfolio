@@ -113,9 +113,9 @@ close-on-outside-click via a `mousedown` listener, and a `ChevronDown` that rota
 The configurator is an intentional exception to the portfolio's repeated centered
 section headers: its shell is a quiet, practical workspace in the established
 Geist / white / GG pink identity. A dedicated `/[locale]/configure` route leaves
-space for a real page preview. The homepage introduces the same four designs.
+space for a real page preview. The homepage introduces the same five designs.
 
-Four compositions, rather than color skins:
+Distinct compositions, rather than color skins:
 
 - **Atelier**: architecture / studios / independent experts. Left-aligned generous
   display type, image occupying the right two-thirds of a composed hero, editorial
@@ -154,3 +154,105 @@ to the available canvas. On narrow screens, default to phone mode and fit its
 width so text remains readable; expanded mode fits the complete device to the
 available height as well. Keep the website itself scrollable inside the screen.
 Hardware details are decorative, non-interactive and hidden from screen readers.
+
+## Shift — fashion / lifestyle storefront
+
+Fifth direction, explicitly inspired by https://landonorris.com/: an oversized
+condensed masthead, floating interactive product, pale canvas, acid accent,
+contrasting editorial section and a large closing wordmark. Adapt the visual
+rhythm to a shop with a clear buying path; retain original names/copy/assets.
+Use Barlow Condensed 800 (`--font-barlow`, Arial Narrow / Arial fallbacks), Geist
+body, lime `#d2f600`, paper `#f5f5f0`, ink `#25291f`. The four palette presets
+and existing spacing / radius / width / type tokens remain editable.
+
+Hierarchy: brand / bag, expressive hero with 3D sneaker, product / colour / size
+selection, three-colour collection, editorial story, practical FAQ, GG enquiry.
+A one-page bag stays inside the preview, including the scaled iPhone, without
+nested dialog traps. Demo pricing is illustrative, with no payment collection or
+claims of real inventory, shipping, reviews or offers. Customers can configure
+initial shoe colour and motion as part of their saved design. Browsing colour,
+size and bag contents is ephemeral demo state, excluded from enquiry payloads.
+
+Three.js is dynamically imported only in an active visible preview. Gallery and
+no-WebGL states use local product renders. Cap DPR at 1.5; stop rendering outside
+the viewport or a hidden tab; honour reduced motion and the saved scroll-animation setting.
+Drag gestures and labelled rotate/reset buttons inspect the product. Vertical
+touch gestures still scroll. Keep the 3D asset and its attribution local.
+
+Small previews, reduced-motion users and data-saving connections start with the
+local poster and an explicit “Explore in 3D” action. Desktop previews at least
+600px wide activate 3D near the viewport. This keeps the initial phone visit light
+while retaining the same interactive model after a tap.
+
+## Shift motion refinement (November 2026)
+
+Keep the Shift palette and Barlow/Geist hierarchy. The opening now occupies one
+preview screen, followed by a short pinned scroll passage: display type travels
+left/up, the product turns and moves toward the centre, then the complete hero
+slides out as the shopping section arrives. Scrolling back reverses the same
+poses. There is no idle turntable or time-based floating. The preview's own scroll
+container is the source of progress, including inside the scaled iPhone frame.
+
+A selected collection image travels into its product detail while the preview
+scrolls there. Variant changes use a short, deliberate product transition; rapid
+selections cancel the previous transition. Keep navigation and purchase controls
+available, use no wheel interception or scroll snapping, and retain a static
+layout for reduced motion, disabled motion and unusually short previews.
+
+Use the online Air Jordan 1 model by makoto (CC BY 4.0), with the original leather,
+stitching, laces and texture maps. The default is its original black/white finish;
+two additional tints are labelled as concepts. Product imagery, the interactive
+view and catalogue names must all agree. Keep original author attribution visible
+in the footer credits and embedded in the asset.
+
+## Reference motion correction (November 2026)
+
+Observed landonorris.com in a live browser at 1440×1000: its opening fills the
+screen, then the complete portrait panel scales into a centred inset as the dark
+scene appears behind it. The background type travels horizontally; the inset
+remains centred before the composition leaves together. Helmet cards use a
+contained hover reveal, and selection is inspected separately below. Reference
+captures are under `output/playwright/lando-*.png`.
+
+Shift should use the same spatial logic: one pale, full-screen product scene
+shrinks into a centred window over an ink background, with large accent-coloured
+collection typography behind it. The shoe gently changes angle as the frame
+recedes; all surrounding hero content belongs to that frame. Keep the existing
+paper/ink/lime tokens and Barlow/Geist type. End at a clear collection section.
+Do not independently throw the heading off-screen or send a product across the
+page to a detail block above the collection. Selection should open a dedicated
+product view with a continuous transition and an equally clear return path.
+
+Helmet inspection confirmed a contained image reveal on hover/tap, not a
+page-opening animation. Adapt the restraint to commerce: cards reveal their
+colour within their own bounds; selection opens an inline product page in the
+preview. Expand the selected card's frame to that page, with a short image
+settle, and provide Back to collection with restored position/focus. Product
+controls become usable immediately and motion may be interrupted. The initial
+hero's whole-frame retreat is the only large scroll effect.
+
+During the retreat, fade the small labels/controls and headline within the
+frame, leaving a clean product image in its centre. Keep the scene-level CTA at
+normal size; the receded frame becomes inert so its miniature controls never
+trap keyboard focus. The native scroll position remains the sole animation clock.
+
+## Product placement and collection handoff
+
+Keep the established palette/type and connected scene. Place the hero headline
+in the left column and give the shoe a clear right-hand product area. On phones,
+keep the product between the headline and purchase action. Lift the live product
+above the receding frame so its scroll-driven turn can continue into the matching
+collection card. The target is measured in the preview's layout coordinates;
+the turn completes at the same angle/size as its card poster. Reverse scrolling
+reverses the handoff. Cards load a real 3D view on hover/focus, turn toward the
+pointer and return to the resting pose on leave; touch/reduced-motion keep the
+poster. Preserve the existing click-to-open product flow.
+
+The implemented handoff keeps the renderer outside the clipped frame and uses
+measured card geometry. The model completes one turn at its poster angle; mobile
+posters use the same translation with a restrained tilt until 3D is activated.
+Visual review reduced the hero product size to keep its controls and caption
+clear, moved the desktop path right of the collection title, and cleared the
+outgoing frame before the shoe leaves it. Card hover turns the real model rather
+than rotating a flat image. Production desktop/phone screenshots and verification
+are recorded in `docs/web-delivery.md`.

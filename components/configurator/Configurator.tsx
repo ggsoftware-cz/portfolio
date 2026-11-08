@@ -89,8 +89,8 @@ export default function Configurator() {
     function escape(event: KeyboardEvent) {
       if (event.key === 'Escape') setExpanded(false);
       if (event.key === 'Tab') {
-        const nodes = previewAreaRef.current?.querySelectorAll<HTMLElement>('button, summary, [tabindex="0"]');
-        const focusable = Array.from(nodes || []).filter(node => node.getClientRects().length > 0);
+        const nodes = previewAreaRef.current?.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), summary, [tabindex="0"]');
+        const focusable = Array.from(nodes || []).filter(node => !node.closest('[inert]') && node.getClientRects().length > 0);
         const first = focusable[0], last = focusable.at(-1);
         if (event.shiftKey && document.activeElement === first) {event.preventDefault(); last?.focus();}
         else if (!event.shiftKey && document.activeElement === last) {event.preventDefault(); first?.focus();}
