@@ -152,14 +152,20 @@ local poster and an explicit “Explore in 3D” action. Desktop previews at lea
 600px wide activate 3D near the viewport. This keeps the initial phone visit light
 while retaining the same interactive model after a tap.
 
-The hero fills the preview screen and pins for a short scroll passage: text moves
-away, the model turns, and the complete hero slides out into the shop. Progress
-comes from the preview scroll container and reverses when scrolling back. The
-scaled iPhone uses layout-pixel measurements. Motion disabled, reduced-motion,
-short preview heights and very long headlines retain a static layout.
+The hero fills the preview screen, then the complete pale scene recedes into a
+centred window over the dark collection background. Its small labels clear away
+and the shoe settles into the window while the background type moves behind it.
+The scene holds briefly, then leaves with native scrolling into the collection.
+Progress reverses when scrolling back and uses layout pixels inside the scaled
+iPhone. Motion disabled, reduced motion, short previews and long headlines retain
+the static layout. Receded controls become inert; the normal-size collection CTA
+and navigation remain usable. The expanded preview's focus loop excludes inert
+controls.
 
-Selecting a collection card carries its product image into the detail section
-and focuses the size controls when complete. Wheel, touch, pointer and keyboard
-input cancel the transition without leaving hidden images or trapping scrolling.
-Colour changes use a finite transition. Existing saved colour IDs are retained
-for version-1 compatibility; their labels now describe the replacement model.
+Collection cards reveal their colour within their own bounds. Selecting one
+opens an inline product page: the card's frame expands into that page and its
+image settles into position. The title receives focus. Back to shop (or Escape)
+returns to the originating card/CTA and restores its scroll position. Wheel,
+touch, pointer and keyboard input finish the reveal immediately. Colour changes
+use a short crossfade; no product image flies over unrelated sections. The bag
+and quote flow remain unchanged. Saved colour IDs retain version-1 compatibility.

@@ -139,3 +139,40 @@ Reviewed screenshots: `output/playwright/shift-scroll-desktop.png`,
 `shift-scroll-midpoint.png`, `shift-scroll-phone-cs.png`,
 `shift-product-transition.png`, and `shift-phone-transition.png`.
 No production deployment, merge, payment or real email submission was performed.
+
+## Reference-led scene correction (2026-11-08, subsequent revision)
+
+This supersedes the earlier independent text translation and scrolling product
+transfer. Inspected [landonorris.com](https://landonorris.com/) in a live browser:
+its opening recedes as a complete framed image over a dark scene with large
+horizontal type; helmet interactions reveal images within their card bounds.
+Reference captures are saved as `output/playwright/lando-*.png`. No reference
+branding, copy, code or media was imported into the product.
+
+Shift now retreats as one frame. Small labels clear away, leaving the shoe in a
+centred window; the backdrop type moves behind it. The entire scene then leaves
+with native scrolling into a dark collection. Cards reveal their colour within
+their own bounds and open a dedicated inline product page. The selected card
+expands into that page; Back to shop/Escape restores the originating card or CTA
+and its scroll position. Product view and bag stay inside the iPhone frame.
+
+- Lint, TypeScript, static export and all **19 tests** pass. Added a contract for
+  the frame retreat/hold and updated the reversible pose test.
+- Chromium desktop/phone: selection entry, interruption, return focus/position,
+  size validation, add-to-bag and bag return checked. Escape from the product
+  page preserves the expanded preview. The keyboard loop excludes inert controls.
+- Reduced motion and saved motion-off: no pinning or product-page animations.
+  A hidden collection still supports direct product entry and return to its CTA.
+- CS phone at 320/390/768px has no document/preview overflow. Zero GLB requests
+  before the explicit 3D action. Checked the 3D scene after activation.
+- Axe WCAG 2 A/AA + 2.1 AA: zero violations in the inset scene and product page
+  inside the expanded phone. Physical Safari/iOS remains untested.
+- Final local mobile Lighthouse, gzip static export: performance **93**, FCP
+  **1.1s**, LCP **3.3s**, TBT **30ms**, CLS **0.01**. No model request before
+  interaction. Report: `output/lighthouse/shift-scene.json`. Local lab evidence;
+  LCP is still above the good threshold and no field improvement is claimed.
+
+Reviewed evidence includes `scene-refined.png`, `scene-product-expanding.png`,
+`scene-product-open.png`, `scene-phone-inset.png`, `scene-phone-cs.png` and
+`scene-phone-cs-product.png` under `output/playwright/`.
+No deployment, merge or real email/order submission was performed.

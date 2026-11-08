@@ -1,6 +1,6 @@
 'use client';
 
-import {useEffect, useId, useRef, useState} from 'react';
+import {useEffect, useId, useLayoutEffect, useRef, useState} from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import {useLocale, useTranslations} from 'next-intl';
@@ -8,7 +8,8 @@ import {ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, Minus, Plus, Rota
 import type {Configuration} from '@/lib/configurator/config';
 import {addToBag, bagQuantity, bagTotal, changeQuantity, colorways, demoPrice, MAX_QUANTITY, productTints, shoeSizes, type BagLine, type Colorway} from '@/lib/configurator/shop';
 import s from './shift.module.css';
-import {transitionToProduct, useShiftScroll} from './useShiftScroll';
+import {useShiftScroll} from './useShiftScroll';
+import {revealProductView} from './productViewMotion';
 
 // The gallery uses only posters. Three.js and the GLB load for an active preview.
 const SneakerCanvas = dynamic(() => import('./SneakerCanvas'), {ssr: false});
@@ -64,7 +65,10 @@ export default function ShiftStorefront({config, miniature = false, onEnquire}: 
   const hero = useRef<HTMLDivElement>(null);
   const cancelSelection = useRef<(() => void) | null>(null);
   const detailAnimation = useRef<Animation | null>(null);
-  const selecting = useRef(false);
+  const productPage = useRef<HTMLElement>(null);
+  const entry = useRef<{card: DOMRect | null; image: DOMRect | null} | null>(null);
+  const returnTo = useRef<{scroll: number; color: Colorway | null; trigger: string} | null>(null);
+  const restoring = useRef(false);
   const collection = useRef<HTMLElement>(null);
   const story = useRef<HTMLElement>(null);
   const productForm = useRef<HTMLDivElement>(null);
@@ -79,22 +83,46 @@ export default function ShiftStorefront({config, miniature = false, onEnquire}: 
   const [sizeError, setSizeError] = useState(false);
   const [lines, setLines] = useState<BagLine[]>([]);
   const [bagOpen, setBagOpen] = useState(false);
+  const [productOpen, setProductOpen] = useState(false);
   const [checkout, setCheckout] = useState(false);
   const [message, setMessage] = useState('');
   const quantity = bagQuantity(lines);
   const name = config.content.name || t('templates.shift.business');
   const headline = config.content.headline || t('templates.shift.headline');
-  useShiftScroll(root, heroTrack, hero, config.shop?.motion !== false, !miniature && !bagOpen, `${config.font}/${config.fontSize}/${headline}`);
+  useShiftScroll(root, heroTrack, hero, config.shop?.motion !== false, !miniature && !bagOpen && !productOpen, `${config.font}/${config.fontSize}/${headline}`);
   useEffect(() => () => {cancelSelection.current?.(); detailAnimation.current?.cancel();}, []);
-  useEffect(() => {cancelSelection.current?.();}, [bagOpen]);
+  useEffect(() => {if (config.shop?.motion === false) cancelSelection.current?.();}, [config.shop?.motion]);
+  useLayoutEffect(() => {
+    const viewport = root.current?.closest<HTMLElement>('[data-storefront-viewport]');
+    if (!viewport || bagOpen) return;
+    if (productOpen && productPage.current) {
+      viewport.scrollTo({top: 0, behavior: 'instant'});
+      previousColor.current = colorway;
+      productPage.current.querySelector<HTMLElement>('[data-product-title]')?.focus({preventScroll: true});
+      const origin = entry.current;
+      entry.current = null;
+      if (origin && config.shop?.motion !== false && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        cancelSelection.current = revealProductView(productPage.current, viewport, origin.card, origin.image);
+      }
+    } else if (restoring.current && returnTo.current) {
+      const destination = returnTo.current;
+      restoring.current = false;
+      viewport.scrollTo({top: destination.scroll, behavior: 'instant'});
+      const selector = destination.color ? `[data-product-card="${destination.color}"]` : `[data-product-trigger="${destination.trigger}"]`;
+      root.current?.querySelector<HTMLElement>(selector)?.focus({preventScroll: true});
+    }
+    return () => cancelSelection.current?.();
+    // Colour changes within an open page must not reset its scroll or focus.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productOpen, bagOpen]);
   useEffect(() => {
     if (previousColor.current === colorway) return;
     previousColor.current = colorway;
     const image = productForm.current?.querySelector('img');
-    if (!image || selecting.current || miniature || config.shop?.motion === false || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!image || miniature || config.shop?.motion === false || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     detailAnimation.current?.cancel();
     // A finite response to choosing a colour; never an idle animation.
-    detailAnimation.current = image.animate([{opacity: .3, transform: 'translateY(18px) rotate(-4deg) scale(.96)'}, {opacity: 1, transform: 'none'}], {duration: 440, easing: 'cubic-bezier(.22,1,.36,1)'});
+    detailAnimation.current = image.animate([{opacity: .35}, {opacity: 1}], {duration: 280, easing: 'cubic-bezier(.22,1,.36,1)'});
     return () => detailAnimation.current?.cancel();
   }, [colorway, miniature, config.shop?.motion]);
   const Heading = miniature ? 'h3' : 'h2';
@@ -121,27 +149,25 @@ export default function ShiftStorefront({config, miniature = false, onEnquire}: 
     setLines(value => addToBag(value, colorway, size));
     setMessage(shop('added', {color: shop(colorway), size}));
   };
-  const selectProduct = (value: Colorway, card: HTMLButtonElement) => {
-    cancelSelection.current?.();
-    detailAnimation.current?.cancel();
-    selectColor(value); setSizeError(false); setMessage('');
-    const viewport = root.current?.closest<HTMLElement>('[data-storefront-viewport]'), target = productForm.current;
-    if (!viewport || !target) return;
-    const focus = () => target.querySelector<HTMLButtonElement>('[data-size]')?.focus({preventScroll: true});
-    if (config.shop?.motion === false || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {scroll(target); requestAnimationFrame(focus); return;}
-    const scale = viewport.getBoundingClientRect().width / viewport.offsetWidth;
-    const navHeight = root.current?.querySelector('header')?.offsetHeight || 0;
-    const top = viewport.scrollTop + (target.getBoundingClientRect().top - viewport.getBoundingClientRect().top) / scale - navHeight - 20;
-    selecting.current = true;
-    cancelSelection.current = transitionToProduct({viewport, source: card.querySelector('img'), target: target.querySelector('img'), top, onFinish: completed => {selecting.current = false; cancelSelection.current = null; if (completed) focus();}});
+  const selectProduct = (value: Colorway, card?: HTMLButtonElement) => {
+    cancelSelection.current?.(); detailAnimation.current?.cancel();
+    const viewport = root.current?.closest<HTMLElement>('[data-storefront-viewport]');
+    returnTo.current = {scroll: viewport?.scrollTop || 0, color: card ? value : null, trigger: document.activeElement?.getAttribute('data-product-trigger') || 'hero'};
+    entry.current = {card: card?.querySelector('[data-card-image]')?.getBoundingClientRect() || null, image: card?.querySelector('img')?.getBoundingClientRect() || null};
+    selectColor(value); setSizeError(false); setMessage(''); setProductOpen(true);
   };
+  const closeProduct = () => {
+    cancelSelection.current?.(); restoring.current = true; setProductOpen(false);
+  };
+  const explore = () => config.sections.services ? scroll(collection.current) : selectProduct(colorway);
 
-  return <article ref={root} className={`${s.store} ${miniature ? s.miniature : ''}`} aria-label={`${t('templates.shift.name')} — ${t('demoLabel')}`}>
+
+  return <article ref={root} className={`${s.store} ${miniature ? s.miniature : ''}`} data-product-open={productOpen && !bagOpen} aria-label={`${t('templates.shift.name')} — ${t('demoLabel')}`} onKeyDown={event => {if (event.key === 'Escape' && productOpen && !bagOpen) {event.stopPropagation(); closeProduct();}}}>
     <header className={s.nav}>
       <span className={s.logo}>{name}<span aria-hidden>↗</span></span>
       <nav aria-label={`${name} ${t('demoLabel')}`}>
-        {!bagOpen && config.sections.services && <button className={s.navLink} onClick={() => scroll(collection.current)}>{shop('collection')}</button>}
-        {!bagOpen && config.sections.about && <button className={s.navLink} onClick={() => scroll(story.current)}>{shop('ourWorld')}</button>}
+        {!bagOpen && config.sections.services && <button className={s.navLink} onClick={() => productOpen ? closeProduct() : scroll(collection.current)}>{shop('collection')}</button>}
+        {!bagOpen && !productOpen && config.sections.about && <button className={s.navLink} onClick={() => scroll(story.current)}>{shop('ourWorld')}</button>}
         <button ref={bagTrigger} className={s.bagButton} onClick={() => {setBagOpen(value => !value); setCheckout(false);}} aria-label={shop('bagCount', {count: quantity})} aria-expanded={bagOpen}><ShoppingBag size={17} aria-hidden /><span>{shop('bag')}</span><b>{quantity}</b></button>
       </nav>
     </header>
@@ -162,26 +188,12 @@ export default function ShiftStorefront({config, miniature = false, onEnquire}: 
           {!checkout ? <button className={s.primary} onClick={() => setCheckout(true)}>{shop('checkout')}<ArrowRight size={18} aria-hidden /></button> : <div className={s.checkoutNotice} role="status"><Check size={22} aria-hidden /><h3>{shop('checkoutTitle')}</h3><p>{shop('checkoutBody')}</p><button className={s.primary} onClick={onEnquire}>{shop('buildShop')}<ArrowUpRight size={18} aria-hidden /></button></div>}
         </div>
       </>}
-    </section> : <>
-      <div ref={heroTrack} className={s.heroTrack}>
-      <div ref={hero} className={s.hero} data-shift-hero>
-        <div className={s.heroTop}><p>{t('templates.shift.tagline')}</p><span>01 / {name}</span></div>
-        <Heading data-hero-heading className={`${s.heroHeading} ${headline.length > 28 ? s.longHeadline : ''}`}>{headline}</Heading>
-        <ProductStage colorway={colorway} motion={config.shop?.motion !== false} miniature={miniature} />
-        <div className={s.heroBottom}>
-          <div className={s.heroCopy}><p>{config.content.description || t('templates.shift.descriptionText')}</p><button className={s.primary} onClick={() => scroll(config.sections.services ? collection.current : productForm.current)}>{config.content.cta || t('templates.shift.cta')}<ArrowUpRight size={20} aria-hidden /></button></div>
-          <div className={s.productCaption}><span>{shop('productName')} — 01</span><p>{shop('colorway')} / {shop(colorway)}</p><div className={s.swatches} role="group" aria-label={shop('colorway')}>{colorways.map(value => <button key={value} aria-label={shop(value)} aria-pressed={colorway === value} style={{'--swatch': swatches[value]} as React.CSSProperties} onClick={() => {selectColor(value); setMessage('');}}><i /></button>)}</div></div>
-        </div>
-        <div className={s.heroFoot}><span>{shop('everyday')}</span><span>{shop('scroll')}<ArrowDown size={14} aria-hidden /></span></div>
-      </div>
-      </div>
-      {!miniature && <>
-        <div className={s.statement}><span>{shop('statement1')}</span><span aria-hidden>↗</span><span>{shop('statement2')}</span></div>
-        <section className={s.shopSection} aria-labelledby={`${id}-product`}>
+    </section> : productOpen ? <section ref={productPage} className={s.productPage} data-product-page aria-labelledby={`${id}-product`}>
+          <button className={s.textButton} onClick={closeProduct}><ArrowLeft size={17} aria-hidden />{shop('backShop')}</button>
           <div className={s.productPanel} ref={productForm}>
             <div className={s.detailPhoto}><span>{shop('productName')} / 01</span><Image src={poster(colorway)} alt={shop('productAlt', {color: shop(colorway)})} width={900} height={700} sizes="(max-width:700px) 90vw, 35vw" /><p>{shop('colorway')} — {shop(colorway)}</p></div>
-            <div className={s.productDetails}>
-              <p className={s.eyebrow}>{shop('everyday')}</p><h3 id={`${id}-product`}>{shop('productName')}</h3><div className={s.price}>{price(demoPrice)}<span>{shop('samplePrice')}</span></div><p>{shop('productBody')}</p>
+            <div className={s.productDetails} data-product-details>
+              <p className={s.eyebrow}>{shop('everyday')}</p><h3 id={`${id}-product`} data-product-title tabIndex={-1}>{shop('productName')}</h3><div className={s.price}>{price(demoPrice)}<span>{shop('samplePrice')}</span></div><p>{shop('productBody')}</p>
               <fieldset><legend>{shop('colorway')} — {shop(colorway)}</legend><div className={s.colorChoices}>{colorways.map(value => <button key={value} aria-pressed={value === colorway} onClick={() => {selectColor(value); setMessage('');}}><i style={{background: swatches[value]}} />{shop(value)}</button>)}</div></fieldset>
               <fieldset aria-describedby={sizeError ? `${id}-size-error` : undefined}><legend>{shop('size')} / EU</legend><div className={s.sizes}>{shoeSizes.map(value => <button data-size key={value} aria-pressed={size === value} onClick={() => {setSize(value); setSizeError(false); setMessage('');}}>{value}</button>)}</div></fieldset>
               {sizeError && <p id={`${id}-size-error`} className={s.fieldError} role="alert">{shop('chooseSize')}</p>}
@@ -190,14 +202,31 @@ export default function ShiftStorefront({config, miniature = false, onEnquire}: 
               <p className={s.demoNote}>{shop('demoNote')}</p>
             </div>
           </div>
-        </section>
-        {config.sections.services && <section ref={collection} className={s.shopSection} aria-labelledby={`${id}-collection`}>
+        </section> : <>
+      <div ref={heroTrack} className={s.heroTrack}>
+      <div className={s.heroScene}>
+        <div className={s.sceneType} aria-hidden><span>{shop('statement1')} {shop('statement1')} {shop('statement1')}</span><span>{shop('statement2')} {shop('statement2')} {shop('statement2')}</span></div>
+      <div ref={hero} className={s.hero} data-shift-hero>
+        <div className={s.heroTop}><p>{t('templates.shift.tagline')}</p><span>01 / {name}</span></div>
+        <Heading data-hero-heading className={`${s.heroHeading} ${headline.length > 28 ? s.longHeadline : ''}`}>{headline}</Heading>
+        <ProductStage colorway={colorway} motion={config.shop?.motion !== false} miniature={miniature} />
+        <div className={s.heroBottom}>
+          <div className={s.heroCopy}><p>{config.content.description || t('templates.shift.descriptionText')}</p><button className={s.primary} data-shop-cta data-product-trigger="hero" onClick={explore}>{config.content.cta || t('templates.shift.cta')}<ArrowUpRight size={20} aria-hidden /></button></div>
+          <div className={s.productCaption}><span>{shop('productName')} — 01</span><p>{shop('colorway')} / {shop(colorway)}</p><div className={s.swatches} role="group" aria-label={shop('colorway')}>{colorways.map(value => <button key={value} aria-label={shop(value)} aria-pressed={colorway === value} style={{'--swatch': swatches[value]} as React.CSSProperties} onClick={() => {selectColor(value); setMessage('');}}><i /></button>)}</div></div>
+        </div>
+        <div className={s.heroFoot}><span>{shop('everyday')}</span><span>{shop('scroll')}<ArrowDown size={14} aria-hidden /></span></div>
+      </div>
+        {!miniature && <div className={s.sceneNext} data-scene-next><span>{shop('collectionEyebrow')}</span><button className={s.primary} data-product-trigger="scene" onClick={explore}>{shop('explore')}<ArrowDown size={17} aria-hidden /></button></div>}
+      </div>
+      </div>
+      {!miniature && <>
+        {config.sections.services && <section ref={collection} className={`${s.shopSection} ${s.collection}`} aria-labelledby={`${id}-collection`}>
           <div className={s.sectionTitle}><div><p className={s.eyebrow}>{shop('collectionEyebrow')}</p><h3 id={`${id}-collection`}>{shop('collectionTitle')}</h3></div><span>01 — 03</span></div>
-          <div className={s.productGrid}>{colorways.map((value, index) => <button className={s.productCard} key={value} onClick={event => selectProduct(value, event.currentTarget)} aria-label={shop('chooseProduct', {color: shop(value)})}><div className={s.cardImage}><span>0{index + 1}</span><Image src={poster(value)} alt={shop('productAlt', {color: shop(value)})} width={900} height={700} sizes="(max-width:700px) 90vw, 30vw" /><span className={s.cardArrow}><ArrowUpRight size={20} aria-hidden /></span></div><div className={s.cardCaption}><span><strong>{shop('productName')}</strong><small>{shop(value)}</small></span><span>{price(demoPrice)}</span></div></button>)}</div>
+          <div className={s.productGrid}>{colorways.map((value, index) => <button className={s.productCard} data-product-card={value} key={value} onClick={event => selectProduct(value, event.currentTarget)} aria-label={shop('chooseProduct', {color: shop(value)})}><div className={s.cardImage} data-card-image style={{'--card-tint': swatches[value]} as React.CSSProperties}><span>0{index + 1}</span><Image src={poster(value)} alt={shop('productAlt', {color: shop(value)})} width={900} height={700} sizes="(max-width:700px) 90vw, 30vw" /><span className={s.cardReveal} aria-hidden>{shop(value)}</span><span className={s.cardArrow}><ArrowUpRight size={20} aria-hidden /></span></div><div className={s.cardCaption}><span><strong>{shop('productName')}</strong><small>{shop(value)}</small></span><span>{price(demoPrice)}</span></div></button>)}</div>
         </section>}
         {config.sections.about && <section ref={story} className={s.story} aria-labelledby={`${id}-story`}>
           <div className={s.storyImage}><Image src={`/templates/${config.image}.webp`} alt={t(`templates.${config.image}.imageAlt`)} fill sizes="(max-width:700px) 100vw, 50vw" /></div>
-          <div className={s.storyCopy}><p className={s.eyebrow}>{shop('ourWorld')} / 02</p><h3 id={`${id}-story`}>{shop('storyTitle')}</h3><p>{shop('storyBody')}</p><button className={s.primary} onClick={() => scroll(productForm.current)}>{shop('explore')}<ArrowUpRight size={20} aria-hidden /></button><span className={s.storyMark} aria-hidden>↗</span></div>
+          <div className={s.storyCopy}><p className={s.eyebrow}>{shop('ourWorld')} / 02</p><h3 id={`${id}-story`}>{shop('storyTitle')}</h3><p>{shop('storyBody')}</p><button className={s.primary} data-product-trigger="story" onClick={explore}>{shop('explore')}<ArrowUpRight size={20} aria-hidden /></button><span className={s.storyMark} aria-hidden>↗</span></div>
         </section>}
         {config.sections.faq && <section className={`${s.shopSection} ${s.faq}`} aria-labelledby={`${id}-faq`}><h3 id={`${id}-faq`}>{shop('faqTitle')}</h3><div>{[1,2,3].map(index => <details key={index}><summary>{shop(`question${index}`)}<Plus size={18} aria-hidden /></summary><p>{shop(`answer${index}`)}</p></details>)}</div></section>}
         <section className={s.contact}><p className={s.eyebrow}>{t('demoLabel')}</p><h3>{shop('contactTitle')}</h3><p>{shop('contactBody')}</p><button className={s.primary} onClick={onEnquire}>{shop('buildShop')}<ArrowUpRight size={20} aria-hidden /></button></section>

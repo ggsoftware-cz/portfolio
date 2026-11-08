@@ -673,7 +673,8 @@
       "checkoutTitle": "Tady začíná váš e-shop.",
       "checkoutBody": "Tímto ukázka končí. Nevznikla žádná objednávka a nepřijímáme platbu. Pošlete svůj návrh GG Software a probereme realizaci vašeho obchodu.",
       "explore3d": "Prohlédnout ve 3D",
-      "scrollDrag": "Posouvejte a otáčejte · tažením prohlížejte"
+      "scrollDrag": "Posouvejte a objevujte · tažením otáčejte",
+      "backShop": "Zpět do obchodu"
     }
   }
 }

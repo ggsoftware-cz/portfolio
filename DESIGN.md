@@ -204,3 +204,34 @@ stitching, laces and texture maps. The default is its original black/white finis
 two additional tints are labelled as concepts. Product imagery, the interactive
 view and catalogue names must all agree. Keep original author attribution visible
 in the footer credits and embedded in the asset.
+
+## Reference motion correction (November 2026)
+
+Observed landonorris.com in a live browser at 1440×1000: its opening fills the
+screen, then the complete portrait panel scales into a centred inset as the dark
+scene appears behind it. The background type travels horizontally; the inset
+remains centred before the composition leaves together. Helmet cards use a
+contained hover reveal, and selection is inspected separately below. Reference
+captures are under `output/playwright/lando-*.png`.
+
+Shift should use the same spatial logic: one pale, full-screen product scene
+shrinks into a centred window over an ink background, with large accent-coloured
+collection typography behind it. The shoe gently changes angle as the frame
+recedes; all surrounding hero content belongs to that frame. Keep the existing
+paper/ink/lime tokens and Barlow/Geist type. End at a clear collection section.
+Do not independently throw the heading off-screen or send a product across the
+page to a detail block above the collection. Selection should open a dedicated
+product view with a continuous transition and an equally clear return path.
+
+Helmet inspection confirmed a contained image reveal on hover/tap, not a
+page-opening animation. Adapt the restraint to commerce: cards reveal their
+colour within their own bounds; selection opens an inline product page in the
+preview. Expand the selected card's frame to that page, with a short image
+settle, and provide Back to collection with restored position/focus. Product
+controls become usable immediately and motion may be interrupted. The initial
+hero's whole-frame retreat is the only large scroll effect.
+
+During the retreat, fade the small labels/controls and headline within the
+frame, leaving a clean product image in its centre. Keep the scene-level CTA at
+normal size; the receded frame becomes inert so its miniature controls never
+trap keyboard focus. The native scroll position remains the sole animation clock.

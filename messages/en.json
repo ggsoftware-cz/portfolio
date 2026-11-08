@@ -673,7 +673,8 @@
       "checkoutTitle": "Your shop starts here.",
       "checkoutBody": "This is the end of the demo. No order was placed and no payment is collected. Send your design to GG Software to discuss building your store.",
       "explore3d": "Explore in 3D",
-      "scrollDrag": "Scroll to turn · drag to inspect"
+      "scrollDrag": "Scroll to explore · drag to inspect",
+      "backShop": "Back to shop"
     }
   }
 }
