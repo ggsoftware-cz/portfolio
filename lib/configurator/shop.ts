@@ -1,6 +1,8 @@
 // Illustrative catalogue. No inventory, payment or order service is connected.
 export const colorways = ['beach', 'midnight', 'street'] as const;
 export type Colorway = typeof colorways[number];
+// Original licensed colour plus two explicitly labelled concept tints.
+export const productTints: Record<Colorway, string> = {beach: '#ffffff', midnight: '#a6c8f5', street: '#dfb5ad'};
 export const shoeSizes = ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46'] as const;
 export type BagLine = {colorway: Colorway; size: string; quantity: number};
 export const demoPrice = 2490;

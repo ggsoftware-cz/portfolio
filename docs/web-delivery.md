@@ -99,3 +99,43 @@ Physical iOS/Safari, live provider receipt and production hosting remain unteste
 No deployment or merge is performed. If direct in-page email is configured, deploy
 its Worker from this revision so its validator accepts Shift and Barlow settings;
 the existing email-app fallback does not require that deployment.
+
+## Shift scroll and online model refinement (2026-11-08)
+
+The hero now follows the preview's scroll position: type translates away, the
+product turns, and the whole scene slides into the shop. Scroll back to reverse
+the same pose. No idle rotation loop remains. Collection selection uses a finite
+image transition, clipped to the preview screen, then focuses size selection;
+wheel/touch/pointer/keyboard input cancels it cleanly. Reduced motion and the
+saved motion-off setting use the static layout and direct product navigation.
+
+Replaced the sample shoe with **Air Jordan 1 by makoto**, downloaded from the
+SceneView mirror under CC BY 4.0. One complete shoe was extracted from the pair;
+original geometry, two materials and all six 1024px textures are retained. The
+reproducible local GLB is 1,969,812 bytes. New 21–23 KB product renders and catalogue
+names match the model; two extra tints are explicitly labelled as concepts.
+Source, licence and modifications are in `docs/configurator-assets.md`, embedded
+GLB metadata and the public footer credits.
+
+- Lint, TypeScript, production static export and `git diff --check` pass; all
+  18 tests pass, including scroll boundaries and reversible poses.
+- Production Chromium: scroll forward/back returns the same progress, stationary
+  scene makes zero WebGL draws, one scroll renders the two meshes and then stops.
+  Collection image transfer, completion focus, wheel cancellation and opacity
+  cleanup checked on desktop and the scaled phone. Colour/size → add → bag works.
+- Motion off and emulated reduced motion disable pinning and image transfer.
+  CS phone starts without a GLB request, then loads the model after the 3D action.
+  Expanded iPhone layouts at 320/390/768px have no document or preview overflow.
+- Axe WCAG 2 A/AA + 2.1 AA: zero violations in the desktop store and expanded CS
+  phone with 3D active. Physical iOS/Safari remains untested.
+- Final local mobile Lighthouse against the gzip-served export: performance
+  **93**, FCP **1.1s**, LCP **3.3s**, TBT **30ms**, CLS **0.009**. No GLB request
+  before interaction. An earlier run with other preview sessions open measured
+  65 / 1,540ms TBT; both reports are retained as
+  `output/lighthouse/shift-scroll{,-final}.json`. These are variable local lab
+  measurements, not field results; LCP remains above 2.5s.
+
+Reviewed screenshots: `output/playwright/shift-scroll-desktop.png`,
+`shift-scroll-midpoint.png`, `shift-scroll-phone-cs.png`,
+`shift-product-transition.png`, and `shift-phone-transition.png`.
+No production deployment, merge, payment or real email submission was performed.

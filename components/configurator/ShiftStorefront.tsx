@@ -4,20 +4,20 @@ import {useEffect, useId, useRef, useState} from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import {useLocale, useTranslations} from 'next-intl';
-import {ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, Minus, Pause, Play, Plus, RotateCcw, ShoppingBag, X} from 'lucide-react';
+import {ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, Minus, Plus, RotateCcw, ShoppingBag, X} from 'lucide-react';
 import type {Configuration} from '@/lib/configurator/config';
-import {addToBag, bagQuantity, bagTotal, changeQuantity, colorways, demoPrice, MAX_QUANTITY, shoeSizes, type BagLine, type Colorway} from '@/lib/configurator/shop';
+import {addToBag, bagQuantity, bagTotal, changeQuantity, colorways, demoPrice, MAX_QUANTITY, productTints, shoeSizes, type BagLine, type Colorway} from '@/lib/configurator/shop';
 import s from './shift.module.css';
+import {transitionToProduct, useShiftScroll} from './useShiftScroll';
 
 // The gallery uses only posters. Three.js and the GLB load for an active preview.
 const SneakerCanvas = dynamic(() => import('./SneakerCanvas'), {ssr: false});
-const swatches = {beach: '#e3c8c3', midnight: '#1e83a9', street: '#343239'};
-const poster = (colorway: Colorway) => `/templates/shift/${colorway}.webp`;
+const swatches = productTints;
+const poster = (colorway: Colorway) => `/templates/shift/air-jordan-${{beach: 'original', midnight: 'blue', street: 'rose'}[colorway]}.webp`;
 
 function ProductStage({colorway, motion, miniature}: {colorway: Colorway; motion: boolean; miniature: boolean}) {
   const t = useTranslations('configurator.shop');
   const [status, setStatus] = useState<'loading' | 'ready' | 'unavailable'>('loading');
-  const [paused, setPaused] = useState(false);
   const [turn, setTurn] = useState(0);
   const [reset, setReset] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -41,15 +41,14 @@ function ProductStage({colorway, motion, miniature}: {colorway: Colorway; motion
     <div className={s.productShadow} aria-hidden />
     <div className={s.productVisual} role="img" aria-label={t('productAlt', {color: t(colorway)})}>
       <Image className={`${s.poster} ${status === 'ready' ? s.posterHidden : ''}`} src={poster(colorway)} alt="" fill sizes={miniature ? '70vw' : '(max-width: 700px) 90vw, 55vw'} fetchPriority={miniature ? 'low' : 'high'} loading={miniature ? 'lazy' : 'eager'} />
-      {!miniature && visible && status !== 'unavailable' && <div className={`${s.canvas} ${status === 'ready' ? s.canvasReady : ''}`}><SneakerCanvas colorway={colorway} motion={motion && !paused} turn={turn} reset={reset} onStatus={setStatus} /></div>}
+      {!miniature && visible && status !== 'unavailable' && <div className={`${s.canvas} ${status === 'ready' ? s.canvasReady : ''}`}><SneakerCanvas colorway={colorway} motion={motion} turn={turn} reset={reset} onStatus={setStatus} /></div>}
     </div>
     {!miniature && <div className={s.viewerBar}>
-      {!visible ? <button className={s.activate3d} onClick={() => setVisible(true)}><RotateCcw size={14} aria-hidden />{t('explore3d')}</button> : <span aria-live="polite">{t(status === 'ready' ? 'drag' : status === 'unavailable' ? 'fallback' : 'loading')}</span>}
+      {!visible ? <button className={s.activate3d} onClick={() => setVisible(true)}><RotateCcw size={14} aria-hidden />{t('explore3d')}</button> : <span aria-live="polite">{t(status === 'ready' ? motion ? 'scrollDrag' : 'drag' : status === 'unavailable' ? 'fallback' : 'loading')}</span>}
       {status === 'ready' && <div className={s.viewerButtons}>
-        <button type="button" aria-label={t('rotateLeft')} onClick={() => {setPaused(true); setTurn(value => value - 1);}}><ArrowLeft size={15} aria-hidden /></button>
-        <button type="button" aria-label={t('rotateRight')} onClick={() => {setPaused(true); setTurn(value => value + 1);}}><ArrowRight size={15} aria-hidden /></button>
+        <button type="button" aria-label={t('rotateLeft')} onClick={() => setTurn(value => value - 1)}><ArrowLeft size={15} aria-hidden /></button>
+        <button type="button" aria-label={t('rotateRight')} onClick={() => setTurn(value => value + 1)}><ArrowRight size={15} aria-hidden /></button>
         <button type="button" aria-label={t('resetView')} onClick={() => setReset(value => value + 1)}><RotateCcw size={14} aria-hidden /></button>
-        {motion && <button type="button" className={s.motionButton} aria-label={t(paused ? 'play' : 'pause')} onClick={() => setPaused(value => !value)}>{paused ? <Play size={14} aria-hidden /> : <Pause size={14} aria-hidden />}</button>}
       </div>}
     </div>}
   </div>;
@@ -61,6 +60,11 @@ export default function ShiftStorefront({config, miniature = false, onEnquire}: 
   const locale = useLocale();
   const id = useId();
   const root = useRef<HTMLElement>(null);
+  const heroTrack = useRef<HTMLDivElement>(null);
+  const hero = useRef<HTMLDivElement>(null);
+  const cancelSelection = useRef<(() => void) | null>(null);
+  const detailAnimation = useRef<Animation | null>(null);
+  const selecting = useRef(false);
   const collection = useRef<HTMLElement>(null);
   const story = useRef<HTMLElement>(null);
   const productForm = useRef<HTMLDivElement>(null);
@@ -69,6 +73,7 @@ export default function ShiftStorefront({config, miniature = false, onEnquire}: 
   const [selected, setSelected] = useState<{base: Colorway; value: Colorway} | null>(null);
   const initialColor = config.shop?.colorway || 'beach';
   const colorway = selected?.base === initialColor ? selected.value : initialColor;
+  const previousColor = useRef(colorway);
   const selectColor = (value: Colorway) => setSelected({base: initialColor, value});
   const [size, setSize] = useState('');
   const [sizeError, setSizeError] = useState(false);
@@ -79,6 +84,19 @@ export default function ShiftStorefront({config, miniature = false, onEnquire}: 
   const quantity = bagQuantity(lines);
   const name = config.content.name || t('templates.shift.business');
   const headline = config.content.headline || t('templates.shift.headline');
+  useShiftScroll(root, heroTrack, hero, config.shop?.motion !== false, !miniature && !bagOpen, `${config.font}/${config.fontSize}/${headline}`);
+  useEffect(() => () => {cancelSelection.current?.(); detailAnimation.current?.cancel();}, []);
+  useEffect(() => {cancelSelection.current?.();}, [bagOpen]);
+  useEffect(() => {
+    if (previousColor.current === colorway) return;
+    previousColor.current = colorway;
+    const image = productForm.current?.querySelector('img');
+    if (!image || selecting.current || miniature || config.shop?.motion === false || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    detailAnimation.current?.cancel();
+    // A finite response to choosing a colour; never an idle animation.
+    detailAnimation.current = image.animate([{opacity: .3, transform: 'translateY(18px) rotate(-4deg) scale(.96)'}, {opacity: 1, transform: 'none'}], {duration: 440, easing: 'cubic-bezier(.22,1,.36,1)'});
+    return () => detailAnimation.current?.cancel();
+  }, [colorway, miniature, config.shop?.motion]);
   const Heading = miniature ? 'h3' : 'h2';
   const price = (amount: number) => new Intl.NumberFormat(locale === 'cs' ? 'cs-CZ' : 'en-GB', {style: 'currency', currency: 'CZK', maximumFractionDigits: 0}).format(amount);
   const scroll = (node: HTMLElement | null) => {
@@ -88,7 +106,7 @@ export default function ShiftStorefront({config, miniature = false, onEnquire}: 
     const scale = viewport.getBoundingClientRect().width / (viewport as HTMLElement).offsetWidth;
     const navHeight = root.current?.querySelector('header')?.offsetHeight || 0;
     viewport.scrollTo({top: viewport.scrollTop + (node.getBoundingClientRect().top - viewport.getBoundingClientRect().top) / scale - navHeight - 20,
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
+      behavior: config.shop?.motion === false || window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
   };
   useEffect(() => {if (bagOpen) {bagHeading.current?.focus({preventScroll: true}); root.current?.closest('[data-storefront-viewport]')?.scrollTo({top:0});}}, [bagOpen]);
   const closeBag = () => {setBagOpen(false); setCheckout(false); requestAnimationFrame(() => {root.current?.closest('[data-storefront-viewport]')?.scrollTo({top:0}); bagTrigger.current?.focus({preventScroll: true});});};
@@ -103,7 +121,20 @@ export default function ShiftStorefront({config, miniature = false, onEnquire}: 
     setLines(value => addToBag(value, colorway, size));
     setMessage(shop('added', {color: shop(colorway), size}));
   };
-  const selectProduct = (value: Colorway) => {selectColor(value); setSizeError(false); scroll(productForm.current); requestAnimationFrame(() => productForm.current?.querySelector<HTMLButtonElement>('[data-size]')?.focus({preventScroll: true}));};
+  const selectProduct = (value: Colorway, card: HTMLButtonElement) => {
+    cancelSelection.current?.();
+    detailAnimation.current?.cancel();
+    selectColor(value); setSizeError(false); setMessage('');
+    const viewport = root.current?.closest<HTMLElement>('[data-storefront-viewport]'), target = productForm.current;
+    if (!viewport || !target) return;
+    const focus = () => target.querySelector<HTMLButtonElement>('[data-size]')?.focus({preventScroll: true});
+    if (config.shop?.motion === false || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {scroll(target); requestAnimationFrame(focus); return;}
+    const scale = viewport.getBoundingClientRect().width / viewport.offsetWidth;
+    const navHeight = root.current?.querySelector('header')?.offsetHeight || 0;
+    const top = viewport.scrollTop + (target.getBoundingClientRect().top - viewport.getBoundingClientRect().top) / scale - navHeight - 20;
+    selecting.current = true;
+    cancelSelection.current = transitionToProduct({viewport, source: card.querySelector('img'), target: target.querySelector('img'), top, onFinish: completed => {selecting.current = false; cancelSelection.current = null; if (completed) focus();}});
+  };
 
   return <article ref={root} className={`${s.store} ${miniature ? s.miniature : ''}`} aria-label={`${t('templates.shift.name')} — ${t('demoLabel')}`}>
     <header className={s.nav}>
@@ -132,15 +163,17 @@ export default function ShiftStorefront({config, miniature = false, onEnquire}: 
         </div>
       </>}
     </section> : <>
-      <div className={s.hero}>
+      <div ref={heroTrack} className={s.heroTrack}>
+      <div ref={hero} className={s.hero} data-shift-hero>
         <div className={s.heroTop}><p>{t('templates.shift.tagline')}</p><span>01 / {name}</span></div>
-        <Heading className={`${s.heroHeading} ${headline.length > 28 ? s.longHeadline : ''}`}>{headline}</Heading>
+        <Heading data-hero-heading className={`${s.heroHeading} ${headline.length > 28 ? s.longHeadline : ''}`}>{headline}</Heading>
         <ProductStage colorway={colorway} motion={config.shop?.motion !== false} miniature={miniature} />
         <div className={s.heroBottom}>
           <div className={s.heroCopy}><p>{config.content.description || t('templates.shift.descriptionText')}</p><button className={s.primary} onClick={() => scroll(config.sections.services ? collection.current : productForm.current)}>{config.content.cta || t('templates.shift.cta')}<ArrowUpRight size={20} aria-hidden /></button></div>
           <div className={s.productCaption}><span>{shop('productName')} — 01</span><p>{shop('colorway')} / {shop(colorway)}</p><div className={s.swatches} role="group" aria-label={shop('colorway')}>{colorways.map(value => <button key={value} aria-label={shop(value)} aria-pressed={colorway === value} style={{'--swatch': swatches[value]} as React.CSSProperties} onClick={() => {selectColor(value); setMessage('');}}><i /></button>)}</div></div>
         </div>
         <div className={s.heroFoot}><span>{shop('everyday')}</span><span>{shop('scroll')}<ArrowDown size={14} aria-hidden /></span></div>
+      </div>
       </div>
       {!miniature && <>
         <div className={s.statement}><span>{shop('statement1')}</span><span aria-hidden>↗</span><span>{shop('statement2')}</span></div>
@@ -160,7 +193,7 @@ export default function ShiftStorefront({config, miniature = false, onEnquire}: 
         </section>
         {config.sections.services && <section ref={collection} className={s.shopSection} aria-labelledby={`${id}-collection`}>
           <div className={s.sectionTitle}><div><p className={s.eyebrow}>{shop('collectionEyebrow')}</p><h3 id={`${id}-collection`}>{shop('collectionTitle')}</h3></div><span>01 — 03</span></div>
-          <div className={s.productGrid}>{colorways.map((value, index) => <button className={s.productCard} key={value} onClick={() => selectProduct(value)} aria-label={shop('chooseProduct', {color: shop(value)})}><div className={s.cardImage}><span>0{index + 1}</span><Image src={poster(value)} alt={shop('productAlt', {color: shop(value)})} width={900} height={700} sizes="(max-width:700px) 90vw, 30vw" /><span className={s.cardArrow}><ArrowUpRight size={20} aria-hidden /></span></div><div className={s.cardCaption}><span><strong>{shop('productName')}</strong><small>{shop(value)}</small></span><span>{price(demoPrice)}</span></div></button>)}</div>
+          <div className={s.productGrid}>{colorways.map((value, index) => <button className={s.productCard} key={value} onClick={event => selectProduct(value, event.currentTarget)} aria-label={shop('chooseProduct', {color: shop(value)})}><div className={s.cardImage}><span>0{index + 1}</span><Image src={poster(value)} alt={shop('productAlt', {color: shop(value)})} width={900} height={700} sizes="(max-width:700px) 90vw, 30vw" /><span className={s.cardArrow}><ArrowUpRight size={20} aria-hidden /></span></div><div className={s.cardCaption}><span><strong>{shop('productName')}</strong><small>{shop(value)}</small></span><span>{price(demoPrice)}</span></div></button>)}</div>
         </section>}
         {config.sections.about && <section ref={story} className={s.story} aria-labelledby={`${id}-story`}>
           <div className={s.storyImage}><Image src={`/templates/${config.image}.webp`} alt={t(`templates.${config.image}.imageAlt`)} fill sizes="(max-width:700px) 100vw, 50vw" /></div>

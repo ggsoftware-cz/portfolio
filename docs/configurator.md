@@ -116,7 +116,8 @@ Primary implementation references:
 
 Open `/en/configure#template=shift` or `/cs/configure#template=shift`. Shift adds
 an original fashion storefront inspired by the composition and 3D interaction of
-landonorris.com. Its catalogue is an illustrative sneaker in three colourways;
+landonorris.com. Its catalogue uses a licensed Air Jordan 1 model with its original finish and two
+explicitly labelled concept tints;
 prices are demo amounts in CZK, not a GG Software offer or live merchandise.
 
 The existing controls apply to typography, palette, spacing, corners, content
@@ -132,10 +133,11 @@ links to the existing GG enquiry; no payment, inventory, delivery or order servi
 is connected. Real store integration and client-owned product assets are a
 separate implementation scope.
 
-The active preview loads Three.js and the local 1.45 MB GLB only when its stage is
+The active preview loads Three.js and the local 1.97 MB GLB only when its stage is
 near the viewport. Gallery cards and unsupported/failed WebGL use transparent
-WebP renders (17–24 KB each). Reduced motion, pause, offscreen/hidden-tab suspension,
-a DPR cap and renderer cleanup limit unnecessary graphics work. Labelled rotation
+WebP renders (21–23 KB each). Rendering responds to scroll, drag, rotation controls
+and finite colour changes; there is no idle animation loop. Reduced motion,
+offscreen/hidden-tab suspension, a DPR cap and cleanup limit graphics work. Labelled rotation
 buttons supplement dragging; vertical touch scrolling stays available. The bag
 is an inline view inside the iPhone frame, with focus moved to its heading and
 returned to the bag control when closed. Credits are linked in the store footer.
@@ -149,3 +151,15 @@ Small previews, reduced-motion users and data-saving connections start with the
 local poster and an explicit “Explore in 3D” action. Desktop previews at least
 600px wide activate 3D near the viewport. This keeps the initial phone visit light
 while retaining the same interactive model after a tap.
+
+The hero fills the preview screen and pins for a short scroll passage: text moves
+away, the model turns, and the complete hero slides out into the shop. Progress
+comes from the preview scroll container and reverses when scrolling back. The
+scaled iPhone uses layout-pixel measurements. Motion disabled, reduced-motion,
+short preview heights and very long headlines retain a static layout.
+
+Selecting a collection card carries its product image into the detail section
+and focuses the size controls when complete. Wheel, touch, pointer and keyboard
+input cancel the transition without leaving hidden images or trapping scrolling.
+Colour changes use a finite transition. Existing saved colour IDs are retained
+for version-1 compatibility; their labels now describe the replacement model.

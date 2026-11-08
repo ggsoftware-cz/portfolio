@@ -175,7 +175,7 @@ size and bag contents is ephemeral demo state, excluded from enquiry payloads.
 
 Three.js is dynamically imported only in an active visible preview. Gallery and
 no-WebGL states use local product renders. Cap DPR at 1.5; stop rendering outside
-the viewport or a hidden tab; honour reduced motion and a manual pause control.
+the viewport or a hidden tab; honour reduced motion and the saved scroll-animation setting.
 Drag gestures and labelled rotate/reset buttons inspect the product. Vertical
 touch gestures still scroll. Keep the 3D asset and its attribution local.
 
@@ -183,3 +183,24 @@ Small previews, reduced-motion users and data-saving connections start with the
 local poster and an explicit “Explore in 3D” action. Desktop previews at least
 600px wide activate 3D near the viewport. This keeps the initial phone visit light
 while retaining the same interactive model after a tap.
+
+## Shift motion refinement (November 2026)
+
+Keep the Shift palette and Barlow/Geist hierarchy. The opening now occupies one
+preview screen, followed by a short pinned scroll passage: display type travels
+left/up, the product turns and moves toward the centre, then the complete hero
+slides out as the shopping section arrives. Scrolling back reverses the same
+poses. There is no idle turntable or time-based floating. The preview's own scroll
+container is the source of progress, including inside the scaled iPhone frame.
+
+A selected collection image travels into its product detail while the preview
+scrolls there. Variant changes use a short, deliberate product transition; rapid
+selections cancel the previous transition. Keep navigation and purchase controls
+available, use no wheel interception or scroll snapping, and retain a static
+layout for reduced motion, disabled motion and unusually short previews.
+
+Use the online Air Jordan 1 model by makoto (CC BY 4.0), with the original leather,
+stitching, laces and texture maps. The default is its original black/white finish;
+two additional tints are labelled as concepts. Product imagery, the interactive
+view and catalogue names must all agree. Keep original author attribution visible
+in the footer credits and embedded in the asset.

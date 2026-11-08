@@ -152,4 +152,27 @@
   .contact { padding: var(--site-space) 6%; }.footer { padding: 30px 5% 20px; }.footer > div { flex-wrap: wrap; }
   .bagPage { padding: 30px 5%; min-height: 600px; }.bagPage > h2 { font-size: calc(50px * var(--site-size)); }.bagLines > li { gap: 12px; }.lineDetails h3 { font-size: 23px; }.bagLines img { width: 28%; }.remove { width: 28px; }.bagSummary { max-width: none; }
 }
-@media (prefers-reduced-motion: reduce) { .store *, .store *::before { transition: none !important; animation: none !important; }.motionButton { display: none !important; } }
+@media (prefers-reduced-motion: reduce) { .store *, .store *::before { transition: none !important; animation: none !important; } }
+
+/* The pinned scene belongs to the preview scroller, not the browser window. */
+.heroTrack { position: relative; }
+.heroTrack[data-scroll=true] { height: calc(var(--shift-screen-height) * 1.78); }
+.heroTrack[data-scroll=true] .hero { --shift-progress: 0; position: sticky; top: var(--shift-nav-height); height: var(--shift-screen-height); max-width: none; width: 100%; display: flex; flex-direction: column; padding: 24px 4% 0; overflow: clip; background: var(--site-bg); }
+.heroTrack[data-scroll=true] .hero::before { transform: translateX(calc(var(--shift-progress) * -7%)) rotate(calc(-24deg + var(--shift-progress) * 18deg)); }
+.heroTrack[data-scroll=true] .heroHeading { font-size: calc(min(16.2cqw, var(--shift-screen-height) * .26) * var(--site-size)); transform: translate3d(calc(var(--shift-progress) * -33cqw), calc(var(--shift-progress) * -55px), 0); opacity: calc(1 - var(--shift-progress) * .92); will-change: transform; }
+.heroTrack[data-scroll=true] .heroHeading.longHeadline { font-size: calc(min(8cqw, var(--shift-screen-height) * .15) * var(--site-size)); }
+.heroTrack[data-scroll=true] .productStage { position: absolute; top: 14%; left: 25%; width: 74%; height: 56%; margin: 0; transform: translate3d(calc(var(--shift-progress) * -15cqw), calc(var(--shift-progress) * -12px), 0); will-change: transform; }
+.heroTrack[data-scroll=true] .heroBottom { margin-top: auto; padding-bottom: 16px; }
+.heroTrack[data-scroll=true] .heroFoot { flex-shrink: 0; }
+.heroTrack[data-scroll=true] .poster { transform: rotate(calc(var(--shift-progress) * -14deg)) scale(calc(1 + var(--shift-progress) * .08)); }
+.heroTrack[data-scroll=true] .productShadow { transform: translateX(calc(var(--shift-progress) * -8%)) scale(calc(1 - var(--shift-progress) * .2)); opacity: calc(.17 - var(--shift-progress) * .07); }
+@container (max-width: 700px) {
+  .heroTrack[data-scroll=true] .hero { padding: 22px 5% 0; }
+  .heroTrack[data-scroll=true] .heroHeading { font-size: calc(min(21cqw, var(--shift-screen-height) * .16) * var(--site-size)); transform: translate3d(calc(var(--shift-progress) * -42cqw), calc(var(--shift-progress) * -30px), 0); }
+  .heroTrack[data-scroll=true] .heroHeading.longHeadline { font-size: calc(min(11cqw, var(--shift-screen-height) * .1) * var(--site-size)); }
+  .heroTrack[data-scroll=true] .productStage { top: 26%; left: -5%; width: 110%; height: 47%; max-height: none; transform: translate3d(0, calc(var(--shift-progress) * -36px), 0); }
+  .heroTrack[data-scroll=true] .heroCopy > p { font-size: 11px; line-height: 1.5; }
+  .heroTrack[data-scroll=true] .heroCopy .primary { margin-top: 12px; }
+  .heroTrack[data-scroll=true] .heroBottom { padding: 12px 0; }
+  .heroTrack[data-scroll=true] .heroFoot { padding: 10px 0; }
+}
