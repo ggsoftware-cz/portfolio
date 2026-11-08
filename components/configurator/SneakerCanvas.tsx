@@ -4,12 +4,12 @@ import {useEffect, useRef} from 'react';
 import * as THREE from 'three';
 import {GLTFLoader, type GLTF} from 'three/addons/loaders/GLTFLoader.js';
 import {productTints, type Colorway} from '@/lib/configurator/shop';
-import {heroPose} from '@/lib/configurator/motion';
+import {heroPose, smoothProgress} from '@/lib/configurator/motion';
 
-type Props = {colorway: Colorway; motion: boolean; turn: number; reset: number; onStatus: (status: 'ready' | 'unavailable') => void};
+type Props = {mode?: 'hero' | 'card'; colorway: Colorway; motion: boolean; turn: number; reset: number; onStatus: (status: 'ready' | 'unavailable') => void};
 type Controller = {variant: (value: Colorway) => void; animate: (value: boolean) => void; turn: (value: number) => void; reset: () => void};
 
-export default function SneakerCanvas({colorway, motion, turn, reset, onStatus}: Props) {
+export default function SneakerCanvas({mode = 'hero', colorway, motion, turn, reset, onStatus}: Props) {
   const hostRef = useRef<HTMLDivElement>(null);
   const controllerRef = useRef<Controller | null>(null);
   const current = useRef({colorway, motion, turn, reset});
@@ -25,7 +25,7 @@ export default function SneakerCanvas({colorway, motion, turn, reset, onStatus}:
     // Own the canvas for this effect lifetime; Strict Mode can replay effects.
     const canvas = document.createElement('canvas');
     canvas.setAttribute('aria-hidden', 'true');
-    Object.assign(canvas.style, {width: '100%', height: '100%', display: 'block', touchAction: 'pan-y', cursor: 'grab'});
+    Object.assign(canvas.style, {width: '100%', height: '100%', display: 'block', touchAction: 'pan-y', cursor: mode === 'hero' ? 'grab' : 'pointer'});
     host.appendChild(canvas);
     let renderer: THREE.WebGLRenderer;
     try {
@@ -39,7 +39,7 @@ export default function SneakerCanvas({colorway, motion, turn, reset, onStatus}:
     renderer.toneMappingExposure = 1.25;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(32, 1, .1, 100);
-    camera.position.set(0, .15, 4.2);
+    camera.position.set(0, .15, 4.1);
     camera.lookAt(0, 0, 0);
     scene.add(new THREE.HemisphereLight(0xffffff, 0x72766a, 2.8));
     const key = new THREE.DirectionalLight(0xffffff, 3.5); key.position.set(2, 4, 5); scene.add(key);
@@ -48,17 +48,21 @@ export default function SneakerCanvas({colorway, motion, turn, reset, onStatus}:
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     const abort = new AbortController();
     let disposed = false, loaded = false, visible = false, frame = 0, selectionPulse = 0;
-    const hero = host.closest<HTMLElement>('[data-shift-hero]');
-    let progress = Number(hero?.dataset.progress || 0);
+    const store = host.closest<HTMLElement>('[data-shift-store]');
+    const card = mode === 'card' ? host.closest<HTMLButtonElement>('[data-product-card]') : null;
+    let progress = Number(store?.dataset.progress || 0), transfer = Number(store?.dataset.transfer || 0);
+    let hoverFrame = 0, hoverYaw = 0, hoverPitch = 0, targetYaw = 0, targetPitch = 0;
     let activeColor: Colorway | null = null;
     let yaw = -.55, pitch = .18, scrollMotion = current.current.motion, dragging = false, lastX = 0, lastY = 0, lastTurn = current.current.turn;
     let materials: THREE.MeshStandardMaterial[] = [];
     const baseColors = new Map<THREE.Material, THREE.Color>();
     let gltf: GLTF | undefined;
     const draw = () => {
-      if (disposed || !loaded || !visible || document.hidden) return;
-      const pose = heroPose(scrollMotion && !reduced.matches ? progress : 0);
-      pivot.rotation.set(pitch + pose.pitch, yaw + pose.yaw + selectionPulse * .2, -.24 + pose.roll);
+      if (disposed || !loaded || !visible || document.hidden || (mode === 'hero' && transfer >= 1)) return;
+      const moving = mode === 'hero' && scrollMotion && !reduced.matches;
+      const pose = heroPose(moving ? progress : 0, moving ? transfer : 0);
+      const manual = 1 - smoothProgress(moving ? transfer : 0);
+      pivot.rotation.set(.18 + (pitch - .18) * manual + pose.pitch + hoverPitch, -.55 + (yaw + .55) * manual + pose.yaw + selectionPulse * .2 + hoverYaw, -.24 + pose.roll);
       pivot.position.y = pose.lift + selectionPulse * .025;
       pivot.scale.setScalar(pose.scale * (1 - selectionPulse * .07));
       renderer.render(scene, camera);
@@ -66,6 +70,8 @@ export default function SneakerCanvas({colorway, motion, turn, reset, onStatus}:
     const targetColors = (value: Colorway) => materials.map(material => baseColors.get(material)!.clone().multiply(new THREE.Color(productTints[value])));
     const settle = () => {
       cancelAnimationFrame(frame); frame = 0; selectionPulse = 0;
+      cancelAnimationFrame(hoverFrame); hoverFrame = 0;
+      if (reduced.matches || !scrollMotion || !visible || document.hidden) hoverYaw = hoverPitch = targetYaw = targetPitch = 0;
       if (activeColor) {const colors = targetColors(activeColor); materials.forEach((material, index) => material.color.copy(colors[index]));}
       draw();
     };
@@ -88,8 +94,8 @@ export default function SneakerCanvas({colorway, motion, turn, reset, onStatus}:
       };
       frame = requestAnimationFrame(transition);
     };
-    const onScroll = (event: Event) => {progress = (event as CustomEvent<number>).detail; draw();};
-    hero?.addEventListener('shift:scroll', onScroll);
+    const onScroll = (event: Event) => {({progress, transfer} = (event as CustomEvent<{progress: number; transfer: number}>).detail); draw();};
+    if (mode === 'hero') store?.addEventListener('shift:scroll', onScroll);
     controllerRef.current = {
       variant,
       animate: value => {scrollMotion = value; settle();},
@@ -101,16 +107,42 @@ export default function SneakerCanvas({colorway, motion, turn, reset, onStatus}:
       if (!width || !height) return;
       renderer.setSize(width, height, false); camera.aspect = width / height;
       // Keep the entire product inside the portrait phone viewport.
-      camera.position.z = camera.aspect < 1.5 ? 4.1 : 3.8;
+      camera.position.z = 4.1;
       camera.updateProjectionMatrix(); draw();
     });
     resize.observe(host);
     const intersection = new IntersectionObserver(([entry]) => {visible = entry.isIntersecting; settle();});
     intersection.observe(canvas);
-    const down = (event: PointerEvent) => {if (event.button !== 0) return; dragging = true; lastX = event.clientX; lastY = event.clientY; canvas.setPointerCapture(event.pointerId); settle();};
+    // Only input starts this finite easing loop. There is no idle rendering.
+    const aim = (nextYaw: number, nextPitch: number) => {
+      if (!card || !loaded || !visible || document.hidden || reduced.matches || !scrollMotion || card.dataset.docking === 'true') return;
+      targetYaw = nextYaw; targetPitch = nextPitch;
+      if (hoverFrame) return;
+      let last = performance.now();
+      const tick = (now: number) => {
+        const blend = 1 - Math.exp(-Math.min(64, now - last) / 85); last = now;
+        hoverYaw += (targetYaw - hoverYaw) * blend;
+        hoverPitch += (targetPitch - hoverPitch) * blend;
+        const finished = Math.abs(targetYaw - hoverYaw) + Math.abs(targetPitch - hoverPitch) < .001;
+        if (finished) {hoverYaw = targetYaw; hoverPitch = targetPitch;}
+        draw();
+        hoverFrame = finished ? 0 : requestAnimationFrame(tick);
+      };
+      hoverFrame = requestAnimationFrame(tick);
+    };
+    const enterCard = () => aim(-1.1, .05);
+    const moveCard = (event: PointerEvent) => {
+      if (event.pointerType !== 'mouse' || !card) return;
+      const rect = card.getBoundingClientRect();
+      aim(-1.1 + ((event.clientX - rect.left) / rect.width - .5) * 1.4, ((event.clientY - rect.top) / rect.height - .5) * .3);
+    };
+    const leaveCard = () => aim(0, 0);
+    card?.addEventListener('pointerenter', enterCard); card?.addEventListener('pointermove', moveCard);
+    card?.addEventListener('pointerleave', leaveCard); card?.addEventListener('focus', enterCard); card?.addEventListener('blur', leaveCard);
+    const down = (event: PointerEvent) => {if (mode !== 'hero' || event.button !== 0) return; dragging = true; lastX = event.clientX; lastY = event.clientY; canvas.setPointerCapture(event.pointerId); settle();};
     const move = (event: PointerEvent) => {if (!dragging) return; yaw += (event.clientX - lastX) * .009; pitch = THREE.MathUtils.clamp(pitch + (event.clientY - lastY) * .005, -.75, .75); lastX = event.clientX; lastY = event.clientY; draw();};
     const up = () => {dragging = false; draw();};
-    const lost = (event: Event) => {event.preventDefault(); scrollMotion = false; cancelAnimationFrame(frame); onStatus('unavailable');};
+    const lost = (event: Event) => {event.preventDefault(); scrollMotion = false; cancelAnimationFrame(frame); cancelAnimationFrame(hoverFrame); onStatus('unavailable');};
     canvas.addEventListener('pointerdown', down); canvas.addEventListener('pointermove', move);
     canvas.addEventListener('pointerup', up); canvas.addEventListener('pointercancel', up); canvas.addEventListener('lostpointercapture', up);
     canvas.addEventListener('webglcontextlost', lost);
@@ -147,19 +179,22 @@ export default function SneakerCanvas({colorway, motion, turn, reset, onStatus}:
         gltf.scene.scale.setScalar(scale);
         pivot.add(gltf.scene); loaded = true;
         variant(current.current.colorway); onStatus('ready'); draw();
+        if (card?.matches(':hover,:focus-visible')) enterCard();
       } catch {if (!disposed) onStatus('unavailable');}
     })();
     return () => {
-      disposed = true; abort.abort(); cancelAnimationFrame(frame); controllerRef.current = null;
+      disposed = true; abort.abort(); cancelAnimationFrame(frame); cancelAnimationFrame(hoverFrame); controllerRef.current = null;
       resize.disconnect(); intersection.disconnect();
       reduced.removeEventListener('change', settle); document.removeEventListener('visibilitychange', settle);
-      hero?.removeEventListener('shift:scroll', onScroll);
+      store?.removeEventListener('shift:scroll', onScroll);
+      card?.removeEventListener('pointerenter', enterCard); card?.removeEventListener('pointermove', moveCard);
+      card?.removeEventListener('pointerleave', leaveCard); card?.removeEventListener('focus', enterCard); card?.removeEventListener('blur', leaveCard);
       canvas.removeEventListener('pointerdown', down); canvas.removeEventListener('pointermove', move);
       canvas.removeEventListener('pointerup', up); canvas.removeEventListener('pointercancel', up); canvas.removeEventListener('lostpointercapture', up);
       canvas.removeEventListener('webglcontextlost', lost);
       disposeModel(); renderer.dispose(); renderer.forceContextLoss(); canvas.remove();
     };
-  }, [onStatus]);
+  }, [onStatus, mode]);
 
   return <div ref={hostRef} style={{width: '100%', height: '100%'}} />;
 }

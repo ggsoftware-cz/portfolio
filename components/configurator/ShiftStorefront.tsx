@@ -11,7 +11,7 @@ import s from './shift.module.css';
 import {useShiftScroll} from './useShiftScroll';
 import {revealProductView} from './productViewMotion';
 
-// The gallery uses only posters. Three.js and the GLB load for an active preview.
+// Gallery thumbnails stay static. Live previews and hovered cards load 3D on demand.
 const SneakerCanvas = dynamic(() => import('./SneakerCanvas'), {ssr: false});
 const swatches = productTints;
 const poster = (colorway: Colorway) => `/templates/shift/air-jordan-${{beach: 'original', midnight: 'blue', street: 'rose'}[colorway]}.webp`;
@@ -31,7 +31,7 @@ function ProductStage({colorway, motion, miniature}: {colorway: Colorway; motion
     const connection = (navigator as Navigator & {connection?: {saveData?: boolean}}).connection;
     const start = () => {
       // Keep the phone's first paint light; a tap explicitly starts its 3D view.
-      if (inView && node.clientWidth >= 600 && !reduced.matches && !connection?.saveData) setVisible(true);
+      if (inView && (node.closest<HTMLElement>('[data-shift-store]')?.clientWidth || 0) > 700 && !reduced.matches && !connection?.saveData) setVisible(true);
     };
     const observer = new IntersectionObserver(([entry]) => {inView = entry.isIntersecting; start();}, {rootMargin: '100px'});
     const resize = new ResizeObserver(start);
@@ -53,6 +53,27 @@ function ProductStage({colorway, motion, miniature}: {colorway: Colorway; motion
       </div>}
     </div>}
   </div>;
+}
+
+function ProductCard({colorway, index, motion, price, onSelect}: {colorway: Colorway; index: number; motion: boolean; price: string; onSelect: (value: Colorway, card: HTMLButtonElement) => void}) {
+  const t = useTranslations('configurator.shop');
+  const [active, setActive] = useState(false);
+  const [status, setStatus] = useState<'loading' | 'ready' | 'unavailable'>('loading');
+  const activate = (button: HTMLButtonElement) => {
+    const connection = (navigator as Navigator & {connection?: {saveData?: boolean}}).connection;
+    if (motion && button.dataset.docking !== 'true' && !connection?.saveData && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) setActive(true);
+  };
+  return <button className={s.productCard} data-product-card={colorway} onPointerEnter={event => {if (event.pointerType === 'mouse') activate(event.currentTarget);}} onPointerMove={event => {if (!active && event.pointerType === 'mouse') activate(event.currentTarget);}} onFocus={event => {if (event.currentTarget.matches(':focus-visible')) activate(event.currentTarget);}} onClick={event => onSelect(colorway, event.currentTarget)} aria-label={t('chooseProduct', {color: t(colorway)})}>
+    <div className={s.cardImage} data-card-image style={{'--card-tint': swatches[colorway]} as React.CSSProperties}>
+      <span>0{index + 1}</span>
+      <div className={s.cardProduct} data-card-product>
+        <Image className={`${s.poster} ${status === 'ready' ? s.posterHidden : ''}`} src={poster(colorway)} alt={t('productAlt', {color: t(colorway)})} fill sizes="(max-width:700px) 90vw, 30vw" />
+        {active && status !== 'unavailable' && <div className={`${s.canvas} ${status === 'ready' ? s.canvasReady : ''}`}><SneakerCanvas mode="card" colorway={colorway} motion={motion} turn={0} reset={0} onStatus={setStatus} /></div>}
+      </div>
+      <span className={s.cardReveal} aria-hidden>{t(colorway)}</span><span className={s.cardArrow}><ArrowUpRight size={20} aria-hidden /></span>
+    </div>
+    <div className={s.cardCaption}><span><strong>{t('productName')}</strong><small>{t(colorway)}</small></span><span>{price}</span></div>
+  </button>;
 }
 
 export default function ShiftStorefront({config, miniature = false, onEnquire}: {config: Configuration; miniature?: boolean; onEnquire?: () => void}) {
@@ -89,7 +110,7 @@ export default function ShiftStorefront({config, miniature = false, onEnquire}: 
   const quantity = bagQuantity(lines);
   const name = config.content.name || t('templates.shift.business');
   const headline = config.content.headline || t('templates.shift.headline');
-  useShiftScroll(root, heroTrack, hero, config.shop?.motion !== false, !miniature && !bagOpen && !productOpen, `${config.font}/${config.fontSize}/${headline}`);
+  useShiftScroll(root, heroTrack, hero, config.shop?.motion !== false, !miniature && !bagOpen && !productOpen, `${config.font}/${config.fontSize}/${headline}/${config.sections.services}`, colorway);
   useEffect(() => () => {cancelSelection.current?.(); detailAnimation.current?.cancel();}, []);
   useEffect(() => {if (config.shop?.motion === false) cancelSelection.current?.();}, [config.shop?.motion]);
   useLayoutEffect(() => {
@@ -153,7 +174,7 @@ export default function ShiftStorefront({config, miniature = false, onEnquire}: 
     cancelSelection.current?.(); detailAnimation.current?.cancel();
     const viewport = root.current?.closest<HTMLElement>('[data-storefront-viewport]');
     returnTo.current = {scroll: viewport?.scrollTop || 0, color: card ? value : null, trigger: document.activeElement?.getAttribute('data-product-trigger') || 'hero'};
-    entry.current = {card: card?.querySelector('[data-card-image]')?.getBoundingClientRect() || null, image: card?.querySelector('img')?.getBoundingClientRect() || null};
+    entry.current = {card: card?.querySelector('[data-card-image]')?.getBoundingClientRect() || null, image: card?.querySelector('[data-card-product]')?.getBoundingClientRect() || null};
     selectColor(value); setSizeError(false); setMessage(''); setProductOpen(true);
   };
   const closeProduct = () => {
@@ -162,7 +183,7 @@ export default function ShiftStorefront({config, miniature = false, onEnquire}: 
   const explore = () => config.sections.services ? scroll(collection.current) : selectProduct(colorway);
 
 
-  return <article ref={root} className={`${s.store} ${miniature ? s.miniature : ''}`} data-product-open={productOpen && !bagOpen} aria-label={`${t('templates.shift.name')} — ${t('demoLabel')}`} onKeyDown={event => {if (event.key === 'Escape' && productOpen && !bagOpen) {event.stopPropagation(); closeProduct();}}}>
+  return <article data-shift-store ref={root} className={`${s.store} ${miniature ? s.miniature : ''}`} data-product-open={productOpen && !bagOpen} aria-label={`${t('templates.shift.name')} — ${t('demoLabel')}`} onKeyDown={event => {if (event.key === 'Escape' && productOpen && !bagOpen) {event.stopPropagation(); closeProduct();}}}>
     <header className={s.nav}>
       <span className={s.logo}>{name}<span aria-hidden>↗</span></span>
       <nav aria-label={`${name} ${t('demoLabel')}`}>
@@ -203,13 +224,14 @@ export default function ShiftStorefront({config, miniature = false, onEnquire}: 
             </div>
           </div>
         </section> : <>
+      {!miniature && <div className={s.travellingProduct} data-travelling-product><ProductStage colorway={colorway} motion={config.shop?.motion !== false} miniature={false} /></div>}
       <div ref={heroTrack} className={s.heroTrack}>
       <div className={s.heroScene}>
         <div className={s.sceneType} aria-hidden><span>{shop('statement1')} {shop('statement1')} {shop('statement1')}</span><span>{shop('statement2')} {shop('statement2')} {shop('statement2')}</span></div>
       <div ref={hero} className={s.hero} data-shift-hero>
         <div className={s.heroTop}><p>{t('templates.shift.tagline')}</p><span>01 / {name}</span></div>
         <Heading data-hero-heading className={`${s.heroHeading} ${headline.length > 28 ? s.longHeadline : ''}`}>{headline}</Heading>
-        <ProductStage colorway={colorway} motion={config.shop?.motion !== false} miniature={miniature} />
+        <div className={s.heroProductSlot} data-hero-product-slot>{miniature && <ProductStage colorway={colorway} motion={false} miniature />}</div>
         <div className={s.heroBottom}>
           <div className={s.heroCopy}><p>{config.content.description || t('templates.shift.descriptionText')}</p><button className={s.primary} data-shop-cta data-product-trigger="hero" onClick={explore}>{config.content.cta || t('templates.shift.cta')}<ArrowUpRight size={20} aria-hidden /></button></div>
           <div className={s.productCaption}><span>{shop('productName')} — 01</span><p>{shop('colorway')} / {shop(colorway)}</p><div className={s.swatches} role="group" aria-label={shop('colorway')}>{colorways.map(value => <button key={value} aria-label={shop(value)} aria-pressed={colorway === value} style={{'--swatch': swatches[value]} as React.CSSProperties} onClick={() => {selectColor(value); setMessage('');}}><i /></button>)}</div></div>
@@ -222,7 +244,7 @@ export default function ShiftStorefront({config, miniature = false, onEnquire}: 
       {!miniature && <>
         {config.sections.services && <section ref={collection} className={`${s.shopSection} ${s.collection}`} aria-labelledby={`${id}-collection`}>
           <div className={s.sectionTitle}><div><p className={s.eyebrow}>{shop('collectionEyebrow')}</p><h3 id={`${id}-collection`}>{shop('collectionTitle')}</h3></div><span>01 — 03</span></div>
-          <div className={s.productGrid}>{colorways.map((value, index) => <button className={s.productCard} data-product-card={value} key={value} onClick={event => selectProduct(value, event.currentTarget)} aria-label={shop('chooseProduct', {color: shop(value)})}><div className={s.cardImage} data-card-image style={{'--card-tint': swatches[value]} as React.CSSProperties}><span>0{index + 1}</span><Image src={poster(value)} alt={shop('productAlt', {color: shop(value)})} width={900} height={700} sizes="(max-width:700px) 90vw, 30vw" /><span className={s.cardReveal} aria-hidden>{shop(value)}</span><span className={s.cardArrow}><ArrowUpRight size={20} aria-hidden /></span></div><div className={s.cardCaption}><span><strong>{shop('productName')}</strong><small>{shop(value)}</small></span><span>{price(demoPrice)}</span></div></button>)}</div>
+          <div className={s.productGrid}>{colorways.map((value, index) => <ProductCard key={value} colorway={value} index={index} motion={config.shop?.motion !== false} price={price(demoPrice)} onSelect={selectProduct} />)}</div>
         </section>}
         {config.sections.about && <section ref={story} className={s.story} aria-labelledby={`${id}-story`}>
           <div className={s.storyImage}><Image src={`/templates/${config.image}.webp`} alt={t(`templates.${config.image}.imageAlt`)} fill sizes="(max-width:700px) 100vw, 50vw" /></div>

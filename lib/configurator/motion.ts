@@ -12,7 +12,17 @@ export function heroScene(progress: number) {
   return {retreat, frameScale: 1 - .46 * retreat, typeTravel: retreat * 14};
 }
 
-export function heroPose(progress: number) {
+export function smoothProgress(progress: number) {
+  const p = heroProgress(progress, 0, 1);
+  return p * p * (3 - 2 * p);
+}
+
+/** A full turn ends at the poster's original angle, so the handoff is seamless. */
+export function heroPose(progress: number, transfer = 0) {
   const {retreat} = heroScene(progress);
-  return {yaw: -.3 * retreat, pitch: -.04 * retreat, roll: .06 * retreat, lift: 0, scale: 1};
+  const handoff = smoothProgress(transfer);
+  const arc = Math.sin(handoff * Math.PI);
+  return {yaw: -.3 * retreat * (1 - handoff) + Math.PI * 2 * handoff,
+    pitch: -.04 * retreat * (1 - handoff) + .16 * arc,
+    roll: .06 * retreat * (1 - handoff) - .12 * arc, lift: 0, scale: 1};
 }

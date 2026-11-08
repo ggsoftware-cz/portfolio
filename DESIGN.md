@@ -235,3 +235,24 @@ During the retreat, fade the small labels/controls and headline within the
 frame, leaving a clean product image in its centre. Keep the scene-level CTA at
 normal size; the receded frame becomes inert so its miniature controls never
 trap keyboard focus. The native scroll position remains the sole animation clock.
+
+## Product placement and collection handoff
+
+Keep the established palette/type and connected scene. Place the hero headline
+in the left column and give the shoe a clear right-hand product area. On phones,
+keep the product between the headline and purchase action. Lift the live product
+above the receding frame so its scroll-driven turn can continue into the matching
+collection card. The target is measured in the preview's layout coordinates;
+the turn completes at the same angle/size as its card poster. Reverse scrolling
+reverses the handoff. Cards load a real 3D view on hover/focus, turn toward the
+pointer and return to the resting pose on leave; touch/reduced-motion keep the
+poster. Preserve the existing click-to-open product flow.
+
+The implemented handoff keeps the renderer outside the clipped frame and uses
+measured card geometry. The model completes one turn at its poster angle; mobile
+posters use the same translation with a restrained tilt until 3D is activated.
+Visual review reduced the hero product size to keep its controls and caption
+clear, moved the desktop path right of the collection title, and cleared the
+outgoing frame before the shoe leaves it. Card hover turns the real model rather
+than rotating a flat image. Production desktop/phone screenshots and verification
+are recorded in `docs/web-delivery.md`.

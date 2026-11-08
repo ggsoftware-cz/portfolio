@@ -148,21 +148,30 @@ new `shift` template, `barlow` font and optional shop settings. The email-app mo
 needs no Worker update. No hosting or Worker deployment is performed by this PR.
 
 Small previews, reduced-motion users and data-saving connections start with the
-local poster and an explicit “Explore in 3D” action. Desktop previews at least
-600px wide activate 3D near the viewport. This keeps the initial phone visit light
+local poster and an explicit “Explore in 3D” action. Desktop previews wider than
+700px activate 3D near the viewport. This keeps the initial phone visit light
 while retaining the same interactive model after a tap.
 
-The hero fills the preview screen, then the complete pale scene recedes into a
-centred window over the dark collection background. Its small labels clear away
-and the shoe settles into the window while the background type moves behind it.
-The scene holds briefly, then leaves with native scrolling into the collection.
-Progress reverses when scrolling back and uses layout pixels inside the scaled
-iPhone. Motion disabled, reduced motion, short previews and long headlines retain
-the static layout. Receded controls become inert; the normal-size collection CTA
-and navigation remain usable. The expanded preview's focus loop excludes inert
-controls.
+The desktop hero separates the left headline from the product on the right. In
+phones, the shoe sits between the heading and the call to action. The pale scene
+recedes into a centred window over dark moving type. The live shoe then leaves
+that frame, completes a full turn and translates into its matching collection
+card. Its path is measured from the real hero/card layout, including the scaled
+iPhone preview, and reverses with the scroll. Camera framing and the final pose
+match the card poster; a short crossfade completes the handoff. The outgoing
+frame and its controls clear away as the shoe leaves.
 
-Collection cards reveal their colour within their own bounds. Selecting one
+Motion disabled, reduced motion, short previews and long headlines retain the
+static layout. Receded controls become inert; navigation remains available. The
+expanded preview's focus loop excludes inert controls. The phone's initial
+poster follows the same translation with a small tilt; tapping “Explore in 3D”
+enables the full model turn.
+
+Collection cards reveal their colour within their own bounds. Mouse hover or
+keyboard focus loads a card's real 3D model on demand, turns it toward the pointer
+and returns it to its resting angle on leave. Touch, reduced motion, data saving
+and disabled motion retain the posters. Loaded card models only render during
+input/easing; there is no idle loop. Selecting one
 opens an inline product page: the card's frame expands into that page and its
 image settles into position. The title receives focus. Back to shop (or Escape)
 returns to the originating card/CTA and restores its scroll position. Wheel,

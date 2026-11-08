@@ -176,3 +176,40 @@ Reviewed evidence includes `scene-refined.png`, `scene-product-expanding.png`,
 `scene-product-open.png`, `scene-phone-inset.png`, `scene-phone-cs.png` and
 `scene-phone-cs-product.png` under `output/playwright/`.
 No deployment, merge or real email/order submission was performed.
+
+## Hero placement, product handoff and 3D card hover (2026-11-08)
+
+The hero now gives the headline and product separate space: text left/product
+right on desktop, product between title and CTA on phones. A single live product
+sits outside the clipped hero frame, rotates through a full turn and translates
+into the matching collection card. Its measured landing rectangle and resting
+angle match the card poster. The outgoing frame clears as the product leaves;
+the desktop path stays right of the incoming title, and phone copy appears once
+the product has passed. Reversing scroll reverses the same path.
+
+Product cards load the existing model on mouse hover or keyboard focus, turn
+with the pointer and ease back to rest on leave. Touch/reduced-motion/data-saving
+visitors keep the poster. No additional model assets or dependencies were added.
+
+- Lint, TypeScript, production static export, `git diff --check` and all **20
+  tests** pass. The new motion contract checks the complete turn, clamping and
+  identical forward/backward poses.
+- Production Chromium: measured forward/back positions are identical. The final
+  product/card rectangles agree within 0.001 CSS pixels. Product selection,
+  size/add-to-bag, Escape and restoration of card focus/scroll still work.
+- WebGL draw instrumentation: zero calls during stationary hero, settled hover
+  and settled pointer leave. Further scrolling after the product has landed
+  makes zero draws in its hidden hero renderer. Card models load on demand.
+- CS preview checked at 320/390/768px, desktop at 1440px: no document/preview
+  horizontal overflow. Fresh phone visit makes no GLB request before the explicit
+  3D action. Blocked model request retains a visible poster and fallback message.
+- Reduced motion and saved motion-off disable pinning/handoff; reduced mode has
+  zero active DOM animations. Axe WCAG 2 A/AA + 2.1 AA finds zero violations in
+  the desktop hero, hovered collection, product view and CS phone hero. Card
+  number contrast was corrected by giving labels an opaque background.
+
+Reviewed captures include `placement-hero-refined.png`, `transfer-*.png`,
+`placement-card-hover.png`, `handoff-final-hover.png`, `handoff-phone-390.png` and
+`handoff-phone-product.png` in `output/playwright/`. Lighthouse was not rerun for
+this revision; earlier figures above describe the earlier revision. Physical
+Safari/iOS remains untested. No deployment, merge or real email/order submission.
