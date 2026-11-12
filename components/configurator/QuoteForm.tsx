@@ -13,6 +13,12 @@ const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 type Turnstile = {render: (element: HTMLElement, options: Record<string, unknown>) => string; remove: (id: string) => void; reset: (id?: string) => void};
 
+declare global {
+  interface Window {
+    turnstile?: Turnstile;
+  }
+}
+
 export function downloadConfiguration(config: Configuration) {
   const url = URL.createObjectURL(new Blob([JSON.stringify(config, null, 2)], {type: 'application/json'}));
   const link = document.createElement('a');
