@@ -245,7 +245,6 @@
       "webapp": {
         "name": "Web App / Tool",
         "price": "From €1,499",
-        "badge": "Most popular",
         "features": [
           "Custom web app or internal tool",
           "Up to 5 core features",
@@ -370,7 +369,6 @@
   "footer": {
     "tagline": "Fast & affordable — no fluff",
     "copyright": "© 2026 GG Software. All rights reserved.",
-    "links": "Quick links",
     "privacy": "Privacy policy"
   },
   "configurator": {

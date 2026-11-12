@@ -245,7 +245,6 @@
       "webapp": {
         "name": "Webová aplikace",
         "price": "Od 38 900 Kč",
-        "badge": "Nejoblíbenější",
         "features": [
           "Webová aplikace na míru",
           "Až 5 hlavních funkcí",
@@ -370,7 +369,6 @@
   "footer": {
     "tagline": "Rychle a dostupně — bez zbytečností",
     "copyright": "© 2026 GG Software. Všechna práva vyhrazena.",
-    "links": "Rychlé odkazy",
     "privacy": "Zásady ochrany údajů"
   },
   "configurator": {
