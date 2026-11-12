@@ -1,7 +1,6 @@
 'use client';
 
 import {useState, useRef, useEffect, type FormEvent} from 'react';
-import Script from 'next/script';
 import {useTranslations} from 'next-intl';
 import {Mail, Send, CheckCircle2, ChevronDown} from 'lucide-react';
 import {siteConfig} from '@/config/site';
@@ -15,13 +14,11 @@ type FormState = {
 
 type Errors = Partial<Record<keyof FormState, string>>;
 
-declare global {
-  interface Window {
-    turnstile?: {reset: (widgetId?: string) => void};
-  }
-}
-
-const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+// Web3Forms access key — public by design: this is a static export, so the key
+// ships in the client bundle (as on every Web3Forms site; the free plan only
+// accepts client-side calls). The delivery mailbox lives in the Web3Forms
+// account settings — never put an email address in the payload.
+const WEB3FORMS_ACCESS_KEY = 'c4083e53-ad70-4893-8901-1081d3ce9b14';
 
 export default function Contact() {
   const t = useTranslations('contact');
@@ -76,26 +73,33 @@ export default function Contact() {
     }
 
     const fd = new FormData(e.currentTarget);
-    const honeypot = String(fd.get('website') ?? '');
-    const turnstileToken = String(fd.get('cf-turnstile-response') ?? '');
+    // Honeypot: humans never see or tick this; bots usually do — Web3Forms
+    // silently rejects submissions where botcheck is checked.
+    const botcheck = fd.get('botcheck') === 'on';
 
     setSubmitting(true);
     setSubmitError(null);
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({...form, website: honeypot, turnstileToken})
+        headers: {'Content-Type': 'application/json', Accept: 'application/json'},
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          name: form.name.trim(),
+          email: form.email.trim(),
+          projectType: projectTypes.find(pt => pt.value === form.projectType)?.label ?? form.projectType,
+          message: form.message,
+          botcheck
+        })
       });
-      if (!res.ok) {
+      const data = (await res.json().catch(() => null)) as {success?: boolean} | null;
+      if (res.ok && data?.success === true) {
+        setSubmitted(true);
+      } else {
         setSubmitError(t('error'));
-        window.turnstile?.reset();
-        return;
       }
-      setSubmitted(true);
     } catch {
       setSubmitError(t('error'));
-      window.turnstile?.reset();
     } finally {
       setSubmitting(false);
     }
@@ -124,14 +128,6 @@ export default function Contact() {
 
   return (
     <section id="contact" className="py-24 bg-white">
-      {TURNSTILE_SITE_KEY && (
-        <Script
-          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-          async
-          defer
-          strategy="afterInteractive"
-        />
-      )}
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-black text-gray-900 mb-4">
@@ -242,20 +238,16 @@ export default function Contact() {
                 />
               </div>
 
-              {/* Honeypot — humans never see or fill this; bots usually do. */}
+              {/* Web3Forms honeypot — humans never see or tick this; bots usually do. */}
               <div
                 aria-hidden="true"
                 style={{position: 'absolute', left: '-9999px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden'}}
               >
                 <label>
-                  Website
-                  <input type="text" name="website" tabIndex={-1} autoComplete="off" defaultValue="" />
+                  Botcheck
+                  <input type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" />
                 </label>
               </div>
-
-              {TURNSTILE_SITE_KEY && (
-                <div className="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="light" />
-              )}
 
               {submitError && (
                 <p className="text-sm text-red-500" role="alert">{submitError}</p>
