@@ -331,7 +331,61 @@
     "ctaTitle": "Want an exact price for your project?",
     "ctaBody": "Tell us a few sentences about what you need — we'll send you a no-obligation offer with a fixed price and deadline.",
     "ctaButton": "Get a quote",
-    "workLink": "See our work"
+    "workLink": "See our work",
+    "care": {
+      "title": "Monthly care",
+      "intro": "A website isn't a one-off project. Our care plans keep your site secure, up to date and available — and we handle small changes for you, so you can focus on your business.",
+      "tiers": [
+        {
+          "name": "Essentials",
+          "price": "€115",
+          "period": "per year",
+          "features": [
+            "Hosting and SSL certificate",
+            "Domain management and renewal",
+            "Uptime monitoring",
+            "Monthly backups",
+            "Security updates"
+          ]
+        },
+        {
+          "name": "Basic",
+          "price": "€27",
+          "period": "per month",
+          "features": [
+            "Everything in Essentials",
+            "Small text and photo changes — up to 30 minutes a month"
+          ]
+        },
+        {
+          "name": "Standard",
+          "price": "€79",
+          "period": "per month",
+          "features": [
+            "Everything in Basic",
+            "Changes up to 2 hours a month",
+            "Priority handling of requests",
+            "Quarterly traffic report"
+          ]
+        },
+        {
+          "name": "Premium",
+          "price": "€139",
+          "period": "per month",
+          "features": [
+            "For e-shops and booking systems",
+            "Changes up to 4 hours a month",
+            "Monthly traffic report",
+            "Outage fixed by the next business day"
+          ]
+        }
+      ],
+      "rules": [
+        "Care billing starts on the day your website launches.",
+        "Domain and hosting are included in every plan.",
+        "New features, redesigns or new pages are not part of the plans — we scope those as separate fixed-price projects."
+      ]
+    }
   },
   "about": {
     "title": "Who we are",

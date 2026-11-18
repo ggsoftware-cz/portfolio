@@ -331,7 +331,61 @@
     "ctaTitle": "Chcete přesnou cenu pro svůj projekt?",
     "ctaBody": "Napište nám pár vět o tom, co potřebujete — pošleme vám nezávaznou nabídku s pevnou cenou a termínem.",
     "ctaButton": "Nezávazná poptávka",
-    "workLink": "Podívejte se na naše reference"
+    "workLink": "Podívejte se na naše reference",
+    "care": {
+      "title": "Měsíční péče o web",
+      "intro": "Web není jednorázová záležitost. Balíčky péče zajistí, že váš web zůstane bezpečný, aktuální a dostupný — a drobné změny vyřídíme bez zdlouhavého poptávání.",
+      "tiers": [
+        {
+          "name": "Provozní minimum",
+          "price": "2 900 Kč",
+          "period": "za rok",
+          "features": [
+            "Hosting a SSL certifikát",
+            "Správa a obnova domény",
+            "Monitoring dostupnosti webu",
+            "Měsíční zálohy",
+            "Bezpečnostní aktualizace"
+          ]
+        },
+        {
+          "name": "Základ",
+          "price": "690 Kč",
+          "period": "měsíčně",
+          "features": [
+            "Vše z balíčku Provozní minimum",
+            "Drobné úpravy textů a fotek — až 30 minut měsíčně"
+          ]
+        },
+        {
+          "name": "Standard",
+          "price": "1 990 Kč",
+          "period": "měsíčně",
+          "features": [
+            "Vše z balíčku Základ",
+            "Úpravy až 2 hodiny měsíčně",
+            "Přednostní řešení požadavků",
+            "Čtvrtletní report návštěvnosti"
+          ]
+        },
+        {
+          "name": "Premium",
+          "price": "3 490 Kč",
+          "period": "měsíčně",
+          "features": [
+            "Pro e-shopy a rezervační systémy",
+            "Úpravy až 4 hodiny měsíčně",
+            "Měsíční report návštěvnosti",
+            "Odstranění výpadku do následujícího pracovního dne"
+          ]
+        }
+      ],
+      "rules": [
+        "Fakturace péče začíná ode dne spuštění webu.",
+        "Doména a hosting jsou zahrnuty v každém balíčku.",
+        "Nové funkce, redesign nebo nové stránky nejsou součástí balíčků — vždy je řešíme jako samostatnou zakázku za pevnou cenu."
+      ]
+    }
   },
   "about": {
     "title": "Kdo jsme",
