@@ -41,6 +41,13 @@ export default async function PricingPage({params}: {params: Promise<Params>}) {
   const terms = t.raw('terms') as {title: string; body: string}[];
   const faq = t.raw('faq') as {q: string; a: string}[];
 
+  const care = t.raw('care') as {
+    title: string;
+    intro: string;
+    rules: string[];
+    tiers: {name: string; price: string; period: string; features: string[]}[];
+  };
+
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -94,6 +101,46 @@ export default async function PricingPage({params}: {params: Promise<Params>}) {
                 );
               })}
             </div>
+          </div>
+        </section>
+
+        {/* Monthly care plans */}
+        <section className="pb-16">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <h2 className="mb-2 text-2xl font-black text-gray-900">{care.title}</h2>
+            <p className="mb-8 max-w-3xl leading-relaxed text-gray-600">{care.intro}</p>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
+              {care.tiers.map(ct => (
+                <div
+                  key={ct.name}
+                  className="flex flex-col rounded-2xl p-6 border border-gray-100 shadow-sm bg-white"
+                >
+                  <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                    {ct.name}
+                  </p>
+                  <p className="text-2xl font-black text-gray-900">
+                    {ct.price}
+                    <span className="ml-1 text-sm font-medium text-gray-500">{ct.period}</span>
+                  </p>
+                  <ul className="flex flex-col gap-2.5 mt-6 flex-1">
+                    {ct.features.map((f: string) => (
+                      <li key={f} className="flex items-start gap-2.5 text-sm text-gray-600">
+                        <Check size={15} className="mt-0.5 shrink-0 text-brand" strokeWidth={2.5} />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+            <ul className="mt-6 flex flex-col gap-2">
+              {care.rules.map((r: string) => (
+                <li key={r} className="flex items-start gap-2.5 text-sm text-gray-500">
+                  <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-400" />
+                  {r}
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 
