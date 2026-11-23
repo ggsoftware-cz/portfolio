@@ -1,6 +1,6 @@
 import type {ReactNode} from 'react';
 import type {Metadata} from 'next';
-import {Geist} from 'next/font/google';
+import {Barlow_Condensed, Geist} from 'next/font/google';
 import {NextIntlClientProvider} from 'next-intl';
 import {getMessages, getTranslations, setRequestLocale} from 'next-intl/server';
 import {notFound} from 'next/navigation';
@@ -14,6 +14,7 @@ const geist = Geist({
   subsets: ['latin'],
   variable: '--font-geist'
 });
+const barlow = Barlow_Condensed({weight: '800', subsets: ['latin', 'latin-ext'], variable: '--font-barlow', display: 'swap', preload: false});
 
 const OG_LOCALE: Record<string, string> = {cs: 'cs_CZ', en: 'en_US'};
 
@@ -147,7 +148,7 @@ export default async function LocaleLayout({
   };
 
   return (
-    <html lang={locale} className={`${geist.variable} scroll-smooth`}>
+    <html lang={locale} className={`${geist.variable} ${barlow.variable} scroll-smooth`}>
       <body className="font-sans antialiased bg-white text-gray-900">
         <script
           type="application/ld+json"

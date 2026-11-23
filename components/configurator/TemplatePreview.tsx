@@ -6,6 +6,7 @@ import {useTranslations} from 'next-intl';
 import {ArrowUpRight, ArrowRight, Plus, Check, Utensils, Leaf, MoveUpRight} from 'lucide-react';
 import {fonts, onColor, type Configuration} from '@/lib/configurator/config';
 import s from './templates.module.css';
+import ShiftStorefront from './ShiftStorefront';
 
 type Props = {config: Configuration; miniature?: boolean; eager?: boolean; onEnquire?: () => void};
 
@@ -32,8 +33,9 @@ export default function TemplatePreview({config, miniature = false, eager = fals
   const action = () => scrollTo(contactRef.current);
   const renderPhoto = ({className = '', secondary = false}: {className?: string; secondary?: boolean}) => (
     <div className={`${s.photo} ${className}`}>
-      <Image src={`/templates/${config.image}.webp`} alt={t(`templates.${config.image}.imageAlt`)} fill
+      <Image src={`/templates/${miniature ? 'thumbs/' : ''}${config.image}.webp`} alt={t(`templates.${config.image}.imageAlt`)} fill
         sizes={miniature ? '(max-width: 640px) 90vw, 45vw' : '(max-width: 700px) 100vw, 70vw'}
+        fetchPriority={miniature ? 'low' : secondary ? 'auto' : 'high'}
         loading={secondary || (miniature && !eager) ? 'lazy' : 'eager'} />
     </div>
   );
@@ -43,6 +45,10 @@ export default function TemplatePreview({config, miniature = false, eager = fals
     </button>
   );
   const HeroHeading = miniature ? 'h3' : 'h2';
+
+  if (config.template === 'shift') return <div className={s.container} style={style}>
+    <ShiftStorefront config={config} miniature={miniature} onEnquire={onEnquire} />
+  </div>;
 
   return (
     <div className={s.container} style={style}>

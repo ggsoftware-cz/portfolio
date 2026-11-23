@@ -58,7 +58,7 @@ export default function LivePreview({config, mobile, expanded, viewportRef, onEn
               <span className={s.phoneIndicators}><Signal size={16} /><Wifi size={16} /><BatteryFull size={23} /></span>
             </div>
             <div className={s.phoneAddress} aria-hidden="true"><LockKeyhole size={11} /><span>{templateNames[config.template]}</span><span className={s.phoneAddressLabel}>{t('preview')}</span></div>
-            <div ref={viewportRef} tabIndex={0} role="region" aria-label={mobile ? t('mobile') : t('preview')} className={s.previewViewport}>
+            <div ref={viewportRef} data-storefront-viewport tabIndex={0} role="region" aria-label={mobile ? t('mobile') : t('preview')} className={s.previewViewport}>
               <TemplatePreview config={config} onEnquire={onEnquire} />
             </div>
             <div className={s.phoneHome} aria-hidden="true"><span /></div>

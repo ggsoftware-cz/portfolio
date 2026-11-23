@@ -1,17 +1,24 @@
-export const templateIds = ['atelier', 'haven', 'forma', 'savor'] as const;
+export const templateIds = ['atelier', 'haven', 'forma', 'savor', 'shift'] as const;
 export type TemplateId = (typeof templateIds)[number];
-export const fontIds = ['geist', 'georgia', 'arial', 'palatino'] as const;
+export const fontIds = ['geist', 'georgia', 'arial', 'palatino', 'barlow'] as const;
 export type FontId = (typeof fontIds)[number];
 
 export const fonts: Record<FontId, {name: string; family: string}> = {
   geist: {name: 'Geist', family: 'var(--font-geist), Arial, sans-serif'},
   georgia: {name: 'Georgia', family: 'Georgia, "Times New Roman", serif'},
   arial: {name: 'Arial', family: 'Arial, Helvetica, sans-serif'},
-  palatino: {name: 'Palatino', family: 'Palatino, "Palatino Linotype", "Book Antiqua", serif'}
+  palatino: {name: 'Palatino', family: 'Palatino, "Palatino Linotype", "Book Antiqua", serif'},
+  barlow: {name: 'Barlow Condensed', family: 'var(--font-barlow), "Arial Narrow", Arial, sans-serif'}
 };
 
 export type Palette = {accent: string; background: string; text: string};
 export const palettes: Record<TemplateId, Palette[]> = {
+  shift: [
+    {accent: '#d2f600', background: '#f5f5f0', text: '#25291f'},
+    {accent: '#ff7648', background: '#f9f3ec', text: '#34291f'},
+    {accent: '#bcb1f5', background: '#f6f5fa', text: '#292434'},
+    {accent: '#9bdbcd', background: '#f0f7f4', text: '#1c3530'}
+  ],
   atelier: [
     {accent: '#355b43', background: '#f5f4ef', text: '#24382f'},
     {accent: '#6b4052', background: '#faf5f7', text: '#34222b'},
@@ -52,21 +59,23 @@ export type Configuration = Palette & {
   imageStyle: 'natural' | 'muted' | 'mono';
   sections: {services: boolean; about: boolean; faq: boolean};
   content: {name: string; headline: string; description: string; cta: string};
+  shop?: {colorway: 'midnight' | 'beach' | 'street'; motion: boolean};
 };
 
 export const contentLimits = {name: 50, headline: 100, description: 240, cta: 32} as const;
-export const templateNames: Record<TemplateId, string> = {atelier: 'Atelier', haven: 'Haven', forma: 'Forma', savor: 'Savor'};
+export const templateNames: Record<TemplateId, string> = {atelier: 'Atelier', haven: 'Haven', forma: 'Forma', savor: 'Savor', shift: 'Shift'};
 export const DRAFT_KEY = 'gg-website-design-v1';
 
 export function createConfiguration(template: TemplateId): Configuration {
   return {
     version: 1, template, ...palettes[template][0],
-    font: template === 'forma' ? 'arial' : 'georgia',
+    font: template === 'shift' ? 'barlow' : template === 'forma' ? 'arial' : 'georgia',
     fontSize: 100, spacing: 64, radius: template === 'haven' ? 4 : template === 'forma' ? 12 : 2,
     width: 1120, align: template === 'haven' ? 'center' : 'left',
     image: template, imagePosition: 50, imageStyle: 'natural',
     sections: {services: true, about: true, faq: true},
-    content: {name: '', headline: '', description: '', cta: ''}
+    content: {name: '', headline: '', description: '', cta: ''},
+    ...(template === 'shift' ? {shop: {colorway: 'beach' as const, motion: true}} : {})
   };
 }
 
@@ -95,6 +104,8 @@ export function parseConfiguration(value: unknown): Configuration | null {
   for (const key of ['services', 'about', 'faq']) {
     if (typeof value.sections[key] !== 'boolean') return null;
   }
+  if (value.shop !== undefined && (!record(value.shop) ||
+    !['midnight', 'beach', 'street'].includes(value.shop.colorway as string) || typeof value.shop.motion !== 'boolean')) return null;
   // Reconstruct instead of carrying arbitrary untrusted properties into drafts or emails.
   return {
     version: 1, template: value.template as TemplateId, image: value.image as TemplateId,
@@ -103,6 +114,9 @@ export function parseConfiguration(value: unknown): Configuration | null {
     radius: value.radius, width: value.width, align: value.align as Configuration['align'],
     imagePosition: value.imagePosition, imageStyle: value.imageStyle as Configuration['imageStyle'],
     sections: {services: value.sections.services as boolean, about: value.sections.about as boolean, faq: value.sections.faq as boolean},
+    ...(value.template === 'shift' ? {shop: record(value.shop)
+      ? {colorway: value.shop.colorway as NonNullable<Configuration['shop']>['colorway'], motion: value.shop.motion as boolean}
+      : {colorway: 'beach' as const, motion: true}} : {}),
     content: {
       name: value.content.name as string, headline: value.content.headline as string,
       description: value.content.description as string, cta: value.content.cta as string
@@ -149,6 +163,7 @@ export function configurationSummary(config: Configuration): string {
     `Font: ${fonts[config.font].name}; heading scale: ${config.fontSize}%`,
     `Spacing: ${config.spacing}px; corners: ${config.radius}px; width: ${config.width}px; alignment: ${config.align}`,
     `Photo: ${config.image}; position: ${config.imagePosition}%; treatment: ${config.imageStyle}`,
+    ...(config.template === 'shift' ? [`3D shop: colorway ${config.shop?.colorway || 'beach'}; motion ${config.shop?.motion !== false ? 'on' : 'off'}`] : []),
     `Sections: ${Object.entries(config.sections).filter(([, enabled]) => enabled).map(([key]) => key).join(', ') || 'hero and contact only'}`,
     ...Object.entries(config.content).map(([key, value]) => `${key}: ${value || '(template default)'}`)
   ].join('\n');
